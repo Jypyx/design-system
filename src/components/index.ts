@@ -53,6 +53,10 @@ export type {
   MenuProps,
 } from './menu/Menu.types'
 
+export { default as Modal } from './modal/Modal.vue'
+export { default as ModalAlert } from './modal/ModalAlert.vue'
+export type { ModalAlertProps, ModalProps, ModalRole } from './modal/Modal.types'
+
 export { default as OTPInput } from './otp-input/OTPInput.vue'
 export type { OTPInputFormat, OTPInputProps } from './otp-input/OTPInput.types'
 

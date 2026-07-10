@@ -1,0 +1,43 @@
+/* ============================================================
+ * LAYER 3 — Component tokens: Modal / ModalAlert
+ * Consumes Layer 2 semantic tokens only; light + dark come for
+ * free because the semantic layer resolves via light-dark().
+ *
+ *   --modal-width           preferred width; the panel never grows
+ *                           past the viewport minus the gutter
+ *                           (overridable per instance via the width prop)
+ *   --modal-gutter          minimum space kept between the panel and
+ *                           the viewport edges on small screens
+ *   --modal-max-height      height cap (also viewport-capped)
+ *   --modal-bg              panel background
+ *   --modal-edge            color of the top/bottom content borders,
+ *                           shown only while the body overflows
+ *   --modal-padding-inline  left/right padding of all three sections
+ *   --modal-padding-block   top padding of the header / bottom padding
+ *                           of the footer
+ * ============================================================ */
+
+.ds-modal {
+  --modal-width: 560px;
+  --modal-gutter: var(--spacing-4);
+  --modal-max-height: calc(100dvh - 2 * var(--modal-gutter));
+  --modal-bg: var(--surface-raised);
+  --modal-edge: var(--border);
+  --modal-radius: var(--radius-xl);
+  --modal-shadow: var(--shadow-xl);
+  --modal-padding-inline: var(--spacing-6);
+  --modal-padding-block: var(--spacing-5);
+  --modal-header-gap: var(--spacing-2);
+  --modal-footer-gap: var(--spacing-2);
+  --modal-title-font-size: var(--text-lg);
+  --modal-subtitle-font-size: var(--text-sm);
+}
+
+/* --- alert: same anatomy, tighter ------------------------------- */
+
+.ds-modal-alert {
+  --modal-width: 400px;
+  --modal-padding-inline: var(--spacing-5);
+  --modal-padding-block: var(--spacing-4);
+  --modal-title-font-size: var(--text-base);
+}
