@@ -96,12 +96,19 @@ export const Sizes: Story = {
   }),
 }
 
-/** Icons via the iconStart / iconEnd props, or any custom Icon via the icon-start / icon-end slots. */
+/**
+ * iconStart / iconEnd accept a Material Symbols name or an image / SVG URL;
+ * inline SVG (or any custom Icon) goes through the icon-start / icon-end slots.
+ */
 export const WithIcons: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
     components: { Button, Icon },
-    setup: () => ({ sizes }),
+    setup: () => ({
+      sizes,
+      smiley:
+        "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='10' fill='%23f59e0b'/%3E%3Ccircle cx='9' cy='10' r='1.5' fill='%23422006'/%3E%3Ccircle cx='15' cy='10' r='1.5' fill='%23422006'/%3E%3Cpath d='M8 14.5q4 3 8 0' stroke='%23422006' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E",
+    }),
     template: `
       <div style="display: flex; flex-direction: column; gap: var(--spacing-4); align-items: flex-start;">
         <div style="display: flex; gap: var(--spacing-4); align-items: center;">
@@ -109,9 +116,22 @@ export const WithIcons: Story = {
           <Button color="primary" variant="tonal" icon-end="arrow_forward">Next</Button>
           <Button variant="outlined" icon-start="download" icon-end="expand_more">Export</Button>
           <Button color="danger" variant="text" icon-start="delete">Delete</Button>
+        </div>
+        <div style="display: flex; gap: var(--spacing-4); align-items: center;">
+          <Button :icon-start="smiley">Image icon</Button>
           <Button color="success" variant="flat">
             <template #icon-start><Icon name="check_circle" filled /></template>
-            Custom slot icon
+            Slot icon
+          </Button>
+          <Button color="primary" variant="tonal">
+            <template #icon-start>
+              <Icon>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 3l2.6 5.3 5.9.9-4.2 4.1 1 5.8L12 16.4 6.7 19.1l1-5.8L3.5 9.2l5.9-.9z" />
+                </svg>
+              </Icon>
+            </template>
+            Inline SVG
           </Button>
         </div>
         <div style="display: flex; gap: var(--spacing-4); align-items: center;">

@@ -17,9 +17,13 @@ export interface ButtonProps {
   target?: '_self' | '_blank' | '_parent' | '_top'
   /** Only used when href is set */
   rel?: string
-  /** Material Symbols Rounded name rendered before the label (or use the icon-start slot) */
+  /**
+   * Icon rendered before the label: a Material Symbols Rounded name, or an
+   * image / SVG URL (anything containing '.', '/' or ':' is treated as a URL).
+   * For inline SVG markup use the icon-start slot instead.
+   */
   iconStart?: string
-  /** Material Symbols Rounded name rendered after the label (or use the icon-end slot) */
+  /** Icon rendered after the label; same accepted values as iconStart (slot: icon-end) */
   iconEnd?: string
   /** Shows a spinner and dims the button; interaction is blocked while loading. */
   isLoading?: boolean

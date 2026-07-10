@@ -9,6 +9,8 @@
  *   --btn-outline     border color of the outlined variant
  *   --btn-fill-border hairline border on filled variants
  *                     (only visible on the neutral button)
+ *   --btn-icon-size       size of Material Symbols icons (and spinner)
+ *   --btn-icon-media-size size of img / svg icons
  * ============================================================ */
 
 .ds-btn {
@@ -18,6 +20,7 @@
   --btn-font-size: var(--text-sm);
   --btn-gap: var(--spacing-2);
   --btn-radius: var(--radius-md);
+  --btn-icon-size: 20px;
 
   /* color — default 'neutral': white button, dark grey in dark theme */
   --btn-accent: var(--surface-raised);
@@ -35,6 +38,7 @@
   --btn-font-size: var(--text-xs);
   --btn-gap: var(--spacing-1\.5);
   --btn-radius: var(--radius-sm);
+  --btn-icon-size: 16px;
 }
 
 .ds-btn[data-size='md'] {
@@ -51,6 +55,7 @@
   --btn-font-size: var(--text-lg);
   --btn-gap: var(--spacing-3);
   --btn-radius: var(--radius-lg);
+  --btn-icon-size: 24px;
 }
 
 /* --- colors --------------------------------------------------- */

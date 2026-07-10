@@ -6,11 +6,15 @@ import type { ButtonProps } from './Button.types'
 withDefaults(defineProps<ButtonProps>(), {
   size: 'sm',
   color: 'neutral',
-  variant: 'elevated',
+  variant: 'flat',
   disabled: false,
   isLoading: false,
   type: 'button',
 })
+
+/* Material Symbols names never contain '.', '/' or ':' — anything that
+   does is an image / SVG URL and renders through Icon's src prop */
+const iconProps = (icon: string) => (/[./:]/.test(icon) ? { src: icon } : { name: icon })
 </script>
 
 <template>
@@ -45,11 +49,11 @@ withDefaults(defineProps<ButtonProps>(), {
       />
     </svg>
     <slot v-else name="icon-start">
-      <Icon v-if="iconStart" :name="iconStart" />
+      <Icon v-if="iconStart" v-bind="iconProps(iconStart)" />
     </slot>
     <slot />
     <slot name="icon-end">
-      <Icon v-if="iconEnd" :name="iconEnd" />
+      <Icon v-if="iconEnd" v-bind="iconProps(iconEnd)" />
     </slot>
   </component>
 </template>
@@ -165,11 +169,9 @@ withDefaults(defineProps<ButtonProps>(), {
 }
 
 /* --- icons -------------------------------------------------------- */
-/* slightly larger than the label so glyphs read at the same
-   optical weight as the text (Material sizing ratio) */
 
 .ds-btn > .ds-icon {
-  --icon-size: 1.25em;
+  --icon-size: var(--btn-icon-size);
 }
 
 /* --- loading ------------------------------------------------------ */
@@ -181,8 +183,8 @@ withDefaults(defineProps<ButtonProps>(), {
 
 .ds-btn-spinner {
   /* matches the icon size so the loading swap doesn't shift layout */
-  width: 1.25em;
-  height: 1.25em;
+  width: var(--btn-icon-size);
+  height: var(--btn-icon-size);
   animation: ds-btn-spin calc(var(--duration-500) * 1.5) var(--ease-linear) infinite;
 }
 
