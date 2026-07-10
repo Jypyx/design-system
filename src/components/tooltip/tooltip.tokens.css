@@ -1,0 +1,30 @@
+/* ============================================================
+ * LAYER 3 — Component tokens: Tooltip
+ * Consumes Layer 2 semantic tokens only; light + dark come for
+ * free because the semantic layer resolves via light-dark().
+ *
+ * The tooltip uses the emphasis surface: a dark bubble in both
+ * themes (in dark it stays lighter than the page background so
+ * it still stands out).
+ *
+ *   --tooltip-bg        bubble background
+ *   --tooltip-color     bubble text color
+ *   --tooltip-gap       distance between the anchor and the bubble
+ *   --tooltip-max-width wrapping threshold of long content
+ * ============================================================ */
+
+.ds-tooltip {
+  --tooltip-bg: var(--surface-emphasis);
+  --tooltip-color: var(--text-on-emphasis);
+
+  --tooltip-font-size: var(--text-xs);
+  --tooltip-line-height: var(--text-xs--line-height);
+  --tooltip-font-weight: var(--font-weight-normal);
+
+  --tooltip-padding-block: var(--spacing-1\.5);
+  --tooltip-padding-inline: var(--spacing-2\.5);
+  --tooltip-radius: var(--radius-md);
+  --tooltip-gap: var(--spacing-2);
+  --tooltip-max-width: 260px;
+  --tooltip-shadow: var(--shadow-md);
+}

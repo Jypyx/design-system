@@ -25,12 +25,16 @@
   --surface-raised: light-dark(var(--color-white), var(--color-neutral-800));
   --surface-disabled: light-dark(var(--color-neutral-200), var(--color-neutral-800));
   --surface-overlay: light-dark(rgb(0 0 0 / 0.4), rgb(0 0 0 / 0.6));
+  /* high-contrast bubble (tooltips, toasts): dark in BOTH themes —
+     in dark it stays a step lighter than --surface so it still pops */
+  --surface-emphasis: light-dark(var(--color-neutral-800), var(--color-neutral-700));
 
   /* --- text -------------------------------------------------- */
   --text: light-dark(var(--color-neutral-900), var(--color-neutral-100));
   --text-muted: light-dark(var(--color-neutral-600), var(--color-neutral-400));
   --text-disabled: light-dark(var(--color-neutral-400), var(--color-neutral-600));
   --text-inverse: light-dark(var(--color-white), var(--color-neutral-950));
+  --text-on-emphasis: var(--color-white);
 
   /* --- borders ------------------------------------------------ */
   --border: light-dark(var(--color-neutral-200), var(--color-neutral-700));

@@ -1,7 +1,8 @@
 {
   "permissions": {
     "allow": [
-      "PowerShell(npx vitest run --project=storybook)"
+      "PowerShell(npx vitest run --project=storybook)",
+      "PowerShell(npx vitest run --project=storybook src/components/tooltip/Tooltip.stories.ts)"
     ]
   }
 }

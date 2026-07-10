@@ -32,3 +32,6 @@ export type { SwitchLabelPosition, SwitchProps } from './switch/Switch.types'
 
 export { default as Textarea } from './textarea/Textarea.vue'
 export type { TextareaProps, TextareaSize } from './textarea/Textarea.types'
+
+export { default as Tooltip } from './tooltip/Tooltip.vue'
+export type { TooltipPlacement, TooltipProps } from './tooltip/Tooltip.types'
