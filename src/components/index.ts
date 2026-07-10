@@ -21,6 +21,18 @@ export type { IconProps } from './icon/Icon.types'
 export { default as Input } from './input/Input.vue'
 export type { InputProps, InputSize, InputType } from './input/Input.types'
 
+export { default as Menu } from './menu/Menu.vue'
+export { default as MenuItem } from './menu/MenuItem.vue'
+export { default as MenuLabel } from './menu/MenuLabel.vue'
+export { default as MenuSeparator } from './menu/MenuSeparator.vue'
+export type {
+  MenuItemColor,
+  MenuItemProps,
+  MenuLabelProps,
+  MenuPlacement,
+  MenuProps,
+} from './menu/Menu.types'
+
 export { default as OTPInput } from './otp-input/OTPInput.vue'
 export type { OTPInputFormat, OTPInputProps } from './otp-input/OTPInput.types'
 
