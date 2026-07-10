@@ -1,0 +1,87 @@
+/* ============================================================
+ * LAYER 3 — Component tokens: Button
+ * Consumes Layer 2 semantic tokens only; light + dark come for
+ * free because the semantic layer resolves via light-dark().
+ *
+ *   --btn-accent      fill color of elevated / flat variants
+ *   --btn-on-accent   content color on top of the fill
+ *   --btn-tint        color of tonal / outlined / text variants
+ *   --btn-outline     border color of the outlined variant
+ *   --btn-fill-border hairline border on filled variants
+ *                     (only visible on the neutral button)
+ * ============================================================ */
+
+.ds-btn {
+  /* size — default 'sm' (36px) */
+  --btn-height: 36px;
+  --btn-padding-inline: var(--spacing-3\.5);
+  --btn-font-size: var(--text-sm);
+  --btn-gap: var(--spacing-2);
+  --btn-radius: var(--radius-md);
+
+  /* color — default 'neutral': white button, dark grey in dark theme */
+  --btn-accent: var(--surface-raised);
+  --btn-on-accent: var(--text);
+  --btn-tint: var(--text);
+  --btn-outline: var(--border-strong);
+  --btn-fill-border: var(--border);
+}
+
+/* --- sizes ---------------------------------------------------- */
+
+.ds-btn[data-size='xs'] {
+  --btn-height: 28px;
+  --btn-padding-inline: var(--spacing-2\.5);
+  --btn-font-size: var(--text-xs);
+  --btn-gap: var(--spacing-1\.5);
+  --btn-radius: var(--radius-sm);
+}
+
+.ds-btn[data-size='md'] {
+  --btn-height: 44px;
+  --btn-padding-inline: var(--spacing-5);
+  --btn-font-size: var(--text-base);
+  --btn-gap: var(--spacing-2\.5);
+  --btn-radius: var(--radius-lg);
+}
+
+.ds-btn[data-size='lg'] {
+  --btn-height: 52px;
+  --btn-padding-inline: var(--spacing-6);
+  --btn-font-size: var(--text-lg);
+  --btn-gap: var(--spacing-3);
+  --btn-radius: var(--radius-lg);
+}
+
+/* --- colors --------------------------------------------------- */
+
+.ds-btn:not([data-color='neutral']) {
+  --btn-outline: var(--btn-tint);
+  --btn-fill-border: transparent;
+}
+
+.ds-btn[data-color='primary'] {
+  --btn-accent: var(--color-primary);
+  --btn-on-accent: var(--color-on-primary);
+  --btn-tint: var(--color-primary);
+}
+
+.ds-btn[data-color='success'] {
+  --btn-accent: var(--color-success);
+  --btn-on-accent: var(--color-on-success);
+  --btn-tint: var(--color-success);
+}
+
+.ds-btn[data-color='danger'] {
+  --btn-accent: var(--color-danger);
+  --btn-on-accent: var(--color-on-danger);
+  --btn-tint: var(--color-danger);
+}
+
+.ds-btn[data-color='warning'] {
+  --btn-accent: var(--color-warning);
+  --btn-on-accent: var(--color-on-warning);
+  /* amber is too light to be readable as text — pull it toward the
+     text color so tonal / outlined / text variants keep contrast */
+  --btn-tint: color-mix(in oklab, var(--color-warning) 70%, var(--text));
+}

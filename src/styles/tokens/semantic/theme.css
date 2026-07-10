@@ -1,0 +1,54 @@
+/* ============================================================
+ * LAYER 2 — Semantic tokens (purpose-driven)
+ * The ONLY layer where light-dark() appears.
+ * Theme resolution:
+ *   - default: follows the OS (color-scheme: light dark)
+ *   - forced:  <html data-theme="light"> or <html data-theme="dark">
+ * ============================================================ */
+
+:root {
+  color-scheme: light dark;
+}
+
+:root[data-theme='light'] {
+  color-scheme: light;
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+}
+
+:root {
+  /* --- surfaces --------------------------------------------- */
+  --surface: light-dark(var(--color-white), var(--color-neutral-950));
+  --surface-muted: light-dark(var(--color-neutral-50), var(--color-neutral-900));
+  --surface-raised: light-dark(var(--color-white), var(--color-neutral-800));
+  --surface-overlay: light-dark(rgb(0 0 0 / 0.4), rgb(0 0 0 / 0.6));
+
+  /* --- text -------------------------------------------------- */
+  --text: light-dark(var(--color-neutral-900), var(--color-neutral-100));
+  --text-muted: light-dark(var(--color-neutral-600), var(--color-neutral-400));
+  --text-disabled: light-dark(var(--color-neutral-400), var(--color-neutral-600));
+  --text-inverse: light-dark(var(--color-white), var(--color-neutral-950));
+
+  /* --- borders ------------------------------------------------ */
+  --border: light-dark(var(--color-neutral-200), var(--color-neutral-700));
+  --border-strong: light-dark(var(--color-neutral-300), var(--color-neutral-600));
+
+  /* --- status / accent colors --------------------------------- */
+  --color-primary: light-dark(var(--color-blue-600), var(--color-blue-400));
+  --color-on-primary: light-dark(var(--color-white), var(--color-blue-950));
+
+  --color-success: light-dark(var(--color-green-600), var(--color-green-400));
+  --color-on-success: light-dark(var(--color-white), var(--color-green-950));
+
+  --color-danger: light-dark(var(--color-red-600), var(--color-red-400));
+  --color-on-danger: light-dark(var(--color-white), var(--color-red-950));
+
+  --color-warning: light-dark(var(--color-amber-500), var(--color-amber-400));
+  --color-on-warning: light-dark(var(--color-amber-950), var(--color-amber-950));
+
+  /* --- interaction -------------------------------------------- */
+  --focus-ring: 2px solid var(--color-primary);
+  --focus-ring-offset: 2px;
+}

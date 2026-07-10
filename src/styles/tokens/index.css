@@ -1,0 +1,11 @@
+/* Token entry point — base (Layer 1) first, then semantic (Layer 2).
+ * Layer 3 (component tokens) lives next to each component. */
+
+@import './base/colors.css';
+@import './base/spacing.css';
+@import './base/radius.css';
+@import './base/shadow.css';
+@import './base/typography.css';
+@import './base/motion.css';
+
+@import './semantic/theme.css';
