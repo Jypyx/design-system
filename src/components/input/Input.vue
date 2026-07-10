@@ -169,7 +169,8 @@ function clear() {
   color: var(--input-text-color);
   transition:
     background-color var(--duration-150) var(--ease-out),
-    border-color var(--duration-150) var(--ease-out);
+    border-color var(--duration-150) var(--ease-out),
+    box-shadow var(--duration-150) var(--ease-out);
 }
 
 .ds-input:not([data-disabled], [data-readonly]) .ds-input-field:hover {
@@ -177,12 +178,12 @@ function clear() {
 }
 
 /* text inputs always match :focus-visible, so keyboard and mouse focus
-   both show the ring; a focused clear / end-icon button does not */
+   both show the focus style; a focused clear / end-icon button does not.
+   The box-shadow visually thickens the 1px border to 2px without any
+   layout shift */
 .ds-input:not([data-disabled]) .ds-input-field:has(> .ds-input-control:focus-visible) {
   border-color: var(--input-accent);
-  outline: var(--focus-ring);
-  outline-color: var(--input-accent);
-  outline-offset: var(--focus-ring-offset);
+  box-shadow: 0 0 0 1px var(--input-accent);
 }
 
 .ds-input[data-disabled] .ds-input-field {
@@ -219,6 +220,18 @@ function clear() {
 /* the clearable prop replaces the native search cancel button */
 .ds-input-control::-webkit-search-cancel-button {
   display: none;
+}
+
+/* no native spin buttons on type="number" */
+.ds-input-control::-webkit-outer-spin-button,
+.ds-input-control::-webkit-inner-spin-button {
+  appearance: none;
+  margin: 0;
+}
+
+.ds-input-control[type='number'] {
+  -moz-appearance: textfield;
+  appearance: textfield;
 }
 
 /* --- icons + affix buttons (clear, clickable end icon) -------------- */
