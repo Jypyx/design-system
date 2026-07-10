@@ -64,9 +64,11 @@ type Story = StoryObj<typeof meta>
 export const Default: Story = {}
 
 /**
- * When the content is taller than the modal, the body scrolls and a 1px
- * border appears at the top and bottom of the scrollport — only while
- * the content actually overflows (pure CSS, scroll-state container query).
+ * When the content is taller than the modal, the body scrolls and 1px
+ * borders mark the scrollport edges — pure CSS (scroll- vs local-attached
+ * background layers). Each border only shows while there is more content
+ * on its side: none at the top before scrolling, none at the bottom once
+ * you reach the end, and none at all when nothing overflows.
  */
 export const ScrollableContent: Story = {
   parameters: { controls: { disable: true } },

@@ -172,11 +172,10 @@ defineExpose({
   min-height: 0;
   overflow: auto;
   overscroll-behavior: contain;
-  container-type: scroll-state;
 }
 
 /* vertical padding lives on the inner wrapper: the body itself must
-   stay padding-free so the sticky edge borders below hug the scrollport */
+   stay padding-free so the edge borders below hug the scrollport */
 .ds-modal-content {
   padding: var(--spacing-2) var(--modal-padding-inline);
 }
@@ -191,35 +190,32 @@ defineExpose({
 }
 
 /* --- scroll edge borders ------------------------------------------ */
-/* two 1px rules pinned to the scrollport edges (sticky, out of flow
-   via the negative margins), visible only while the body overflows */
+/* pure-background technique: two 1px lines pinned to the scrollport
+   edges (attachment: scroll), each hidden by an opaque panel-colored
+   cover that moves with the content (attachment: local). The top line
+   only shows once you scroll away from the top, the bottom one hides
+   when you reach the end — and no overflow means no lines at all.
+   Covers are listed first: earlier background layers paint on top. */
 
-.ds-modal-body::before,
-.ds-modal-body::after {
-  content: '';
-  display: block;
-  position: sticky;
-  z-index: 1;
-  height: 1px;
-  background-color: transparent;
-  transition: background-color var(--duration-150) var(--ease-out);
-}
-
-.ds-modal-body::before {
-  top: 0;
-  margin-block-end: -1px;
-}
-
-.ds-modal-body::after {
-  bottom: 0;
-  margin-block-start: -1px;
-}
-
-@container scroll-state(scrollable: y) {
-  .ds-modal-body::before,
-  .ds-modal-body::after {
-    background-color: var(--modal-edge);
-  }
+.ds-modal-body {
+  background-image:
+    linear-gradient(var(--modal-bg), var(--modal-bg)),
+    linear-gradient(var(--modal-bg), var(--modal-bg)),
+    linear-gradient(var(--modal-edge), var(--modal-edge)),
+    linear-gradient(var(--modal-edge), var(--modal-edge));
+  background-position:
+    left top,
+    left bottom,
+    left top,
+    left bottom;
+  /* covers are 1px taller than the lines so subpixel scroll can't bleed */
+  background-size:
+    100% 2px,
+    100% 2px,
+    100% 1px,
+    100% 1px;
+  background-repeat: no-repeat;
+  background-attachment: local, local, scroll, scroll;
 }
 
 /* --- footer -------------------------------------------------------- */
