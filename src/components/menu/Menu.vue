@@ -194,10 +194,12 @@ onMounted(() => {
   /* self-contained: never rely on a host-app reset */
   box-sizing: border-box;
   /* undo the UA popover styles (inset: 0 + margin: auto) so the
-     position-area grid cell does the placement instead */
+     position-area grid cell does the placement instead; the gap is
+     re-added per placement below, on the trigger side only, so the
+     panel stays flush with the anchor on the aligned edges */
   position: fixed;
   inset: auto;
-  margin: var(--menu-gap);
+  margin: 0;
   min-width: var(--menu-min-width);
   max-width: var(--menu-max-width);
   width: max-content;
@@ -216,8 +218,25 @@ onMounted(() => {
 
 /* --- placement (CSS anchor positioning) ------------------------- */
 /* the panel is laid out in the 3×3 position-area grid around its
-   anchor; the margin above acts as the trigger↔panel gap.
+   anchor; a one-sided margin creates the trigger↔panel gap (the
+   flip fallbacks below also flip margins, keeping the gap correct).
    Submenus override this with their own rules (see MenuItem). */
+
+.ds-menu-popover[data-placement^='bottom'] {
+  margin-block-start: var(--menu-gap);
+}
+
+.ds-menu-popover[data-placement^='top'] {
+  margin-block-end: var(--menu-gap);
+}
+
+.ds-menu-popover[data-placement='left'] {
+  margin-inline-end: var(--menu-gap);
+}
+
+.ds-menu-popover[data-placement='right'] {
+  margin-inline-start: var(--menu-gap);
+}
 
 .ds-menu-popover[data-placement='bottom-start'] {
   position-area: bottom span-right;
