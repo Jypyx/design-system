@@ -35,7 +35,7 @@ withDefaults(defineProps<ButtonProps>(), {
   justify-content: center;
   gap: var(--btn-gap);
   height: var(--btn-height);
-  padding-inline: var(--btn-padding-inline);
+  padding: 0 var(--btn-padding-inline);
   border: 1px solid transparent;
   border-radius: var(--btn-radius);
   font-family: var(--font-sans);

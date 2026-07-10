@@ -14,7 +14,7 @@
 .ds-btn {
   /* size — default 'sm' (36px) */
   --btn-height: 36px;
-  --btn-padding-inline: var(--spacing-3\.5);
+  --btn-padding-inline: var(--spacing-4);
   --btn-font-size: var(--text-sm);
   --btn-gap: var(--spacing-2);
   --btn-radius: var(--radius-md);
@@ -31,7 +31,7 @@
 
 .ds-btn[data-size='xs'] {
   --btn-height: 28px;
-  --btn-padding-inline: var(--spacing-2\.5);
+  --btn-padding-inline: var(--spacing-3);
   --btn-font-size: var(--text-xs);
   --btn-gap: var(--spacing-1\.5);
   --btn-radius: var(--radius-sm);
