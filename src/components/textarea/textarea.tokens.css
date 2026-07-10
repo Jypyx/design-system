@@ -1,0 +1,98 @@
+/* ============================================================
+ * LAYER 3 — Component tokens: Textarea
+ * Consumes Layer 2 semantic tokens only; light + dark come for
+ * free because the semantic layer resolves via light-dark().
+ *
+ * Font sizes, paddings, radii and icon sizes match Input (and
+ * therefore Button); height comes from the rows prop instead of
+ * a fixed height token.
+ *
+ *   --textarea-surface            field background
+ *   --textarea-border-color       field border
+ *   --textarea-accent             focus border + focus shadow color
+ *   --textarea-text-color         value text
+ *   --textarea-placeholder-color  placeholder text
+ *   --textarea-icon-color         decorative icons, affix buttons, spinner
+ *   --textarea-label-color        label above the field
+ *   --textarea-hint-color         hint + counter below the field
+ * ============================================================ */
+
+.ds-textarea {
+  /* size — default 'sm' */
+  --textarea-padding-inline: var(--spacing-3);
+  --textarea-padding-block: var(--spacing-2);
+  --textarea-font-size: var(--text-sm);
+  --textarea-line-height: 1.5;
+  --textarea-gap: var(--spacing-2);
+  --textarea-stack-gap: var(--spacing-1\.5);
+  --textarea-radius: var(--radius-md);
+  --textarea-icon-size: 20px;
+  --textarea-label-font-size: var(--text-sm);
+  --textarea-meta-font-size: var(--text-xs);
+
+  /* colors */
+  --textarea-surface: var(--surface-raised);
+  --textarea-border-color: var(--border-strong);
+  --textarea-accent: var(--color-primary);
+  --textarea-text-color: var(--text);
+  --textarea-placeholder-color: var(--text-muted);
+  --textarea-icon-color: var(--text-muted);
+  --textarea-label-color: var(--text);
+  --textarea-hint-color: var(--text-muted);
+}
+
+/* --- sizes ---------------------------------------------------- */
+
+.ds-textarea[data-size='xs'] {
+  --textarea-padding-inline: var(--spacing-2\.5);
+  --textarea-padding-block: var(--spacing-1\.5);
+  --textarea-font-size: var(--text-xs);
+  --textarea-gap: var(--spacing-1\.5);
+  --textarea-radius: var(--radius-sm);
+  --textarea-icon-size: 16px;
+  --textarea-label-font-size: var(--text-xs);
+}
+
+.ds-textarea[data-size='md'] {
+  --textarea-padding-inline: var(--spacing-3\.5);
+  --textarea-padding-block: var(--spacing-2\.5);
+  --textarea-font-size: var(--text-base);
+  --textarea-gap: var(--spacing-2\.5);
+  --textarea-radius: var(--radius-lg);
+  --textarea-label-font-size: var(--text-base);
+  --textarea-meta-font-size: var(--text-sm);
+}
+
+.ds-textarea[data-size='lg'] {
+  --textarea-padding-inline: var(--spacing-4);
+  --textarea-padding-block: var(--spacing-3);
+  --textarea-font-size: var(--text-lg);
+  --textarea-gap: var(--spacing-3);
+  --textarea-radius: var(--radius-lg);
+  --textarea-icon-size: 24px;
+  --textarea-label-font-size: var(--text-lg);
+  --textarea-meta-font-size: var(--text-sm);
+}
+
+/* --- states ---------------------------------------------------- */
+
+.ds-textarea[data-invalid] {
+  --textarea-border-color: var(--color-danger);
+  --textarea-accent: var(--color-danger);
+  --textarea-hint-color: var(--color-danger);
+}
+
+.ds-textarea[data-readonly] {
+  --textarea-surface: var(--surface-muted);
+}
+
+/* grey out everything; must stay after the other state sections */
+.ds-textarea[data-disabled] {
+  --textarea-surface: var(--surface-disabled);
+  --textarea-border-color: var(--border);
+  --textarea-text-color: var(--text-disabled);
+  --textarea-placeholder-color: var(--text-disabled);
+  --textarea-icon-color: var(--text-disabled);
+  --textarea-label-color: var(--text-disabled);
+  --textarea-hint-color: var(--text-disabled);
+}
