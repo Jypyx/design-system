@@ -85,3 +85,15 @@
      text color so tonal / outlined / text variants keep contrast */
   --btn-tint: color-mix(in oklab, var(--color-warning) 70%, var(--text));
 }
+
+/* --- disabled -------------------------------------------------- */
+/* grey out whatever the color prop says; every variant derives its
+   own look from these tokens (must stay after the color section) */
+
+.ds-btn:is(:disabled, [aria-disabled='true']) {
+  --btn-accent: var(--surface-disabled);
+  --btn-on-accent: var(--text-disabled);
+  --btn-tint: var(--text-disabled);
+  --btn-outline: var(--border);
+  --btn-fill-border: transparent;
+}

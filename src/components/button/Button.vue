@@ -7,21 +7,44 @@ withDefaults(defineProps<ButtonProps>(), {
   color: 'neutral',
   variant: 'elevated',
   disabled: false,
+  isLoading: false,
   type: 'button',
 })
 </script>
 
 <template>
-  <button
+  <component
+    :is="href ? 'a' : 'button'"
     class="ds-btn"
-    :type="type"
-    :disabled="disabled"
+    :type="href ? undefined : type"
+    :disabled="href ? undefined : disabled || undefined"
+    :href="disabled ? undefined : href"
+    :target="href && !disabled ? target : undefined"
+    :rel="href && !disabled ? (rel ?? (target === '_blank' ? 'noopener noreferrer' : undefined)) : undefined"
+    :aria-disabled="href && disabled ? 'true' : undefined"
+    :aria-busy="isLoading ? 'true' : undefined"
+    :data-loading="isLoading ? '' : undefined"
     :data-size="size"
     :data-color="color"
     :data-variant="variant"
   >
+    <svg
+      v-if="isLoading"
+      class="ds-btn-spinner"
+      viewBox="0 0 24 24"
+      fill="none"
+      aria-hidden="true"
+    >
+      <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3" opacity="0.25" />
+      <path
+        d="M12 2a10 10 0 0 1 10 10"
+        stroke="currentColor"
+        stroke-width="3"
+        stroke-linecap="round"
+      />
+    </svg>
     <slot />
-  </button>
+  </component>
 </template>
 
 <style>
@@ -43,6 +66,7 @@ withDefaults(defineProps<ButtonProps>(), {
   font-weight: var(--font-weight-medium);
   line-height: 1;
   white-space: nowrap;
+  text-decoration: none;
   cursor: pointer;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
@@ -70,21 +94,21 @@ withDefaults(defineProps<ButtonProps>(), {
   box-shadow: var(--shadow-sm);
 }
 
-.ds-btn[data-variant='elevated']:hover:not(:disabled) {
+.ds-btn[data-variant='elevated']:hover:not(:disabled, [aria-disabled='true']) {
   box-shadow: var(--shadow-md);
 }
 
-.ds-btn[data-variant='elevated']:active:not(:disabled) {
+.ds-btn[data-variant='elevated']:active:not(:disabled, [aria-disabled='true']) {
   box-shadow: var(--shadow-xs);
 }
 
-.ds-btn[data-variant='elevated']:hover:not(:disabled),
-.ds-btn[data-variant='flat']:hover:not(:disabled) {
+.ds-btn[data-variant='elevated']:hover:not(:disabled, [aria-disabled='true']),
+.ds-btn[data-variant='flat']:hover:not(:disabled, [aria-disabled='true']) {
   background-color: color-mix(in oklab, var(--btn-accent) 90%, var(--btn-on-accent));
 }
 
-.ds-btn[data-variant='elevated']:active:not(:disabled),
-.ds-btn[data-variant='flat']:active:not(:disabled) {
+.ds-btn[data-variant='elevated']:active:not(:disabled, [aria-disabled='true']),
+.ds-btn[data-variant='flat']:active:not(:disabled, [aria-disabled='true']) {
   background-color: color-mix(in oklab, var(--btn-accent) 82%, var(--btn-on-accent));
 }
 
@@ -95,11 +119,11 @@ withDefaults(defineProps<ButtonProps>(), {
   color: var(--btn-tint);
 }
 
-.ds-btn[data-variant='tonal']:hover:not(:disabled) {
+.ds-btn[data-variant='tonal']:hover:not(:disabled, [aria-disabled='true']) {
   background-color: color-mix(in oklab, var(--btn-tint) 22%, transparent);
 }
 
-.ds-btn[data-variant='tonal']:active:not(:disabled) {
+.ds-btn[data-variant='tonal']:active:not(:disabled, [aria-disabled='true']) {
   background-color: color-mix(in oklab, var(--btn-tint) 30%, transparent);
 }
 
@@ -115,21 +139,40 @@ withDefaults(defineProps<ButtonProps>(), {
   border-color: var(--btn-outline);
 }
 
-.ds-btn[data-variant='outlined']:hover:not(:disabled),
-.ds-btn[data-variant='text']:hover:not(:disabled) {
+.ds-btn[data-variant='outlined']:hover:not(:disabled, [aria-disabled='true']),
+.ds-btn[data-variant='text']:hover:not(:disabled, [aria-disabled='true']) {
   background-color: color-mix(in oklab, var(--btn-tint) 10%, transparent);
 }
 
-.ds-btn[data-variant='outlined']:active:not(:disabled),
-.ds-btn[data-variant='text']:active:not(:disabled) {
+.ds-btn[data-variant='outlined']:active:not(:disabled, [aria-disabled='true']),
+.ds-btn[data-variant='text']:active:not(:disabled, [aria-disabled='true']) {
   background-color: color-mix(in oklab, var(--btn-tint) 16%, transparent);
 }
 
 /* --- disabled ---------------------------------------------------- */
+/* colors are greyed out via the token overrides in button.tokens.css */
 
-.ds-btn:disabled {
-  opacity: 0.5;
+.ds-btn:is(:disabled, [aria-disabled='true']) {
   box-shadow: none;
   cursor: not-allowed;
+}
+
+/* --- loading ------------------------------------------------------ */
+
+.ds-btn[data-loading] {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.ds-btn-spinner {
+  width: 1em;
+  height: 1em;
+  animation: ds-btn-spin calc(var(--duration-500) * 1.5) var(--ease-linear) infinite;
+}
+
+@keyframes ds-btn-spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 </style>

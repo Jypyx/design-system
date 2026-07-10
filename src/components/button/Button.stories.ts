@@ -20,12 +20,27 @@ const meta = {
     color: { control: 'select', options: colors },
     variant: { control: 'select', options: variants },
     disabled: { control: 'boolean' },
+    isLoading: { control: 'boolean' },
+    href: {
+      control: 'text',
+      description: 'Renders an <a> instead of a <button>',
+    },
+    target: {
+      control: 'select',
+      options: ['_self', '_blank', '_parent', '_top'],
+      description: 'Only used with href',
+    },
+    rel: {
+      control: 'text',
+      description: 'Only used with href; defaults to "noopener noreferrer" when target is _blank',
+    },
   },
   args: {
     size: 'sm',
     color: 'neutral',
     variant: 'elevated',
     disabled: false,
+    isLoading: false,
   },
   render: (args) => ({
     components: { Button },
@@ -85,4 +100,28 @@ export const Disabled: Story = {
       </div>
     `,
   }),
+}
+
+export const Loading: Story = {
+  parameters: { controls: { disable: true } },
+  render: () => ({
+    components: { Button },
+    setup: () => ({ variants, capitalize }),
+    template: `
+      <div style="display: flex; gap: var(--spacing-4); align-items: center;">
+        <Button v-for="variant in variants" :key="variant" :variant="variant" color="primary" is-loading>
+          {{ capitalize(variant) }}
+        </Button>
+      </div>
+    `,
+  }),
+}
+
+/** With an href, the button renders as an <a> tag. */
+export const AsLink: Story = {
+  args: {
+    href: 'https://example.com',
+    target: '_blank',
+    color: 'primary',
+  },
 }
