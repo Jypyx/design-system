@@ -4,12 +4,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project
 
-A Vue 3 + TypeScript design system, developed and showcased through Storybook. Guiding principle: **CSS and HTML over TypeScript** — all styling logic (variants, sizes, colors, theming) lives in CSS; TypeScript is limited to prop types and minimal component scripts.
+A Vue 3 + TypeScript design system, published as an npm package and developed/showcased through Storybook (there is no app shell — Storybook is the only dev environment). Guiding principle: **CSS and HTML over TypeScript** — all styling logic (variants, sizes, colors, theming) lives in CSS; TypeScript is limited to prop types and minimal component scripts.
 
 ## Commands
 
 - `npm run storybook` — dev environment (Storybook on port 6006); this is the primary way to work on components
-- `npm run build` — typecheck (`vue-tsc -b`) + Vite build; use this to verify TypeScript
+- `npm run build` — typecheck (`vue-tsc -b`) + Vite **library build** to `dist/` (ESM + d.ts via vite-plugin-dts, `vue` external); use this to verify TypeScript
 - `npm run build-storybook` — static Storybook build
 - `npx vitest run --project=storybook` — renders every story in headless Chromium with a11y checks (via @storybook/addon-vitest); run twice if the first run fails with "Vite unexpectedly reloaded a test" (dep re-optimization flake)
 - Single component's stories: `npx vitest run --project=storybook src/components/button/Button.stories.ts`
@@ -24,7 +24,18 @@ All design tokens are **CSS custom properties** — never TypeScript constants.
 
 Theming: `color-scheme: light dark` on `:root` follows the OS; `data-theme="light" | "dark"` on `<html>` forces a theme (zero JS). The Storybook toolbar "Theme" switcher sets this attribute (see [.storybook/preview.ts](.storybook/preview.ts)).
 
-Entry point: [src/styles/index.css](src/styles/index.css) (tokens then reset) — imported by both `src/main.ts` and `.storybook/preview.ts`.
+Entry point: [src/styles/index.css](src/styles/index.css) (tokens then reset) — imported by both `src/index.ts` (the library entry) and `.storybook/preview.ts`.
+
+## Package consumption
+
+`src/index.ts` is the library entry. Consumers do:
+
+```ts
+import { Button } from 'design-system'
+import 'design-system/styles.css' // tokens + reset + component styles, single file
+```
+
+Package exports live in [package.json](package.json) (`.` → `dist/index.js` + types, `./styles.css` → `dist/styles.css`); `vue` is a peerDependency. New public components/types must be re-exported from `src/components/index.ts` to reach the bundle.
 
 ## Component pattern
 
