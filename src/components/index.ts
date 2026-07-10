@@ -39,6 +39,14 @@ export type { OTPInputFormat, OTPInputProps } from './otp-input/OTPInput.types'
 export { default as Radio } from './radio/Radio.vue'
 export type { RadioLabelPosition, RadioProps } from './radio/Radio.types'
 
+export { default as Slider } from './slider/Slider.vue'
+export type {
+  SliderModelValue,
+  SliderOrientation,
+  SliderProps,
+  SliderValue,
+} from './slider/Slider.types'
+
 export { default as Switch } from './switch/Switch.vue'
 export type { SwitchLabelPosition, SwitchProps } from './switch/Switch.types'
 
