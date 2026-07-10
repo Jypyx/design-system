@@ -1,3 +1,6 @@
+export { default as Breadcrumb } from './breadcrumb/Breadcrumb.vue'
+export type { BreadcrumbItem, BreadcrumbProps } from './breadcrumb/Breadcrumb.types'
+
 export { default as Button } from './button/Button.vue'
 export type {
   ButtonColor,

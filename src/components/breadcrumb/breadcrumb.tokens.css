@@ -1,0 +1,27 @@
+/* ============================================================
+ * LAYER 3 — Component tokens: Breadcrumb
+ * Consumes Layer 2 semantic tokens only; light + dark come for
+ * free because the semantic layer resolves via light-dark().
+ *
+ *   --breadcrumb-color            resting color of the links
+ *   --breadcrumb-color-hover      link color on hover
+ *   --breadcrumb-current-color    color of the last / active crumb
+ *   --breadcrumb-current-weight   weight of the last / active crumb
+ *   --breadcrumb-separator-color  color of the separator icons
+ *   --breadcrumb-icon-size        size of crumb + separator icons
+ * ============================================================ */
+
+.ds-breadcrumb {
+  --breadcrumb-gap: var(--spacing-1);
+  --breadcrumb-font-size: var(--text-sm);
+  --breadcrumb-line-height: var(--text-sm--line-height);
+  --breadcrumb-color: var(--text-muted);
+  --breadcrumb-color-hover: var(--text);
+  --breadcrumb-current-color: var(--text);
+  --breadcrumb-current-weight: var(--font-weight-medium);
+  --breadcrumb-separator-color: var(--text-muted);
+  --breadcrumb-icon-size: 16px;
+  --breadcrumb-item-radius: var(--radius-sm);
+  --breadcrumb-item-padding-block: var(--spacing-0\.5);
+  --breadcrumb-item-padding-inline: var(--spacing-1);
+}

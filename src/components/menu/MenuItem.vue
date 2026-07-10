@@ -73,12 +73,17 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <button
+  <component
+    :is="href ? 'a' : 'button'"
     v-bind="$attrs"
     class="ds-menu-item"
-    type="button"
+    :type="href ? undefined : 'button'"
     role="menuitem"
-    :disabled="disabled || undefined"
+    :disabled="!href && disabled ? true : undefined"
+    :href="disabled ? undefined : href"
+    :target="href && !disabled ? target : undefined"
+    :rel="href && !disabled ? (rel ?? (target === '_blank' ? 'noopener noreferrer' : undefined)) : undefined"
+    :aria-disabled="href && disabled ? 'true' : undefined"
     :data-color="color"
     :aria-haspopup="hasSubmenu ? 'menu' : undefined"
     :popovertarget="hasSubmenu ? submenuId : undefined"
@@ -101,7 +106,7 @@ onBeforeUnmount(() => {
       </slot>
       <Icon v-if="hasSubmenu" name="chevron_right" class="ds-menu-item-chevron" />
     </span>
-  </button>
+  </component>
   <div
     v-if="hasSubmenu"
     :id="submenuId"
@@ -138,6 +143,7 @@ onBeforeUnmount(() => {
   font-weight: var(--font-weight-normal);
   line-height: var(--menu-item-line-height);
   text-align: left;
+  text-decoration: none;
   cursor: pointer;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
@@ -145,7 +151,7 @@ onBeforeUnmount(() => {
 }
 
 /* hover wash; an item whose submenu is open stays highlighted */
-.ds-menu-item:hover:not(:disabled),
+.ds-menu-item:hover:not(:disabled, [aria-disabled='true']),
 .ds-menu-item:has(+ .ds-menu-popover:popover-open) {
   background-color: color-mix(in oklab, var(--menu-item-tint) 8%, transparent);
 }
@@ -156,11 +162,11 @@ onBeforeUnmount(() => {
   background-color: color-mix(in oklab, var(--menu-item-tint) 14%, transparent);
 }
 
-.ds-menu-item:active:not(:disabled) {
+.ds-menu-item:active:not(:disabled, [aria-disabled='true']) {
   background-color: color-mix(in oklab, var(--menu-item-tint) 14%, transparent);
 }
 
-.ds-menu-item:disabled {
+.ds-menu-item:is(:disabled, [aria-disabled='true']) {
   cursor: not-allowed;
 }
 

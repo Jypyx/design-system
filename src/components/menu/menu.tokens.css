@@ -76,7 +76,7 @@
 
 /* --- disabled: grey out whatever the color prop says ------------ */
 
-.ds-menu-item:disabled {
+.ds-menu-item:is(:disabled, [aria-disabled='true']) {
   --menu-item-color: var(--text-disabled);
   --menu-item-sublabel-color: var(--text-disabled);
   --menu-item-icon-color: var(--text-disabled);

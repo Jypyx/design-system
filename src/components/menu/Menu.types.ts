@@ -37,6 +37,12 @@ export interface MenuItemProps {
   iconEnd?: string
   color?: MenuItemColor
   disabled?: boolean
+  /** Renders an <a> instead of a <button>. The href is dropped when disabled. */
+  href?: string
+  /** Only used when href is set. With '_blank', rel defaults to 'noopener noreferrer'. */
+  target?: '_self' | '_blank' | '_parent' | '_top'
+  /** Only used when href is set */
+  rel?: string
 }
 
 export interface MenuLabelProps {

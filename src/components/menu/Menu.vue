@@ -24,9 +24,12 @@ let triggerControl: Element | undefined
 /* enabled items of one menu level only — items of nested submenus have a
    closer .ds-menu-popover ancestor and are filtered out */
 function itemsOf(menu: HTMLElement): HTMLElement[] {
-  return Array.from(menu.querySelectorAll<HTMLElement>('.ds-menu-item:enabled')).filter(
-    (el) => el.closest('.ds-menu-popover') === menu,
-  )
+  /* :enabled would skip link items — anchors never match it */
+  return Array.from(
+    menu.querySelectorAll<HTMLElement>(
+      '.ds-menu-item:not(:disabled):not([aria-disabled="true"])',
+    ),
+  ).filter((el) => el.closest('.ds-menu-popover') === menu)
 }
 
 function open(focusLast = false) {
@@ -104,8 +107,15 @@ function onMenuKeydown(event: KeyboardEvent) {
     case 'ArrowRight':
     case 'Enter':
     case ' ':
-      /* Enter / Space on a leaf item stays native (button activation) */
-      if (!submenu) return
+      /* Enter / Space on a leaf item stays native (button activation),
+         except Space on a link item — anchors only activate on Enter */
+      if (!submenu) {
+        if (event.key === ' ' && item instanceof HTMLAnchorElement) {
+          item.click()
+          break
+        }
+        return
+      }
       if (!submenu.matches(':popover-open')) submenu.showPopover()
       itemsOf(submenu)[0]?.focus()
       break
