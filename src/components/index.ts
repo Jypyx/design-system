@@ -1,3 +1,12 @@
+export { default as Avatar } from './avatar/Avatar.vue'
+export { default as AvatarGroup } from './avatar/AvatarGroup.vue'
+export type {
+  AvatarColor,
+  AvatarGroupProps,
+  AvatarProps,
+  AvatarSize,
+} from './avatar/Avatar.types'
+
 export { default as Breadcrumb } from './breadcrumb/Breadcrumb.vue'
 export type { BreadcrumbItem, BreadcrumbProps } from './breadcrumb/Breadcrumb.types'
 

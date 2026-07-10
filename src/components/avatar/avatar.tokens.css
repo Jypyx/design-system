@@ -1,0 +1,125 @@
+/* ============================================================
+ * LAYER 3 — Component tokens: Avatar / AvatarGroup
+ * Consumes Layer 2 semantic tokens only; light + dark come for
+ * free because the semantic layer resolves via light-dark().
+ *
+ * One documented exception: the 'auto' color builds a raw
+ * oklch() from a hue hashed out of the avatar content. A
+ * continuous, data-derived hue is data, not a semantic purpose,
+ * so no semantic token can express it; lightness / chroma are
+ * fixed so white content stays readable on every hue in both
+ * themes, and are exposed as overridable tokens.
+ *
+ *   --avatar-size          circle diameter (drives font + icon size)
+ *   --avatar-bg            background of the circle
+ *   --avatar-fg            content color (initials / icon / text)
+ *   --avatar-border        hairline border (neutral color only)
+ *   --avatar-hue           hashed hue consumed by the 'auto' color
+ *   --avatar-auto-lightness / --avatar-auto-chroma
+ *                          oklch L / C of the 'auto' background
+ *   --avatar-group-size    diameter imposed on every child avatar
+ *   --avatar-group-overlap how much each avatar covers the previous one
+ *   --avatar-ring          separation ring between stacked avatars
+ * ============================================================ */
+
+.ds-avatar {
+  /* size — default 'sm' (36px, matches the Button sm height) */
+  --avatar-size: 36px;
+  --avatar-font-size: calc(var(--avatar-size) * 0.4);
+  --avatar-icon-size: calc(var(--avatar-size) * 0.55);
+
+  /* color — default 'auto': hue hashed from the content */
+  --avatar-hue: 0;
+  --avatar-auto-lightness: 0.55;
+  --avatar-auto-chroma: 0.12;
+  --avatar-bg: oklch(var(--avatar-auto-lightness) var(--avatar-auto-chroma) var(--avatar-hue));
+  --avatar-fg: var(--text-on-emphasis);
+  --avatar-border: transparent;
+}
+
+/* --- sizes ---------------------------------------------------- */
+
+.ds-avatar[data-size='xs'] {
+  --avatar-size: 28px;
+}
+
+.ds-avatar[data-size='md'] {
+  --avatar-size: 44px;
+}
+
+.ds-avatar[data-size='lg'] {
+  --avatar-size: 52px;
+}
+
+.ds-avatar[data-size='xl'] {
+  --avatar-size: 64px;
+}
+
+/* --- colors --------------------------------------------------- */
+
+.ds-avatar[data-color='neutral'] {
+  /* also the AvatarGroup "+X" overflow chip */
+  --avatar-bg: var(--surface-muted);
+  --avatar-fg: var(--text-muted);
+  --avatar-border: var(--border);
+}
+
+.ds-avatar[data-color='primary'] {
+  --avatar-bg: var(--color-primary);
+  --avatar-fg: var(--color-on-primary);
+}
+
+.ds-avatar[data-color='success'] {
+  --avatar-bg: var(--color-success);
+  --avatar-fg: var(--color-on-success);
+}
+
+.ds-avatar[data-color='danger'] {
+  --avatar-bg: var(--color-danger);
+  --avatar-fg: var(--color-on-danger);
+}
+
+.ds-avatar[data-color='warning'] {
+  --avatar-bg: var(--color-warning);
+  --avatar-fg: var(--color-on-warning);
+}
+
+.ds-avatar[data-color='custom'] {
+  /* arbitrary user background: derive a black-or-white foreground from
+     its lightness (l < 0.62 → white, else black) via relative color */
+  --avatar-fg: oklch(from var(--avatar-bg) clamp(0, (0.62 - l) * infinity, 1) 0 h);
+}
+
+/* --- group ---------------------------------------------------- */
+
+.ds-avatar-group {
+  /* size — default 'sm', mirrors the avatar scale */
+  --avatar-group-size: 36px;
+  --avatar-group-overlap: calc(var(--avatar-group-size) * 0.3);
+  --avatar-ring: var(--surface);
+  --avatar-ring-width: 2px;
+}
+
+.ds-avatar-group[data-size='xs'] {
+  --avatar-group-size: 28px;
+}
+
+.ds-avatar-group[data-size='md'] {
+  --avatar-group-size: 44px;
+}
+
+.ds-avatar-group[data-size='lg'] {
+  --avatar-group-size: 52px;
+}
+
+.ds-avatar-group[data-size='xl'] {
+  --avatar-group-size: 64px;
+}
+
+/* the group imposes a uniform size on every child avatar; specificity
+   (0,3,0) beats .ds-avatar[data-size] (0,2,0) so the group always wins
+   over a per-child size prop, and the descendant selector reaches
+   through the tooltip trigger wrapper */
+.ds-avatar-group[data-size] .ds-avatar {
+  --avatar-size: var(--avatar-group-size);
+}
