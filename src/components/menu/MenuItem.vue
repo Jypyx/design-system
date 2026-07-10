@@ -126,6 +126,7 @@ onBeforeUnmount(() => {
   align-items: center;
   gap: var(--menu-item-gap);
   width: 100%;
+  min-height: var(--menu-item-min-height);
   margin: 0;
   border: 0;
   padding: var(--menu-item-padding-block) var(--menu-item-padding-inline);
@@ -182,7 +183,7 @@ onBeforeUnmount(() => {
 }
 
 .ds-menu-item-sublabel {
-  font-size: var(--text-xs);
+  font-size: var(--menu-item-sublabel-font-size);
   line-height: var(--text-xs--line-height);
   color: var(--menu-item-sublabel-color);
 }
@@ -193,7 +194,7 @@ onBeforeUnmount(() => {
   display: inline-flex;
   align-items: center;
   gap: var(--spacing-1);
-  font-size: var(--text-xs);
+  font-size: var(--menu-item-sublabel-font-size);
   color: var(--menu-item-sublabel-color);
 }
 

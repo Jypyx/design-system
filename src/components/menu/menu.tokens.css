@@ -23,13 +23,32 @@
   --menu-min-width: 180px;
   --menu-max-width: 320px;
 
+  /* item dimensions mirror the Button 'sm' size (36px / 14px / 20px) */
+  --menu-item-min-height: 36px;
   --menu-item-gap: var(--spacing-2\.5);
   --menu-item-padding-block: var(--spacing-2);
   --menu-item-padding-inline: var(--spacing-2);
   --menu-item-radius: var(--radius-md);
   --menu-item-font-size: var(--text-sm);
+  --menu-item-sublabel-font-size: var(--text-xs);
   --menu-item-line-height: 1.25;
   --menu-item-icon-size: 20px;
+}
+
+/* --- dense: mirrors the Button 'xs' size (28px / 12px / 16px) ----- */
+/* submenu panels re-declare the tokens above, so the descendant
+   selector re-applies the dense values to every nested level */
+
+.ds-menu-popover[data-dense],
+.ds-menu-popover[data-dense] .ds-menu-popover {
+  --menu-min-width: 160px;
+
+  --menu-item-min-height: 28px;
+  --menu-item-gap: var(--spacing-2);
+  --menu-item-padding-block: var(--spacing-1);
+  --menu-item-font-size: var(--text-xs);
+  --menu-item-sublabel-font-size: var(--text-2xs);
+  --menu-item-icon-size: 16px;
 }
 
 /* --- item colors — default 'neutral' --------------------------- */

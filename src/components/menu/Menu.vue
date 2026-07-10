@@ -6,6 +6,7 @@ import type { MenuProps } from './Menu.types'
 const props = withDefaults(defineProps<MenuProps>(), {
   placement: 'bottom-start',
   disabled: false,
+  dense: false,
 })
 
 /* one dashed-ident per instance ties the trigger (anchor-name) to its
@@ -162,6 +163,7 @@ onMounted(() => {
       role="menu"
       popover="auto"
       :data-placement="placement"
+      :data-dense="dense ? '' : undefined"
       :style="`position-anchor: ${anchorName}`"
       @keydown="onMenuKeydown"
       @toggle="onToggle"

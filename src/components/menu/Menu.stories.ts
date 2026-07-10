@@ -28,10 +28,15 @@ const meta = {
       description: 'Preferred side; flips automatically when it would overflow the viewport',
     },
     disabled: { control: 'boolean' },
+    dense: {
+      control: 'boolean',
+      description: 'Tighter vertical rhythm and smaller icons; submenus inherit it',
+    },
   },
   args: {
     placement: 'bottom-start',
     disabled: false,
+    dense: false,
   },
   render: (args) => ({
     components: { Menu, MenuItem, MenuSeparator, Button },
@@ -92,6 +97,52 @@ export const Submenus: Story = {
           <MenuItem icon-start="delete" label="Delete" color="danger" />
         </template>
       </Menu>
+    `,
+  }),
+}
+
+/**
+ * `dense` tightens the vertical rhythm and shrinks the icons — for
+ * data-heavy surfaces (tables, toolbars) where the menu should stay
+ * compact. Submenus inherit the density of their root menu.
+ */
+export const Dense: Story = {
+  parameters: { controls: { disable: true } },
+  render: () => ({
+    components: { Menu, MenuItem, MenuSeparator, Button },
+    template: `
+      <div style="display: flex; gap: var(--spacing-6); align-items: center;">
+        <Menu>
+          <Button variant="outlined" icon-end="expand_more">Default</Button>
+          <template #items>
+            <MenuItem icon-start="edit" label="Rename" />
+            <MenuItem icon-start="content_copy" label="Duplicate" />
+            <MenuItem icon-start="share" label="Share">
+              <template #submenu>
+                <MenuItem icon-start="mail" label="Email" />
+                <MenuItem icon-start="link" label="Copy link" />
+              </template>
+            </MenuItem>
+            <MenuSeparator />
+            <MenuItem icon-start="delete" label="Delete" color="danger" />
+          </template>
+        </Menu>
+        <Menu dense>
+          <Button variant="outlined" icon-end="expand_more">Dense</Button>
+          <template #items>
+            <MenuItem icon-start="edit" label="Rename" />
+            <MenuItem icon-start="content_copy" label="Duplicate" />
+            <MenuItem icon-start="share" label="Share">
+              <template #submenu>
+                <MenuItem icon-start="mail" label="Email" />
+                <MenuItem icon-start="link" label="Copy link" />
+              </template>
+            </MenuItem>
+            <MenuSeparator />
+            <MenuItem icon-start="delete" label="Delete" color="danger" />
+          </template>
+        </Menu>
+      </div>
     `,
   }),
 }

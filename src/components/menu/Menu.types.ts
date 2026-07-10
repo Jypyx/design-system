@@ -17,6 +17,8 @@ export interface MenuProps {
   placement?: MenuPlacement
   /** Never open the menu */
   disabled?: boolean
+  /** Tighter vertical rhythm and smaller icons; submenus inherit it */
+  dense?: boolean
 }
 
 export type MenuItemColor = 'neutral' | 'primary' | 'danger'
