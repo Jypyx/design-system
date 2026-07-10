@@ -10,6 +10,9 @@
  *   --slider-accent        filled part of the track (primary only)
  *   --slider-label-space   space reserved for tick labels
  *   --slider-field-width   width of the optional number inputs
+ *
+ * The tooltip bubble and the number fields are the Tooltip and
+ * Input components — theme them through their own tokens.
  * ============================================================ */
 
 .ds-slider {
@@ -31,14 +34,7 @@
   --slider-label-gap: var(--spacing-1\.5);
   --slider-label-space: calc(var(--slider-label-gap) + var(--slider-label-font-size) * 1.25 + 8px);
 
-  --slider-tooltip-surface: var(--surface-emphasis);
-  --slider-tooltip-color: var(--text-on-emphasis);
-
   --slider-field-width: 72px;
-  --slider-field-height: 32px;
-  --slider-field-surface: var(--surface);
-  --slider-field-border: var(--border-strong);
-  --slider-field-color: var(--text);
 }
 
 /* --- disabled --------------------------------------------------
@@ -50,7 +46,4 @@
   --slider-track-color: var(--surface-disabled);
   --slider-tick-color: var(--border);
   --slider-label-color: var(--text-disabled);
-  --slider-field-surface: var(--surface-disabled);
-  --slider-field-border: var(--border);
-  --slider-field-color: var(--text-disabled);
 }

@@ -23,4 +23,10 @@ export interface TooltipProps {
   closeDelay?: number
   /** Never show the tooltip */
   disabled?: boolean
+  /**
+   * Controlled mode: when set (true / false) the tooltip is shown and hidden
+   * programmatically and the built-in hover / focus / Escape triggers (and
+   * the disabled prop) are ignored. Leave undefined for the default behavior.
+   */
+  open?: boolean
 }

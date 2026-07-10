@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import './tooltip.tokens.css'
-import { onBeforeUnmount, onMounted, useId, useTemplateRef } from 'vue'
+import { onBeforeUnmount, onMounted, useId, useTemplateRef, watch } from 'vue'
 import type { TooltipProps } from './Tooltip.types'
 
 const props = withDefaults(defineProps<TooltipProps>(), {
@@ -8,7 +8,11 @@ const props = withDefaults(defineProps<TooltipProps>(), {
   openDelay: 300,
   closeDelay: 100,
   disabled: false,
+  open: undefined,
 })
+
+/* controlled mode: the open prop drives visibility, built-in triggers are off */
+const isControlled = () => props.open !== undefined
 
 /* one dashed-ident per instance ties the trigger (anchor-name) to its
    popover (position-anchor); all placement logic then lives in CSS */
@@ -22,45 +26,57 @@ const tooltip = useTemplateRef<HTMLElement>('tooltip')
 let openTimer: ReturnType<typeof setTimeout> | undefined
 let closeTimer: ReturnType<typeof setTimeout> | undefined
 
-function open() {
+function show() {
   const el = tooltip.value
   if (el?.showPopover && !el.matches(':popover-open')) el.showPopover()
 }
 
-function close() {
+function hide() {
   const el = tooltip.value
   if (el?.hidePopover && el.matches(':popover-open')) el.hidePopover()
 }
 
 function onHoverIn() {
+  if (isControlled()) return
   clearTimeout(closeTimer)
   if (props.disabled) return
-  openTimer = setTimeout(open, props.openDelay)
+  openTimer = setTimeout(show, props.openDelay)
 }
 
 function onHoverOut() {
+  if (isControlled()) return
   clearTimeout(openTimer)
-  closeTimer = setTimeout(close, props.closeDelay)
+  closeTimer = setTimeout(hide, props.closeDelay)
 }
 
 function onFocusIn() {
+  if (isControlled()) return
   clearTimeout(closeTimer)
-  if (!props.disabled) open()
+  if (!props.disabled) show()
 }
 
 function onFocusOut() {
+  if (isControlled()) return
   clearTimeout(openTimer)
-  close()
+  hide()
 }
 
 function onKeydown(event: KeyboardEvent) {
+  if (isControlled()) return
   if (event.key === 'Escape') {
     clearTimeout(openTimer)
-    close()
+    hide()
   }
 }
 
+watch(
+  () => props.open,
+  (value) => (value ? show() : hide()),
+)
+
 onMounted(() => {
+  if (props.open) show()
+
   /* describe the slotted trigger element (if any) for screen readers;
      the popover itself is excluded since it is also a child */
   const target = Array.from(trigger.value?.children ?? []).find((el) => el !== tooltip.value)

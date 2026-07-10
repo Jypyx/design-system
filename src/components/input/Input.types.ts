@@ -38,6 +38,12 @@ export interface InputProps {
   showCount?: boolean
   /** Native maxlength, also used as the denominator of the counter */
   maxlength?: number
+  /** Native min attribute (type="number") */
+  min?: number | string
+  /** Native max attribute (type="number") */
+  max?: number | string
+  /** Native step attribute (type="number") */
+  step?: number | string
   /** Native name attribute */
   name?: string
   /** Native autocomplete attribute */

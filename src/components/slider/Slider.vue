@@ -1,6 +1,8 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, reactive, ref, watchEffect } from 'vue'
 import './slider.tokens.css'
+import Input from '../input/Input.vue'
+import Tooltip from '../tooltip/Tooltip.vue'
 import type { SliderModelValue, SliderProps, SliderValue } from './Slider.types'
 
 const props = withDefaults(defineProps<SliderProps>(), {
@@ -90,14 +92,36 @@ function onKeydown(thumb: 'start' | 'end', event: KeyboardEvent) {
   emit('change', model.value)
 }
 
-function onFieldChange(thumb: 'start' | 'end', event: Event) {
-  const el = event.target as HTMLInputElement
-  if (!Number.isNaN(el.valueAsNumber)) {
-    setPos(thumb, el.valueAsNumber)
+/* --- number fields (Input component) ---------------------------------
+   Each field edits a draft so nothing jumps while typing; the value is
+   committed (and clamped) on the native change event, which bubbles up
+   through the Input component. */
+
+const startDraft = ref('')
+const endDraft = ref('')
+watchEffect(() => {
+  startDraft.value = String(startPos.value)
+  endDraft.value = String(endPos.value)
+})
+
+function onFieldChange(thumb: 'start' | 'end') {
+  const draft = (thumb === 'start' ? startDraft : endDraft).value.trim()
+  if (draft !== '' && !Number.isNaN(Number(draft))) {
+    setPos(thumb, Number(draft))
     emit('change', model.value)
   }
-  sync(thumb, el)
+  /* resync the drafts even when the clamped commit left the model as-is */
+  startDraft.value = String(startPos.value)
+  endDraft.value = String(endPos.value)
 }
+
+/* --- tooltips (Tooltip component, controlled) -------------------------
+   Hover / focus is tracked on the range inputs (in range mode only the
+   thumbs catch the pointer) and drives each Tooltip's open prop; the
+   bubble anchors to an invisible box following the thumb. */
+
+const thumbActive = reactive({ start: false, end: false })
+const tooltipPlacement = computed(() => (props.orientation === 'vertical' ? 'left' : 'top'))
 
 const thumbLabel = (thumb: 'start' | 'end') => {
   if (!isRange.value) return props.label
@@ -135,17 +159,18 @@ const tickList = computed(() => {
     :data-tick-labels="tickLabels ? '' : undefined"
     :style="rootStyle"
   >
-    <input
+    <Input
       v-if="showInputs && !options && isRange"
+      v-model="startDraft"
       class="ds-slider-field"
       type="number"
-      :value="startPos"
+      size="sm"
       :min="lo"
       :max="hi"
       :step="inc"
       :disabled="disabled"
       :aria-label="thumbLabel('start')"
-      @change="onFieldChange('start', $event)"
+      @change="onFieldChange('start')"
     />
     <div class="ds-slider-control">
       <div class="ds-slider-rail" aria-hidden="true">
@@ -176,6 +201,10 @@ const tickList = computed(() => {
         @input="onSlide('start', $event)"
         @change="emit('change', model)"
         @keydown="onKeydown('start', $event)"
+        @pointerenter="thumbActive.start = true"
+        @pointerleave="thumbActive.start = false"
+        @focus="thumbActive.start = true"
+        @blur="thumbActive.start = false"
       />
       <input
         type="range"
@@ -192,18 +221,27 @@ const tickList = computed(() => {
         @input="onSlide('end', $event)"
         @change="emit('change', model)"
         @keydown="onKeydown('end', $event)"
+        @pointerenter="thumbActive.end = true"
+        @pointerleave="thumbActive.end = false"
+        @focus="thumbActive.end = true"
+        @blur="thumbActive.end = false"
       />
       <template v-if="tooltip && !disabled">
-        <div v-if="isRange" class="ds-slider-tooltip" data-thumb="start" aria-hidden="true">
-          <span class="ds-slider-tooltip-bubble">
+        <Tooltip
+          v-if="isRange"
+          data-thumb="start"
+          :open="thumbActive.start"
+          :placement="tooltipPlacement"
+        >
+          <template #content>
             <slot name="tooltip" :value="startValue" thumb="start">{{ startValue }}</slot>
-          </span>
-        </div>
-        <div class="ds-slider-tooltip" data-thumb="end" aria-hidden="true">
-          <span class="ds-slider-tooltip-bubble">
+          </template>
+        </Tooltip>
+        <Tooltip data-thumb="end" :open="thumbActive.end" :placement="tooltipPlacement">
+          <template #content>
             <slot name="tooltip" :value="endValue" thumb="end">{{ endValue }}</slot>
-          </span>
-        </div>
+          </template>
+        </Tooltip>
       </template>
       <div v-if="tickLabels" class="ds-slider-labels" aria-hidden="true">
         <span
@@ -216,17 +254,18 @@ const tickList = computed(() => {
         </span>
       </div>
     </div>
-    <input
+    <Input
       v-if="showInputs && !options"
+      v-model="endDraft"
       class="ds-slider-field"
       type="number"
-      :value="endPos"
+      size="sm"
       :min="lo"
       :max="hi"
       :step="inc"
       :disabled="disabled"
       :aria-label="thumbLabel('end')"
-      @change="onFieldChange('end', $event)"
+      @change="onFieldChange('end')"
     />
   </div>
 </template>
@@ -263,7 +302,7 @@ const tickList = computed(() => {
 /* --- track area ------------------------------------------------------
    The control gets a vertical writing mode in vertical orientation:
    the native range inputs render vertically and every logical inset
-   below (rail, fill, ticks, tooltips, labels) flips for free.
+   below (rail, fill, ticks, tooltip anchors, labels) flips for free.
    direction: rtl makes the value grow bottom-up. */
 
 .ds-slider-control {
@@ -419,60 +458,36 @@ const tickList = computed(() => {
   box-shadow: none;
 }
 
-/* --- tooltips ----------------------------------------------------------
-   Positioned above the thumb (beside it in vertical orientation); the
-   inner bubble resets the writing mode so its content stays horizontal. */
+/* --- tooltips (Tooltip component) --------------------------------------
+   The Tooltip trigger is an invisible box matching the thumb; the bubble
+   anchors to it via the Tooltip's own CSS anchor positioning. */
 
-.ds-slider-tooltip {
+.ds-slider-control > .ds-tooltip-trigger {
   position: absolute;
-  inset-block-end: calc(100% + var(--spacing-1\.5));
-  inset-inline-start: calc(
-    var(--slider-thumb-size) / 2 + var(--_pos) * (100% - var(--slider-thumb-size))
-  );
-  translate: -50% 0;
-  opacity: 0;
+  inline-size: var(--slider-thumb-size);
+  block-size: var(--slider-thumb-size);
+  inset-block-start: 0;
+  inset-inline-start: calc(var(--_pos) * (100% - var(--slider-thumb-size)));
   pointer-events: none;
-  transition: opacity var(--duration-150) var(--ease-out);
 }
 
-.ds-slider-tooltip[data-thumb='start'] {
+.ds-slider-control > .ds-tooltip-trigger[data-thumb='start'] {
   --_pos: var(--_start);
 }
 
-.ds-slider-tooltip[data-thumb='end'] {
+.ds-slider-control > .ds-tooltip-trigger[data-thumb='end'] {
   --_pos: var(--_end);
 }
 
-.ds-slider[data-orientation='vertical'] .ds-slider-tooltip {
-  translate: 0 50%;
-}
-
-.ds-slider-control:has(.ds-slider-input[data-thumb='start']:is(:hover, :active, :focus-visible))
-  .ds-slider-tooltip[data-thumb='start'],
-.ds-slider-control:has(.ds-slider-input[data-thumb='end']:is(:hover, :active, :focus-visible))
-  .ds-slider-tooltip[data-thumb='end'] {
-  opacity: 1;
-}
-
-.ds-slider-tooltip-bubble {
+/* the control's vertical writing mode must not rotate the bubble text */
+.ds-slider-control .ds-tooltip {
   writing-mode: horizontal-tb;
   direction: ltr;
-  display: inline-flex;
-  align-items: center;
-  gap: var(--spacing-1);
-  inline-size: max-content;
-  padding: var(--spacing-1) var(--spacing-2);
-  border-radius: var(--radius-md);
-  background-color: var(--slider-tooltip-surface);
-  color: var(--slider-tooltip-color);
-  font-size: var(--text-xs);
-  line-height: 1.25;
-  white-space: nowrap;
-  box-shadow: var(--shadow-sm);
 }
 
-.ds-slider-tooltip-bubble .ds-icon {
+.ds-slider-control .ds-tooltip .ds-icon {
   --icon-size: 14px;
+  vertical-align: text-bottom;
 }
 
 /* --- tick labels -------------------------------------------------------- */
@@ -507,41 +522,15 @@ const tickList = computed(() => {
   user-select: none;
 }
 
-/* --- number inputs ------------------------------------------------------ */
+/* --- number fields (Input component) ------------------------------------ */
 
-.ds-slider-field {
-  box-sizing: border-box;
+.ds-slider > .ds-slider-field {
   flex: none;
-  margin: 0;
   width: var(--slider-field-width);
-  height: var(--slider-field-height);
-  padding-inline: var(--spacing-2);
-  border: 1px solid var(--slider-field-border);
-  border-radius: var(--radius-md);
-  background-color: var(--slider-field-surface);
-  color: var(--slider-field-color);
-  font-family: inherit;
-  font-size: var(--text-sm);
+}
+
+.ds-slider > .ds-slider-field .ds-input-control {
   text-align: center;
   font-variant-numeric: tabular-nums;
-  transition:
-    border-color var(--duration-150) var(--ease-out),
-    box-shadow var(--duration-150) var(--ease-out);
-}
-
-.ds-slider-field:hover:not(:disabled) {
-  border-color: color-mix(in oklab, var(--slider-field-border) 50%, var(--text));
-}
-
-/* the box-shadow visually thickens the 1px border to 2px (same recipe as
-   the Input component) */
-.ds-slider-field:focus-visible {
-  outline: none;
-  border-color: var(--slider-accent);
-  box-shadow: 0 0 0 1px var(--slider-accent);
-}
-
-.ds-slider-field:disabled {
-  cursor: not-allowed;
 }
 </style>
