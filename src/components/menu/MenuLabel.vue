@@ -23,5 +23,6 @@ defineProps<MenuLabelProps>()
   font-weight: var(--font-weight-medium);
   color: var(--menu-label-color);
   user-select: none;
+  text-transform: uppercase;
 }
 </style>
