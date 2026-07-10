@@ -1,0 +1,30 @@
+/* ============================================================
+ * LAYER 3 — Component tokens: Checkbox
+ * Consumes Layer 2 semantic tokens only; light + dark come for
+ * free because the semantic layer resolves via light-dark().
+ *
+ *   --checkbox-size          single size: 20px box
+ *   --checkbox-accent        fill when checked / indeterminate
+ *   --checkbox-on-accent     check mark / dash color on the fill
+ * ============================================================ */
+
+.ds-checkbox {
+  --checkbox-size: 20px;
+  --checkbox-radius: var(--radius-sm); /* 4px */
+  --checkbox-border-width: 2px;
+  --checkbox-border-color: var(--border-strong);
+  --checkbox-accent: var(--color-primary);
+  --checkbox-on-accent: var(--color-on-primary);
+  --checkbox-gap: var(--spacing-2);
+  --checkbox-font-size: var(--text-sm);
+  --checkbox-label-color: var(--text);
+}
+
+/* --- disabled -------------------------------------------------- */
+
+.ds-checkbox[data-disabled] {
+  --checkbox-border-color: var(--border);
+  --checkbox-accent: var(--surface-disabled);
+  --checkbox-on-accent: var(--text-disabled);
+  --checkbox-label-color: var(--text-disabled);
+}

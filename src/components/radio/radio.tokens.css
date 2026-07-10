@@ -1,0 +1,29 @@
+/* ============================================================
+ * LAYER 3 — Component tokens: Radio
+ * Same specs as the Checkbox: 20px single size, 2px border.
+ * Consumes Layer 2 semantic tokens only; light + dark come for
+ * free because the semantic layer resolves via light-dark().
+ *
+ *   --radio-accent      fill when checked
+ *   --radio-on-accent   dot color on the fill
+ * ============================================================ */
+
+.ds-radio {
+  --radio-size: 20px;
+  --radio-border-width: 2px;
+  --radio-border-color: var(--border-strong);
+  --radio-accent: var(--color-primary);
+  --radio-on-accent: var(--color-on-primary);
+  --radio-gap: var(--spacing-2);
+  --radio-font-size: var(--text-sm);
+  --radio-label-color: var(--text);
+}
+
+/* --- disabled -------------------------------------------------- */
+
+.ds-radio[data-disabled] {
+  --radio-border-color: var(--border);
+  --radio-accent: var(--surface-disabled);
+  --radio-on-accent: var(--text-disabled);
+  --radio-label-color: var(--text-disabled);
+}
