@@ -90,6 +90,9 @@ onBeforeUnmount(dismissAllToasts)
   display: flex;
   flex-direction: column;
   gap: var(--toast-stack-gap);
+  /* the stack rectangle (padding, gaps) must not block the page under it;
+     each toast re-enables its own pointer events */
+  pointer-events: none;
 }
 
 /* the newest toast always lands next to the screen edge: bottom stacks
