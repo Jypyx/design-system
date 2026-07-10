@@ -1,0 +1,13 @@
+/* ============================================================
+ * LAYER 3 — Component tokens: ButtonGroup
+ * The group only styles the Buttons it contains, so it has no
+ * tokens of its own — it re-tunes Button tokens contextually.
+ * ============================================================ */
+
+/* two glued filled buttons of the same color would fuse into one
+   block: draw a hairline seam out of the button's own content color
+   (outlined / text variants don't use this token and keep their look) */
+
+.ds-btn-group > .ds-btn:not(:first-child) {
+  --btn-fill-border: color-mix(in oklab, var(--btn-on-accent) 25%, transparent);
+}
