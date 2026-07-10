@@ -1,0 +1,73 @@
+/* ============================================================
+ * LAYER 3 — Component tokens: Toast
+ * Consumes Layer 2 semantic tokens only; light + dark come for
+ * free because the semantic layer resolves via light-dark().
+ *
+ * The neutral toast uses the emphasis surface: a dark bubble in
+ * both themes (in dark it stays lighter than the page background
+ * so it still stands out). Colored toasts reuse the exact accent
+ * pairs of the Button component.
+ *
+ *   --toast-width       width preset (capped by the viewport)
+ *   --toast-bg          toast background
+ *   --toast-color       content color on top of the background
+ *   --toast-screen-gap  inset between a stack and the screen edges
+ *   --toast-stack-gap   gap between stacked toasts
+ * ============================================================ */
+
+.ds-toast-stack {
+  --toast-screen-gap: var(--spacing-4);
+  --toast-stack-gap: var(--spacing-3);
+}
+
+.ds-toast {
+  /* size — default 'md' (360px) */
+  --toast-width: 360px;
+
+  --toast-padding: var(--spacing-4);
+  --toast-gap: var(--spacing-3);
+  --toast-radius: var(--radius-lg);
+  --toast-shadow: var(--shadow-lg);
+  --toast-icon-size: 20px;
+  --toast-close-icon-size: 18px;
+  --toast-title-font-size: var(--text-sm);
+  --toast-title-line-height: var(--text-sm--line-height);
+  --toast-font-size: var(--text-sm);
+  --toast-line-height: var(--text-sm--line-height);
+
+  /* color — default 'neutral': high-contrast emphasis bubble */
+  --toast-bg: var(--surface-emphasis);
+  --toast-color: var(--text-on-emphasis);
+}
+
+/* --- sizes ---------------------------------------------------- */
+
+.ds-toast[data-size='sm'] {
+  --toast-width: 300px;
+}
+
+.ds-toast[data-size='lg'] {
+  --toast-width: 440px;
+}
+
+/* --- colors (same accent pairs as the Button fills) ----------- */
+
+.ds-toast[data-color='primary'] {
+  --toast-bg: var(--color-primary);
+  --toast-color: var(--color-on-primary);
+}
+
+.ds-toast[data-color='success'] {
+  --toast-bg: var(--color-success);
+  --toast-color: var(--color-on-success);
+}
+
+.ds-toast[data-color='danger'] {
+  --toast-bg: var(--color-danger);
+  --toast-color: var(--color-on-danger);
+}
+
+.ds-toast[data-color='warning'] {
+  --toast-bg: var(--color-warning);
+  --toast-color: var(--color-on-warning);
+}
