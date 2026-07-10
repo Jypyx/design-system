@@ -5,6 +5,8 @@ const sizes = ['xs', 'sm', 'md', 'lg'] as const
 const colors = ['neutral', 'primary', 'success', 'danger', 'warning'] as const
 const variants = ['elevated', 'flat', 'tonal', 'outlined', 'text'] as const
 
+const capitalize = (value: string) => value.charAt(0).toUpperCase() + value.slice(1)
+
 const meta = {
   title: 'Components/Button',
   component: Button,
@@ -42,12 +44,12 @@ export const Matrix: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
     components: { Button },
-    setup: () => ({ colors, variants }),
+    setup: () => ({ colors, variants, capitalize }),
     template: `
       <div style="display: grid; grid-template-columns: repeat(5, max-content); gap: var(--spacing-4); align-items: center;">
         <template v-for="variant in variants" :key="variant">
           <Button v-for="color in colors" :key="color" :variant="variant" :color="color">
-            {{ variant }}
+            {{ capitalize(variant) }}
           </Button>
         </template>
       </div>
@@ -63,7 +65,7 @@ export const Sizes: Story = {
     template: `
       <div style="display: flex; gap: var(--spacing-4); align-items: center;">
         <Button v-for="size in sizes" :key="size" :size="size" color="primary">
-          size {{ size }}
+          Size {{ size }}
         </Button>
       </div>
     `,
@@ -74,11 +76,11 @@ export const Disabled: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
     components: { Button },
-    setup: () => ({ variants }),
+    setup: () => ({ variants, capitalize }),
     template: `
       <div style="display: flex; gap: var(--spacing-4); align-items: center;">
         <Button v-for="variant in variants" :key="variant" :variant="variant" color="primary" disabled>
-          {{ variant }}
+          {{ capitalize(variant) }}
         </Button>
       </div>
     `,
