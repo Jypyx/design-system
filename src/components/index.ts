@@ -24,5 +24,8 @@ export type { InputProps, InputSize, InputType } from './input/Input.types'
 export { default as Radio } from './radio/Radio.vue'
 export type { RadioLabelPosition, RadioProps } from './radio/Radio.types'
 
+export { default as Switch } from './switch/Switch.vue'
+export type { SwitchLabelPosition, SwitchProps } from './switch/Switch.types'
+
 export { default as Textarea } from './textarea/Textarea.vue'
 export type { TextareaProps, TextareaSize } from './textarea/Textarea.types'

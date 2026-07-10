@@ -1,0 +1,40 @@
+/* ============================================================
+ * LAYER 3 — Component tokens: Switch
+ * Consumes Layer 2 semantic tokens only; light + dark come for
+ * free because the semantic layer resolves via light-dark().
+ *
+ *   --switch-width / --switch-height   single size: 36 × 20px track
+ *   --switch-track-color               track fill when off
+ *   --switch-accent                    track fill when on
+ *   --switch-thumb-color               thumb fill
+ * ============================================================ */
+
+.ds-switch {
+  --switch-width: 36px;
+  --switch-height: 20px;
+  --switch-padding: 2px;
+  --switch-thumb-size: calc(var(--switch-height) - 2 * var(--switch-padding)); /* 16px */
+  --switch-radius: var(--radius-full);
+  --switch-track-color: var(--border-strong);
+  --switch-accent: var(--color-primary);
+  --switch-thumb-color: var(--color-on-primary);
+  --switch-gap: var(--spacing-2);
+  --switch-font-size: var(--text-sm);
+  --switch-label-color: var(--text);
+}
+
+/* --- disabled -------------------------------------------------- */
+
+.ds-switch[data-disabled] {
+  --switch-track-color: var(--surface-disabled);
+  /* washed-out primary: still reads as "on" next to the plain grey off track */
+  --switch-accent: color-mix(in oklab, var(--color-primary) 50%, var(--surface-disabled));
+  --switch-thumb-color: var(--text-disabled);
+}
+
+/* on + disabled: lift the grey slightly so the thumb reads against the
+   tinted track (mixing with the white keyword lightens in BOTH themes,
+   unlike --surface which is near-black in dark) */
+.ds-switch[data-disabled]:has(.ds-switch-input:checked) {
+  --switch-thumb-color: color-mix(in oklab, var(--text-disabled) 75%, white);
+}
