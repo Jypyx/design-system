@@ -1,0 +1,96 @@
+/* ============================================================
+ * LAYER 3 — Component tokens: Input
+ * Consumes Layer 2 semantic tokens only; light + dark come for
+ * free because the semantic layer resolves via light-dark().
+ *
+ * Heights, font sizes, radii and icon sizes match Button so the
+ * two components line up when placed side by side.
+ *
+ *   --input-surface            field background
+ *   --input-border-color       field border
+ *   --input-accent             focus border + focus ring color
+ *   --input-text-color         value text
+ *   --input-placeholder-color  placeholder text
+ *   --input-icon-color         decorative icons, affix buttons, spinner
+ *   --input-label-color        label above the field
+ *   --input-hint-color         hint + counter below the field
+ * ============================================================ */
+
+.ds-input {
+  /* size — default 'sm' (36px) */
+  --input-height: 36px;
+  --input-padding-inline: var(--spacing-3);
+  --input-font-size: var(--text-sm);
+  --input-gap: var(--spacing-2);
+  --input-stack-gap: var(--spacing-1\.5);
+  --input-radius: var(--radius-md);
+  --input-icon-size: 20px;
+  --input-label-font-size: var(--text-sm);
+  --input-meta-font-size: var(--text-xs);
+
+  /* colors */
+  --input-surface: var(--surface-raised);
+  --input-border-color: var(--border-strong);
+  --input-accent: var(--color-primary);
+  --input-text-color: var(--text);
+  --input-placeholder-color: var(--text-muted);
+  --input-icon-color: var(--text-muted);
+  --input-label-color: var(--text);
+  --input-hint-color: var(--text-muted);
+}
+
+/* --- sizes ---------------------------------------------------- */
+
+.ds-input[data-size='xs'] {
+  --input-height: 28px;
+  --input-padding-inline: var(--spacing-2\.5);
+  --input-font-size: var(--text-xs);
+  --input-gap: var(--spacing-1\.5);
+  --input-radius: var(--radius-sm);
+  --input-icon-size: 16px;
+  --input-label-font-size: var(--text-xs);
+}
+
+.ds-input[data-size='md'] {
+  --input-height: 44px;
+  --input-padding-inline: var(--spacing-3\.5);
+  --input-font-size: var(--text-base);
+  --input-gap: var(--spacing-2\.5);
+  --input-radius: var(--radius-lg);
+  --input-label-font-size: var(--text-base);
+  --input-meta-font-size: var(--text-sm);
+}
+
+.ds-input[data-size='lg'] {
+  --input-height: 52px;
+  --input-padding-inline: var(--spacing-4);
+  --input-font-size: var(--text-lg);
+  --input-gap: var(--spacing-3);
+  --input-radius: var(--radius-lg);
+  --input-icon-size: 24px;
+  --input-label-font-size: var(--text-lg);
+  --input-meta-font-size: var(--text-sm);
+}
+
+/* --- states ---------------------------------------------------- */
+
+.ds-input[data-invalid] {
+  --input-border-color: var(--color-danger);
+  --input-accent: var(--color-danger);
+  --input-hint-color: var(--color-danger);
+}
+
+.ds-input[data-readonly] {
+  --input-surface: var(--surface-muted);
+}
+
+/* grey out everything; must stay after the other state sections */
+.ds-input[data-disabled] {
+  --input-surface: var(--surface-disabled);
+  --input-border-color: var(--border);
+  --input-text-color: var(--text-disabled);
+  --input-placeholder-color: var(--text-disabled);
+  --input-icon-color: var(--text-disabled);
+  --input-label-color: var(--text-disabled);
+  --input-hint-color: var(--text-disabled);
+}

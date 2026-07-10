@@ -18,5 +18,8 @@ export type { CheckboxLabelPosition, CheckboxProps } from './checkbox/Checkbox.t
 export { default as Icon } from './icon/Icon.vue'
 export type { IconProps } from './icon/Icon.types'
 
+export { default as Input } from './input/Input.vue'
+export type { InputProps, InputSize, InputType } from './input/Input.types'
+
 export { default as Radio } from './radio/Radio.vue'
 export type { RadioLabelPosition, RadioProps } from './radio/Radio.types'
