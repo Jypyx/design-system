@@ -32,9 +32,22 @@ const preview: Preview = {
         dynamicTitle: true,
       },
     },
+    direction: {
+      description: 'Text direction',
+      toolbar: {
+        title: 'Direction',
+        icon: 'transfer',
+        items: [
+          { value: 'ltr', title: 'LTR' },
+          { value: 'rtl', title: 'RTL' },
+        ],
+        dynamicTitle: true,
+      },
+    },
   },
   initialGlobals: {
     theme: 'system',
+    direction: 'ltr',
   },
 
   decorators: [
@@ -45,6 +58,8 @@ const preview: Preview = {
       } else {
         delete document.documentElement.dataset.theme
       }
+      const direction = context.globals.direction as string
+      document.documentElement.dir = direction === 'rtl' ? 'rtl' : 'ltr'
       return story()
     },
   ],
