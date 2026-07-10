@@ -29,7 +29,7 @@
   --toast-radius: var(--radius-lg);
   --toast-shadow: var(--shadow-lg);
   --toast-icon-size: 20px;
-  --toast-close-icon-size: 18px;
+  --toast-close-icon-size: 20px;
   --toast-title-font-size: var(--text-sm);
   --toast-title-line-height: var(--text-sm--line-height);
   --toast-font-size: var(--text-sm);

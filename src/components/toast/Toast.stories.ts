@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
-import Toaster from './Toaster.vue'
+import Toaster from './Toast.vue'
 import { toast } from './toast'
 import type { ToastOptions } from './Toast.types'
 import Button from '../button/Button.vue'

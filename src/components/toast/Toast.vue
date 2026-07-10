@@ -2,8 +2,8 @@
 import './toast.tokens.css'
 import { computed, onBeforeUnmount } from 'vue'
 import Icon from '../icon/Icon.vue'
-import { dismissAllToasts, dismissToast, pauseToast, resumeToast, toasts } from './toast'
-import type { ToastItem, ToastPosition } from './Toast.types'
+import { dismissAllToasts, dismissToast, pauseToast, resumeToast, toasts } from './toast.ts'
+import type { ToastItem, ToastPosition } from './Toast.types.ts'
 
 /* toasts are grouped into one fixed stack per screen corner/edge */
 const stacks = computed(() => {

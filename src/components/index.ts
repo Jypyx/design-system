@@ -45,7 +45,7 @@ export type { SwitchLabelPosition, SwitchProps } from './switch/Switch.types'
 export { default as Textarea } from './textarea/Textarea.vue'
 export type { TextareaProps, TextareaSize } from './textarea/Textarea.types'
 
-export { default as Toaster } from './toast/Toaster.vue'
+export { default as Toaster } from './toast/Toast.vue'
 export { toast } from './toast/toast'
 export type {
   ToastColor,
