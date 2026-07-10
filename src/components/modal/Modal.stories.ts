@@ -5,9 +5,11 @@ import Modal from './Modal.vue'
 import Button from '../button/Button.vue'
 import ButtonIcon from '../button-icon/ButtonIcon.vue'
 
-/* opens the modal so the story (and its a11y scan) shows the dialog;
-   autodocs previews skip play functions and stay closed */
+/* opens the modal in the automated (webdriver-driven) vitest run only,
+   so the a11y scan covers the open dialog; in the Storybook UI stories
+   start closed and the trigger opens them */
 const openModal = async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+  if (!navigator.webdriver) return
   await userEvent.click(within(canvasElement).getByRole('button', { name: 'Open modal' }))
 }
 

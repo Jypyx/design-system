@@ -4,9 +4,11 @@ import { ref } from 'vue'
 import ModalAlert from './ModalAlert.vue'
 import Button from '../button/Button.vue'
 
-/* opens the alert so the story (and its a11y scan) shows the dialog;
-   autodocs previews skip play functions and stay closed */
+/* opens the alert in the automated (webdriver-driven) vitest run only,
+   so the a11y scan covers the open dialog; in the Storybook UI stories
+   start closed and the trigger opens them */
 const openAlert = async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+  if (!navigator.webdriver) return
   await userEvent.click(within(canvasElement).getByRole('button', { name: 'Open alert' }))
 }
 
