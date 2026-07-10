@@ -1,0 +1,59 @@
+/* ============================================================
+ * LAYER 3 — Component tokens: Accordion
+ * Consumes Layer 2 semantic tokens only; light + dark come for
+ * free because the semantic layer resolves via light-dark().
+ *
+ *   --accordion-border   shell border (card) and item separators
+ *   --accordion-radius   outer radius of the card variant
+ *
+ * Tokens are declared on both the group and the item so a
+ * standalone AccordionItem (no parent Accordion) still resolves
+ * them. Header heights sit above Button sizes on purpose — a
+ * header is a section heading, not a control.
+ * ============================================================ */
+
+.ds-accordion,
+.ds-accordion-item {
+  --accordion-border: var(--border);
+  --accordion-radius: var(--radius-lg);
+
+  /* header — roomier than Button 'sm' (48px / 14px / 20px) */
+  --accordion-summary-min-height: 48px;
+  --accordion-summary-gap: var(--spacing-2\.5);
+  --accordion-summary-padding-block: var(--spacing-2\.5);
+  --accordion-summary-padding-inline: var(--spacing-4);
+  --accordion-summary-font-size: var(--text-sm);
+  --accordion-sublabel-font-size: var(--text-xs);
+  --accordion-icon-size: 20px;
+
+  --accordion-label-color: var(--text);
+  --accordion-sublabel-color: var(--text-muted);
+  --accordion-icon-color: var(--text-muted);
+
+  --accordion-content-padding-block: var(--spacing-3);
+  --accordion-content-padding-inline: var(--spacing-4);
+}
+
+/* --- dense: one step up from Button 'xs' (36px / 12px / 16px) ----- */
+
+.ds-accordion[data-dense],
+.ds-accordion[data-dense] .ds-accordion-item {
+  --accordion-summary-min-height: 36px;
+  --accordion-summary-gap: var(--spacing-2);
+  --accordion-summary-padding-block: var(--spacing-1\.5);
+  --accordion-summary-padding-inline: var(--spacing-3);
+  --accordion-summary-font-size: var(--text-xs);
+  --accordion-sublabel-font-size: var(--text-2xs);
+  --accordion-icon-size: 16px;
+
+  --accordion-content-padding-block: var(--spacing-2);
+  --accordion-content-padding-inline: var(--spacing-3);
+}
+
+/* --- disabled: grey out the whole header -------------------------- */
+
+.ds-accordion-summary[aria-disabled='true'] {
+  --accordion-label-color: var(--text-disabled);
+  --accordion-sublabel-color: var(--text-disabled);
+  --accordion-icon-color: var(--text-disabled);
+}

@@ -1,3 +1,11 @@
+export { default as Accordion } from './accordion/Accordion.vue'
+export { default as AccordionItem } from './accordion/AccordionItem.vue'
+export type {
+  AccordionItemProps,
+  AccordionProps,
+  AccordionVariant,
+} from './accordion/Accordion.types'
+
 export { default as Avatar } from './avatar/Avatar.vue'
 export { default as AvatarGroup } from './avatar/AvatarGroup.vue'
 export type {

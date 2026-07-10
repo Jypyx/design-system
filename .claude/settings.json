@@ -11,7 +11,8 @@
       "PowerShell(npx vitest run --project=storybook src/components/breadcrumb/Breadcrumb.stories.ts src/components/menu/Menu.stories.ts)",
       "PowerShell(npm run build)",
       "PowerShell(npx vitest run --project=storybook src/components/progress-linear/ProgressLinear.stories.ts)",
-      "PowerShell(npx vitest run --project=storybook src/components/avatar/Avatar.stories.ts src/components/avatar/AvatarGroup.stories.ts)"
+      "PowerShell(npx vitest run --project=storybook src/components/avatar/Avatar.stories.ts src/components/avatar/AvatarGroup.stories.ts)",
+      "PowerShell(npx vitest run --project=storybook src/components/accordion/Accordion.stories.ts)"
     ]
   }
 }
