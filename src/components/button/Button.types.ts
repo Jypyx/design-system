@@ -17,6 +17,10 @@ export interface ButtonProps {
   target?: '_self' | '_blank' | '_parent' | '_top'
   /** Only used when href is set */
   rel?: string
+  /** Material Symbols Rounded name rendered before the label (or use the icon-start slot) */
+  iconStart?: string
+  /** Material Symbols Rounded name rendered after the label (or use the icon-end slot) */
+  iconEnd?: string
   /** Shows a spinner and dims the button; interaction is blocked while loading. */
   isLoading?: boolean
   /** Ignored when href is set */

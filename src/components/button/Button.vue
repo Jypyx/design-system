@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import './button.tokens.css'
+import Icon from '../icon/Icon.vue'
 import type { ButtonProps } from './Button.types'
 
 withDefaults(defineProps<ButtonProps>(), {
@@ -43,7 +44,13 @@ withDefaults(defineProps<ButtonProps>(), {
         stroke-linecap="round"
       />
     </svg>
+    <slot v-else name="icon-start">
+      <Icon v-if="iconStart" :name="iconStart" />
+    </slot>
     <slot />
+    <slot name="icon-end">
+      <Icon v-if="iconEnd" :name="iconEnd" />
+    </slot>
   </component>
 </template>
 
@@ -157,6 +164,14 @@ withDefaults(defineProps<ButtonProps>(), {
   cursor: not-allowed;
 }
 
+/* --- icons -------------------------------------------------------- */
+/* slightly larger than the label so glyphs read at the same
+   optical weight as the text (Material sizing ratio) */
+
+.ds-btn > .ds-icon {
+  --icon-size: 1.25em;
+}
+
 /* --- loading ------------------------------------------------------ */
 
 .ds-btn[data-loading] {
@@ -165,8 +180,9 @@ withDefaults(defineProps<ButtonProps>(), {
 }
 
 .ds-btn-spinner {
-  width: 1em;
-  height: 1em;
+  /* matches the icon size so the loading swap doesn't shift layout */
+  width: 1.25em;
+  height: 1.25em;
   animation: ds-btn-spin calc(var(--duration-500) * 1.5) var(--ease-linear) infinite;
 }
 

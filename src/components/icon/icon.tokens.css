@@ -1,0 +1,27 @@
+/* ============================================================
+ * LAYER 3 — Component tokens: Icon
+ *
+ *   --icon-size          box + glyph size; defaults to 1em so the
+ *                        icon always scales with the parent's
+ *                        font-size — override for a fixed size
+ *   --icon-fill          Material Symbols FILL axis (0 | 1)
+ *   --icon-weight        Material Symbols wght axis (100–700)
+ *   --icon-grade         Material Symbols GRAD axis (-50–200)
+ *   --icon-optical-size  Material Symbols opsz axis (20–48)
+ *
+ * The 'Material Symbols Rounded' variable font is not bundled;
+ * consumers load it themselves (Storybook does so in
+ * .storybook/preview-head.html).
+ * ============================================================ */
+
+.ds-icon {
+  --icon-size: 1em;
+  --icon-fill: 0;
+  --icon-weight: 400;
+  --icon-grade: 0;
+  --icon-optical-size: 24;
+}
+
+.ds-icon[data-filled] {
+  --icon-fill: 1;
+}

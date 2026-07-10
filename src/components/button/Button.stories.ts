@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import Button from './Button.vue'
+import Icon from '../icon/Icon.vue'
 
 const sizes = ['xs', 'sm', 'md', 'lg'] as const
 const colors = ['neutral', 'primary', 'success', 'danger', 'warning'] as const
@@ -21,6 +22,14 @@ const meta = {
     variant: { control: 'select', options: variants },
     disabled: { control: 'boolean' },
     isLoading: { control: 'boolean' },
+    iconStart: {
+      control: 'text',
+      description: 'Material Symbols Rounded name shown before the label',
+    },
+    iconEnd: {
+      control: 'text',
+      description: 'Material Symbols Rounded name shown after the label',
+    },
     href: {
       control: 'text',
       description: 'Renders an <a> instead of a <button>',
@@ -82,6 +91,34 @@ export const Sizes: Story = {
         <Button v-for="size in sizes" :key="size" :size="size" color="primary">
           Size {{ size }}
         </Button>
+      </div>
+    `,
+  }),
+}
+
+/** Icons via the iconStart / iconEnd props, or any custom Icon via the icon-start / icon-end slots. */
+export const WithIcons: Story = {
+  parameters: { controls: { disable: true } },
+  render: () => ({
+    components: { Button, Icon },
+    setup: () => ({ sizes }),
+    template: `
+      <div style="display: flex; flex-direction: column; gap: var(--spacing-4); align-items: flex-start;">
+        <div style="display: flex; gap: var(--spacing-4); align-items: center;">
+          <Button color="primary" icon-start="add">Create</Button>
+          <Button color="primary" variant="tonal" icon-end="arrow_forward">Next</Button>
+          <Button variant="outlined" icon-start="download" icon-end="expand_more">Export</Button>
+          <Button color="danger" variant="text" icon-start="delete">Delete</Button>
+          <Button color="success" variant="flat">
+            <template #icon-start><Icon name="check_circle" filled /></template>
+            Custom slot icon
+          </Button>
+        </div>
+        <div style="display: flex; gap: var(--spacing-4); align-items: center;">
+          <Button v-for="size in sizes" :key="size" :size="size" color="primary" icon-start="rocket_launch">
+            Size {{ size }}
+          </Button>
+        </div>
       </div>
     `,
   }),
