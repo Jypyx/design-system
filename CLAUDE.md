@@ -24,7 +24,7 @@ All design tokens are **CSS custom properties** — never TypeScript constants.
 
 Theming: `color-scheme: light dark` on `:root` follows the OS; `data-theme="light" | "dark"` on `<html>` forces a theme (zero JS). The Storybook toolbar "Theme" switcher sets this attribute (see [.storybook/preview.ts](.storybook/preview.ts)).
 
-Entry point: [src/styles/index.css](src/styles/index.css) (tokens then reset) — imported by both `src/index.ts` (the library entry) and `.storybook/preview.ts`.
+Entry point: both the library entry `src/index.ts` and `.storybook/preview.ts` import [src/styles/tokens/index.css](src/styles/tokens/index.css). **There is no reset/global stylesheet and none may be added** — consumers keep their own global styles. Consequently, components must be self-contained and never assume host styles (declare `box-sizing`, `margin`, fonts, etc. themselves — see `.ds-btn`). The only global styling lives in [.storybook/preview.css](.storybook/preview.css), which is Storybook canvas decoration, not part of the design system.
 
 ## Package consumption
 
@@ -32,7 +32,7 @@ Entry point: [src/styles/index.css](src/styles/index.css) (tokens then reset) �
 
 ```ts
 import { Button } from 'design-system'
-import 'design-system/styles.css' // tokens + reset + component styles, single file
+import 'design-system/styles.css' // tokens + component styles, single file (no reset)
 ```
 
 Package exports live in [package.json](package.json) (`.` → `dist/index.js` + types, `./styles.css` → `dist/styles.css`); `vue` is a peerDependency. New public components/types must be re-exported from `src/components/index.ts` to reach the bundle.

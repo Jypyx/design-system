@@ -1,0 +1,9 @@
+/* Storybook canvas styling only — not part of the design system.
+ * Makes the preview background/text follow the active theme. */
+
+body {
+  margin: 0;
+  background-color: var(--surface);
+  color: var(--text);
+  font-family: var(--font-sans);
+}

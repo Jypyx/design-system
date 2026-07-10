@@ -26,6 +26,10 @@ withDefaults(defineProps<ButtonProps>(), {
 
 <style>
 .ds-btn {
+  /* self-contained: never rely on a host-app reset */
+  box-sizing: border-box;
+  margin: 0;
+  appearance: none;
   display: inline-flex;
   align-items: center;
   justify-content: center;
