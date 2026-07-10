@@ -9,6 +9,8 @@ export interface InputProps {
   type?: InputType
   /** Text rendered above the field, linked to the input */
   label?: string
+  /** Accessible name applied to the native input, for fields without a visible label */
+  ariaLabel?: string
   placeholder?: string
   /** Helper text rendered below the field (turns red when invalid) */
   hint?: string

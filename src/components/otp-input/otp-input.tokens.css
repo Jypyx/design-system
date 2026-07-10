@@ -1,0 +1,50 @@
+/* ============================================================
+ * LAYER 3 — Component tokens: OTPInput
+ * Consumes Layer 2 semantic tokens only; light + dark come for
+ * free because the semantic layer resolves via light-dark().
+ *
+ * Field widths match the Input heights of the same size so the
+ * cells stay square; everything else (border, surface, focus…)
+ * is inherited from the Input tokens.
+ *
+ *   --otp-field-width          width of one character cell
+ *   --otp-gap                  gap between cells / separators
+ *   --otp-separator-color      literal text, separator icon, spinner
+ * ============================================================ */
+
+.ds-otp {
+  /* size — default 'sm' (36px, square) */
+  --otp-field-width: 36px;
+  --otp-gap: var(--spacing-2);
+  --otp-separator-font-size: var(--text-sm);
+  --otp-separator-icon-size: 20px;
+  --otp-separator-color: var(--text-muted);
+}
+
+/* --- sizes ---------------------------------------------------- */
+
+.ds-otp[data-size='xs'] {
+  --otp-field-width: 28px;
+  --otp-gap: var(--spacing-1\.5);
+  --otp-separator-font-size: var(--text-xs);
+  --otp-separator-icon-size: 16px;
+}
+
+.ds-otp[data-size='md'] {
+  --otp-field-width: 44px;
+  --otp-gap: var(--spacing-2\.5);
+  --otp-separator-font-size: var(--text-base);
+}
+
+.ds-otp[data-size='lg'] {
+  --otp-field-width: 52px;
+  --otp-gap: var(--spacing-3);
+  --otp-separator-font-size: var(--text-lg);
+  --otp-separator-icon-size: 24px;
+}
+
+/* --- states ---------------------------------------------------- */
+
+.ds-otp[data-disabled] {
+  --otp-separator-color: var(--text-disabled);
+}

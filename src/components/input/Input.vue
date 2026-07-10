@@ -43,6 +43,13 @@ function clear() {
   emit('clear')
   input.value?.focus()
 }
+
+defineExpose({
+  /** the native input element */
+  input,
+  /** focuses the native input */
+  focus: () => input.value?.focus(),
+})
 </script>
 
 <template>
@@ -74,6 +81,7 @@ function clear() {
         :disabled="disabled"
         :readonly="readonly"
         :required="required"
+        :aria-label="ariaLabel"
         :aria-invalid="invalid ? 'true' : undefined"
         :aria-busy="isLoading ? 'true' : undefined"
         :aria-describedby="hint ? hintId : undefined"
