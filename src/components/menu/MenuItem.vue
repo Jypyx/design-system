@@ -135,7 +135,7 @@ onBeforeUnmount(() => {
   font-family: var(--font-sans);
   font-size: var(--menu-item-font-size);
   font-weight: var(--font-weight-normal);
-  line-height: var(--text-sm--line-height);
+  line-height: var(--menu-item-line-height);
   text-align: left;
   cursor: pointer;
   user-select: none;

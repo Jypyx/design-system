@@ -28,6 +28,7 @@
   --menu-item-padding-inline: var(--spacing-2);
   --menu-item-radius: var(--radius-md);
   --menu-item-font-size: var(--text-sm);
+  --menu-item-line-height: 1.25;
   --menu-item-icon-size: 20px;
 }
 
