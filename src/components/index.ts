@@ -39,6 +39,12 @@ export type {
 export { default as OTPInput } from './otp-input/OTPInput.vue'
 export type { OTPInputFormat, OTPInputProps } from './otp-input/OTPInput.types'
 
+export { default as ProgressCircular } from './progress-circular/ProgressCircular.vue'
+export type {
+  ProgressCircularColor,
+  ProgressCircularProps,
+} from './progress-circular/ProgressCircular.types'
+
 export { default as ProgressLinear } from './progress-linear/ProgressLinear.vue'
 export type {
   ProgressLinearColor,

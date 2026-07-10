@@ -1,0 +1,40 @@
+/* ============================================================
+ * LAYER 3 — Component tokens: ProgressCircular
+ * Consumes Layer 2 semantic tokens only; light + dark come for
+ * free because the semantic layer resolves via light-dark().
+ *
+ *   --progress-circular-size             outer diameter (set inline
+ *                                        from the size prop)
+ *   --progress-circular-accent           ring color (set inline for
+ *                                        custom colors)
+ *   --progress-circular-track            tint of the accent behind
+ *                                        the ring
+ *   --progress-circular-label-font-size  scales with the diameter
+ * ============================================================ */
+
+.ds-progress-circular {
+  --progress-circular-size: 48px;
+  --progress-circular-label-font-size: calc(var(--progress-circular-size) * 0.25);
+
+  /* color — default 'primary' */
+  --progress-circular-accent: var(--color-primary);
+  --progress-circular-track: color-mix(in oklab, var(--progress-circular-accent) 16%, transparent);
+}
+
+/* --- colors ---------------------------------------------------- */
+
+.ds-progress-circular[data-color='neutral'] {
+  --progress-circular-accent: var(--text);
+}
+
+.ds-progress-circular[data-color='success'] {
+  --progress-circular-accent: var(--color-success);
+}
+
+.ds-progress-circular[data-color='danger'] {
+  --progress-circular-accent: var(--color-danger);
+}
+
+.ds-progress-circular[data-color='warning'] {
+  --progress-circular-accent: var(--color-warning);
+}
