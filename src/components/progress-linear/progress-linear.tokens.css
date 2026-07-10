@@ -1,0 +1,55 @@
+/* ============================================================
+ * LAYER 3 — Component tokens: ProgressLinear
+ * Consumes Layer 2 semantic tokens only; light + dark come for
+ * free because the semantic layer resolves via light-dark().
+ *
+ *   --progress-height     bar thickness (18px when the label shows;
+ *                         the height prop overrides both via style)
+ *   --progress-radius     pill by default, 0 with the square prop
+ *   --progress-accent     fill color (set inline for custom colors)
+ *   --progress-on-accent  label color when contrast-color() is
+ *                         unsupported by the browser
+ *   --progress-track      tint of the accent behind the fill
+ * ============================================================ */
+
+.ds-progress-linear {
+  --progress-height: 8px;
+  --progress-radius: var(--radius-full);
+  --progress-label-font-size: var(--text-xs);
+
+  /* color — default 'primary' */
+  --progress-accent: var(--color-primary);
+  --progress-on-accent: var(--color-on-primary);
+  --progress-track: color-mix(in oklab, var(--progress-accent) 16%, transparent);
+}
+
+/* room for the --text-xs label inside the fill */
+.ds-progress-linear[data-label] {
+  --progress-height: 18px;
+}
+
+.ds-progress-linear[data-square] {
+  --progress-radius: 0px;
+}
+
+/* --- colors ---------------------------------------------------- */
+
+.ds-progress-linear[data-color='neutral'] {
+  --progress-accent: var(--text);
+  --progress-on-accent: var(--text-inverse);
+}
+
+.ds-progress-linear[data-color='success'] {
+  --progress-accent: var(--color-success);
+  --progress-on-accent: var(--color-on-success);
+}
+
+.ds-progress-linear[data-color='danger'] {
+  --progress-accent: var(--color-danger);
+  --progress-on-accent: var(--color-on-danger);
+}
+
+.ds-progress-linear[data-color='warning'] {
+  --progress-accent: var(--color-warning);
+  --progress-on-accent: var(--color-on-warning);
+}

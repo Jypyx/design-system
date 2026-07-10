@@ -39,6 +39,12 @@ export type {
 export { default as OTPInput } from './otp-input/OTPInput.vue'
 export type { OTPInputFormat, OTPInputProps } from './otp-input/OTPInput.types'
 
+export { default as ProgressLinear } from './progress-linear/ProgressLinear.vue'
+export type {
+  ProgressLinearColor,
+  ProgressLinearProps,
+} from './progress-linear/ProgressLinear.types'
+
 export { default as Radio } from './radio/Radio.vue'
 export type { RadioLabelPosition, RadioProps } from './radio/Radio.types'
 
