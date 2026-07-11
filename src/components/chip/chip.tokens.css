@@ -22,7 +22,7 @@
 .ds-chip {
   /* size — default 'sm' (26px) */
   --chip-size: 26px;
-  --chip-padding-inline: var(--spacing-2);
+  --chip-padding-inline: var(--spacing-2\.5);
   --chip-font-size: var(--text-xs);
   --chip-gap: var(--spacing-1\.5);
   --chip-radius: var(--radius-md);
@@ -41,7 +41,7 @@
 
 .ds-chip[data-size='xs'] {
   --chip-size: 20px;
-  --chip-padding-inline: var(--spacing-1\.5);
+  --chip-padding-inline: var(--spacing-2);
   --chip-font-size: var(--text-2xs);
   --chip-gap: var(--spacing-1);
   --chip-radius: var(--radius-sm);
@@ -51,7 +51,7 @@
 
 .ds-chip[data-size='md'] {
   --chip-size: 32px;
-  --chip-padding-inline: var(--spacing-2\.5);
+  --chip-padding-inline: var(--spacing-3);
   --chip-font-size: var(--text-sm);
   --chip-gap: var(--spacing-2);
   --chip-icon-size: 18px;
@@ -60,7 +60,7 @@
 
 .ds-chip[data-size='lg'] {
   --chip-size: 38px;
-  --chip-padding-inline: var(--spacing-3);
+  --chip-padding-inline: var(--spacing-3\.5);
   --chip-font-size: var(--text-base);
   --chip-gap: var(--spacing-2);
   --chip-radius: var(--radius-lg);
@@ -70,7 +70,7 @@
 
 .ds-chip[data-size='xl'] {
   --chip-size: 42px;
-  --chip-padding-inline: var(--spacing-3\.5);
+  --chip-padding-inline: var(--spacing-4);
   --chip-font-size: var(--text-lg);
   --chip-gap: var(--spacing-2\.5);
   --chip-radius: var(--radius-lg);

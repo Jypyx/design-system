@@ -161,6 +161,10 @@ const onKeydown = (event: KeyboardEvent) => {
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: var(--chip-max-width, none);
+  /* with the inherited line-height of 1 the box is exactly 1em tall and
+     overflow: hidden clips descenders (y, p, q, g, j); a normal line box
+     includes them — the chip height is fixed so nothing else moves */
+  line-height: normal;
 }
 
 .ds-chip .ds-icon {
