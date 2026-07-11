@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import Tooltip from './Tooltip.vue'
 import Button from '../button/Button.vue'
-import ButtonIcon from '../button-icon/ButtonIcon.vue'
 import Input from '../input/Input.vue'
 
 const placements = [
@@ -72,11 +71,11 @@ export const Placements: Story = {
 export const OnAnything: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    components: { Tooltip, Button, ButtonIcon, Input },
+    components: { Tooltip, Button, Input },
     template: `
       <div style="display: flex; gap: var(--spacing-6); align-items: center;">
         <Tooltip content="Delete forever" placement="bottom">
-          <ButtonIcon icon="delete" color="danger" variant="tonal" label="Delete" />
+          <Button icon="delete" color="danger" variant="tonal" label="Delete" />
         </Tooltip>
         <Tooltip content="Saved 2 minutes ago">
           <Button variant="text" icon-start="cloud_done">Saved</Button>

@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import ButtonGroup from './ButtonGroup.vue'
 import Button from '../button/Button.vue'
-import ButtonIcon from '../button-icon/ButtonIcon.vue'
 
 const variants = ['elevated', 'flat', 'tonal', 'outlined', 'text'] as const
 
@@ -56,27 +55,27 @@ export const Variants: Story = {
   }),
 }
 
-/** ButtonIcon glues exactly like Button — e.g. a split button or a pager. */
-export const WithButtonIcon: Story = {
+/** Icon-only buttons glue exactly like labeled ones — e.g. a split button or a pager. */
+export const WithIconOnlyButtons: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    components: { ButtonGroup, Button, ButtonIcon },
+    components: { ButtonGroup, Button },
     template: `
       <div style="display: flex; flex-direction: column; gap: var(--spacing-4); align-items: flex-start;">
         <ButtonGroup label="Save options">
           <Button color="primary" icon-start="save">Save</Button>
-          <ButtonIcon color="primary" icon="expand_more" label="More save options" />
+          <Button color="primary" icon="expand_more" label="More save options" />
         </ButtonGroup>
         <ButtonGroup label="Pagination">
-          <ButtonIcon variant="outlined" icon="chevron_left" label="Previous page" />
+          <Button variant="outlined" icon="chevron_left" label="Previous page" />
           <Button variant="outlined">1</Button>
           <Button variant="outlined">2</Button>
           <Button variant="outlined">3</Button>
-          <ButtonIcon variant="outlined" icon="chevron_right" label="Next page" />
+          <Button variant="outlined" icon="chevron_right" label="Next page" />
         </ButtonGroup>
         <ButtonGroup label="Zoom">
-          <ButtonIcon variant="tonal" color="primary" icon="zoom_out" label="Zoom out" />
-          <ButtonIcon variant="tonal" color="primary" icon="zoom_in" label="Zoom in" />
+          <Button variant="tonal" color="primary" icon="zoom_out" label="Zoom out" />
+          <Button variant="tonal" color="primary" icon="zoom_in" label="Zoom in" />
         </ButtonGroup>
       </div>
     `,

@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import Accordion from './Accordion.vue'
 import AccordionItem from './AccordionItem.vue'
 import Avatar from '../avatar/Avatar.vue'
-import ButtonIcon from '../button-icon/ButtonIcon.vue'
+import Button from '../button/Button.vue'
 
 const meta = {
   title: 'Components/Accordion',
@@ -182,20 +182,20 @@ export const CustomHeader: Story = {
 export const Actions: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    components: { Accordion, AccordionItem, ButtonIcon },
+    components: { Accordion, AccordionItem, Button },
     template: `
       <Accordion style="width: 360px;">
         <AccordionItem icon="folder" label="Documents" sublabel="12 files">
           <template #actions>
-            <ButtonIcon icon="edit" variant="text" size="xs" label="Rename" />
-            <ButtonIcon icon="delete" variant="text" size="xs" label="Delete" />
+            <Button icon="edit" variant="text" size="xs" label="Rename" />
+            <Button icon="delete" variant="text" size="xs" label="Delete" />
           </template>
           <p style="margin: 0;">Reports, contracts and specs.</p>
         </AccordionItem>
         <AccordionItem icon="folder" label="Pictures" sublabel="48 files">
           <template #actions>
-            <ButtonIcon icon="edit" variant="text" size="xs" label="Rename" />
-            <ButtonIcon icon="delete" variant="text" size="xs" label="Delete" />
+            <Button icon="edit" variant="text" size="xs" label="Rename" />
+            <Button icon="delete" variant="text" size="xs" label="Delete" />
           </template>
           <p style="margin: 0;">Screenshots and photos.</p>
         </AccordionItem>

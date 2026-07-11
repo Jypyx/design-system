@@ -98,8 +98,8 @@ export const Sizes: Story = {
 }
 
 /**
- * With the `icon` prop (and no text) the toggle becomes square, like a
- * ButtonIcon. `label` is required: it is the accessible name.
+ * With the `icon` prop (and no text) the toggle becomes square, like an
+ * icon-only Button. `label` is required: it is the accessible name.
  */
 export const IconOnly: Story = {
   parameters: { controls: { disable: true } },

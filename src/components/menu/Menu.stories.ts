@@ -4,7 +4,6 @@ import MenuItem from './MenuItem.vue'
 import MenuLabel from './MenuLabel.vue'
 import MenuSeparator from './MenuSeparator.vue'
 import Button from '../button/Button.vue'
-import ButtonIcon from '../button-icon/ButtonIcon.vue'
 
 const placements = [
   'bottom-start',
@@ -151,10 +150,10 @@ export const Dense: Story = {
 export const GroupsAndSeparators: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    components: { Menu, MenuItem, MenuLabel, MenuSeparator, ButtonIcon },
+    components: { Menu, MenuItem, MenuLabel, MenuSeparator, Button },
     template: `
       <Menu>
-        <ButtonIcon icon="more_vert" variant="text" label="More actions" />
+        <Button icon="more_vert" variant="text" label="More actions" />
         <template #items>
           <MenuLabel label="Workspace" />
           <MenuItem icon-start="settings" label="Settings" />
@@ -235,11 +234,11 @@ export const CustomEndContent: Story = {
 export const OnAnything: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    components: { Menu, MenuItem, Button, ButtonIcon },
+    components: { Menu, MenuItem, Button },
     template: `
       <div style="display: flex; gap: var(--spacing-6); align-items: center;">
         <Menu>
-          <ButtonIcon icon="more_horiz" variant="tonal" label="Row actions" />
+          <Button icon="more_horiz" variant="tonal" label="Row actions" />
           <template #items>
             <MenuItem icon-start="visibility" label="Preview" />
             <MenuItem icon-start="edit" label="Edit" />

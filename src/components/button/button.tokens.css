@@ -91,6 +91,20 @@
   --btn-tint: color-mix(in oklab, var(--color-warning) 70%, var(--text));
 }
 
+/* --- icon-only ------------------------------------------------- */
+/* (after the size section: it overrides the per-size padding/radius) */
+
+.ds-btn[data-shape] {
+  /* no label: the per-size inline padding is meaningless */
+  --btn-padding-inline: 0;
+}
+
+/* 'square' keeps the per-size --btn-radius */
+
+.ds-btn[data-shape='round'] {
+  --btn-radius: var(--radius-full);
+}
+
 /* --- disabled -------------------------------------------------- */
 /* grey out whatever the color prop says; every variant derives its
    own look from these tokens (must stay after the color section) */

@@ -7,6 +7,7 @@ withDefaults(defineProps<ButtonProps>(), {
   size: 'sm',
   color: 'neutral',
   variant: 'flat',
+  shape: 'square',
   disabled: false,
   isLoading: false,
   type: 'button',
@@ -28,10 +29,12 @@ const iconProps = (icon: string) => (/[./:]/.test(icon) ? { src: icon } : { name
     :rel="href && !disabled ? (rel ?? (target === '_blank' ? 'noopener noreferrer' : undefined)) : undefined"
     :aria-disabled="href && disabled ? 'true' : undefined"
     :aria-busy="isLoading ? 'true' : undefined"
+    :aria-label="label"
     :data-loading="isLoading ? '' : undefined"
     :data-size="size"
     :data-color="color"
     :data-variant="variant"
+    :data-shape="icon || label ? shape : undefined"
   >
     <svg
       v-if="isLoading"
@@ -49,7 +52,7 @@ const iconProps = (icon: string) => (/[./:]/.test(icon) ? { src: icon } : { name
       />
     </svg>
     <slot v-else name="icon-start">
-      <Icon v-if="iconStart" v-bind="iconProps(iconStart)" />
+      <Icon v-if="iconStart || icon" v-bind="iconProps((iconStart || icon)!)" />
     </slot>
     <slot />
     <slot name="icon-end">
@@ -172,6 +175,20 @@ const iconProps = (icon: string) => (/[./:]/.test(icon) ? { src: icon } : { name
 
 .ds-btn > .ds-icon {
   --icon-size: var(--btn-icon-size);
+}
+
+/* --- icon-only ------------------------------------------------------ */
+
+.ds-btn[data-shape] {
+  /* icon-only: the button is exactly as wide as it is tall */
+  width: var(--btn-height);
+  flex: none;
+}
+
+/* the spinner takes the icon's place — also hide an icon slotted
+   through the default slot so the two never stack */
+.ds-btn[data-shape][data-loading] > :not(.ds-btn-spinner) {
+  display: none;
 }
 
 /* --- loading ------------------------------------------------------ */

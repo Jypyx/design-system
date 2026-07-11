@@ -3,7 +3,6 @@ import { userEvent, within } from 'storybook/test'
 import { ref } from 'vue'
 import Dialog from './Dialog.vue'
 import Button from '../button/Button.vue'
-import ButtonIcon from '../button-icon/ButtonIcon.vue'
 import Input from '../input/Input.vue'
 import Textarea from '../textarea/Textarea.vue'
 import Menu from '../menu/Menu.vue'
@@ -112,15 +111,15 @@ export const CustomWidth: Story = {
 export const HeaderActions: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    components: { Dialog, Button, ButtonIcon },
+    components: { Dialog, Button },
     setup: () => ({ open: ref(false) }),
     template: `
       <Button @click="open = true">Open dialog</Button>
       <Dialog v-model:open="open" title="Report — Q3" subtitle="Generated a few seconds ago">
         <p style="margin: 0;">Revenue is up 12% quarter over quarter.</p>
         <template #header-actions>
-          <ButtonIcon icon="download" variant="tonal" color="primary" label="Download" />
-          <ButtonIcon icon="open_in_full" variant="tonal" color="primary" label="Expand" />
+          <Button icon="download" variant="tonal" color="primary" label="Download" />
+          <Button icon="open_in_full" variant="tonal" color="primary" label="Expand" />
         </template>
         <template #footer>
           <Button color="primary" @click="open = false">Done</Button>

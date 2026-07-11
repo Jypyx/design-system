@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import './breadcrumb.tokens.css'
 import { computed } from 'vue'
-import ButtonIcon from '../button-icon/ButtonIcon.vue'
+import Button from '../button/Button.vue'
 import Icon from '../icon/Icon.vue'
 import Menu from '../menu/Menu.vue'
 import MenuItem from '../menu/MenuItem.vue'
@@ -59,7 +59,7 @@ const isCurrent = (item: BreadcrumbItem) => item.href === currentPath.value
 
       <li v-if="hiddenItems.length" class="ds-breadcrumb-item">
         <Menu dense placement="bottom-start">
-          <ButtonIcon size="xs" variant="text" color="neutral" icon="more_horiz" :label="moreLabel" />
+          <Button size="xs" variant="text" color="neutral" icon="more_horiz" :label="moreLabel" />
           <template #items>
             <MenuItem
               v-for="item in hiddenItems"

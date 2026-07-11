@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import './dialog.tokens.css'
 import { onMounted, useId, useTemplateRef, watch } from 'vue'
-import ButtonIcon from '../button-icon/ButtonIcon.vue'
+import Button from '../button/Button.vue'
 import type { DialogProps } from './Dialog.types'
 
 const props = withDefaults(defineProps<DialogProps>(), {
@@ -75,7 +75,7 @@ defineExpose({
       <div v-if="$slots['header-actions']" class="ds-dialog-header__actions">
           <slot name="header-actions" />
       </div>
-      <ButtonIcon
+      <Button
         v-if="closable"
         class="ds-dialog-close"
         icon="close"

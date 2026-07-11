@@ -14,7 +14,7 @@ export interface ToggleProps {
   color?: ButtonColor
   disabled?: boolean
   /**
-   * Icon-only toggle (square, like ButtonIcon): a Material Symbols Rounded
+   * Icon-only toggle (square, like an icon-only Button): a Material Symbols Rounded
    * name, or an image / SVG URL (anything containing '.', '/' or ':' is
    * treated as a URL). Pass `label` for the accessible name.
    */

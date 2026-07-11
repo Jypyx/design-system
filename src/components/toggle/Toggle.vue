@@ -5,7 +5,9 @@ import Icon from '../icon/Icon.vue'
 import { toggleGroupKey } from '../toggle-group/ToggleGroup.types'
 import type { ToggleProps } from './Toggle.types'
 
-const props = defineProps<ToggleProps>()
+/* disabled must stay undefined when absent (Vue casts missing boolean
+   props to false) so the group's disabled can be inherited below */
+const props = withDefaults(defineProps<ToggleProps>(), { disabled: undefined })
 
 /** standalone pressed state — inside a ToggleGroup the group model wins */
 const model = defineModel<boolean>({ default: false })
