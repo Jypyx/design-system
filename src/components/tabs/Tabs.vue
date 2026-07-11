@@ -189,39 +189,41 @@ const nextIcon = computed(
     :data-stretch="stretch ? '' : undefined"
   >
     <div class="ds-tabs-bar">
-      <Button
-        v-if="scrollButtons && overflowing"
-        class="ds-tabs-scroll"
-        variant="text"
-        color="neutral"
-        :size="size"
-        :icon="prevIcon"
-        :label="scrollPrevLabel"
-        :disabled="!canPrev"
-        @click="scrollByPage(-1)"
-      />
-      <div
-        ref="list"
-        class="ds-tabs-list"
-        role="tablist"
-        :aria-label="label"
-        :aria-orientation="orientation === 'vertical' ? 'vertical' : undefined"
-        @keydown="onKeydown"
-        @scroll.passive="updateScroll"
-      >
-        <slot name="tabs" />
+      <div class="ds-tabs-track">
+        <Button
+          v-if="scrollButtons && overflowing"
+          class="ds-tabs-scroll"
+          variant="text"
+          color="neutral"
+          :size="size"
+          :icon="prevIcon"
+          :label="scrollPrevLabel"
+          :disabled="!canPrev"
+          @click="scrollByPage(-1)"
+        />
+        <div
+          ref="list"
+          class="ds-tabs-list"
+          role="tablist"
+          :aria-label="label"
+          :aria-orientation="orientation === 'vertical' ? 'vertical' : undefined"
+          @keydown="onKeydown"
+          @scroll.passive="updateScroll"
+        >
+          <slot name="tabs" />
+        </div>
+        <Button
+          v-if="scrollButtons && overflowing"
+          class="ds-tabs-scroll"
+          variant="text"
+          color="neutral"
+          :size="size"
+          :icon="nextIcon"
+          :label="scrollNextLabel"
+          :disabled="!canNext"
+          @click="scrollByPage(1)"
+        />
       </div>
-      <Button
-        v-if="scrollButtons && overflowing"
-        class="ds-tabs-scroll"
-        variant="text"
-        color="neutral"
-        :size="size"
-        :icon="nextIcon"
-        :label="scrollNextLabel"
-        :disabled="!canNext"
-        @click="scrollByPage(1)"
-      />
     </div>
     <div class="ds-tabs-panels">
       <slot />
@@ -244,6 +246,15 @@ const nextIcon = computed(
 }
 
 .ds-tabs-bar {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+
+/* hugs the tabs and carries the scroll buttons, so the inset variant's
+   grey background can wrap buttons and tabs together */
+.ds-tabs-track {
   box-sizing: border-box;
   display: flex;
   align-items: center;
@@ -282,11 +293,15 @@ const nextIcon = computed(
 
 /* --- stretch: tabs share all the available space -------------------- */
 
-.ds-tabs[data-stretch] > .ds-tabs-bar > .ds-tabs-list {
+.ds-tabs[data-stretch] > .ds-tabs-bar > .ds-tabs-track {
   flex: 1;
 }
 
-.ds-tabs[data-stretch] > .ds-tabs-bar > .ds-tabs-list > .ds-tab {
+.ds-tabs[data-stretch] > .ds-tabs-bar > .ds-tabs-track > .ds-tabs-list {
+  flex: 1;
+}
+
+.ds-tabs[data-stretch] > .ds-tabs-bar > .ds-tabs-track > .ds-tabs-list > .ds-tab {
   flex: 1;
 }
 
@@ -302,11 +317,17 @@ const nextIcon = computed(
   min-height: 0;
 }
 
-.ds-tabs[data-orientation='vertical'] > .ds-tabs-bar > .ds-tabs-scroll {
+.ds-tabs[data-orientation='vertical'] > .ds-tabs-bar > .ds-tabs-track {
+  flex-direction: column;
+  align-items: stretch;
+  min-height: 0;
+}
+
+.ds-tabs[data-orientation='vertical'] > .ds-tabs-bar > .ds-tabs-track > .ds-tabs-scroll {
   align-self: center;
 }
 
-.ds-tabs[data-orientation='vertical'] > .ds-tabs-bar > .ds-tabs-list {
+.ds-tabs[data-orientation='vertical'] > .ds-tabs-bar > .ds-tabs-track > .ds-tabs-list {
   flex-direction: column;
   align-items: stretch;
   min-height: 0;
@@ -315,7 +336,7 @@ const nextIcon = computed(
 }
 
 /* vertical tabs read as a nav rail: labels align to the start */
-.ds-tabs[data-orientation='vertical'] > .ds-tabs-bar > .ds-tabs-list > .ds-tab {
+.ds-tabs[data-orientation='vertical'] > .ds-tabs-bar > .ds-tabs-track > .ds-tabs-list > .ds-tab {
   justify-content: flex-start;
 }
 
@@ -324,14 +345,14 @@ const nextIcon = computed(
 }
 
 /* --- line variant: hairline under the whole bar ---------------------- */
-/* the list overlaps the hairline by 1px so the selected tab's indicator
+/* the track overlaps the hairline by 1px so the selected tab's indicator
    paints on top of it */
 
 .ds-tabs[data-variant='line'] > .ds-tabs-bar {
   border-block-end: 1px solid var(--tabs-border);
 }
 
-.ds-tabs[data-variant='line'] > .ds-tabs-bar > .ds-tabs-list {
+.ds-tabs[data-variant='line'] > .ds-tabs-bar > .ds-tabs-track {
   margin-block-end: -1px;
 }
 
@@ -342,17 +363,21 @@ const nextIcon = computed(
   border-inline-start: 1px solid var(--tabs-border);
 }
 
-.ds-tabs[data-variant='line'][data-orientation='vertical'] > .ds-tabs-bar > .ds-tabs-list {
+.ds-tabs[data-variant='line'][data-orientation='vertical'] > .ds-tabs-bar > .ds-tabs-track {
   margin-block-end: 0;
   margin-inline-start: -1px;
 }
 
-/* --- inset variant: grey track around the tabs ----------------------- */
+/* --- inset variant: grey track around buttons + tabs ------------------ */
 
-.ds-tabs[data-variant='inset'] > .ds-tabs-bar > .ds-tabs-list {
+.ds-tabs[data-variant='inset'] > .ds-tabs-bar > .ds-tabs-track {
   gap: var(--tabs-track-gap);
   padding: var(--tabs-track-padding);
   background-color: var(--tabs-track-bg);
   border-radius: var(--tabs-track-radius);
+}
+
+.ds-tabs[data-variant='inset'] > .ds-tabs-bar > .ds-tabs-track > .ds-tabs-list {
+  gap: var(--tabs-track-gap);
 }
 </style>

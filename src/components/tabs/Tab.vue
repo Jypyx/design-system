@@ -109,6 +109,16 @@ const iconProps = (icon: string) => (/[./:]/.test(icon) ? { src: icon } : { name
   border-end-end-radius: 0;
 }
 
+/* only the extremities keep a rounded top corner: the inner edges of
+   middle tabs stay square so the hover washes read as one strip */
+.ds-tab[data-variant='line'][data-orientation='horizontal']:not(:first-child) {
+  border-start-start-radius: 0;
+}
+
+.ds-tab[data-variant='line'][data-orientation='horizontal']:not(:last-child) {
+  border-start-end-radius: 0;
+}
+
 .ds-tab[data-variant='line'][aria-selected='true'] {
   color: var(--tabs-tint);
   border-color: var(--tabs-tint);
@@ -122,6 +132,14 @@ const iconProps = (icon: string) => (/[./:]/.test(icon) ? { src: icon } : { name
   border-start-end-radius: var(--tabs-radius);
   border-end-start-radius: 0;
   border-end-end-radius: var(--tabs-radius);
+}
+
+.ds-tab[data-variant='line'][data-orientation='vertical']:not(:first-child) {
+  border-start-end-radius: 0;
+}
+
+.ds-tab[data-variant='line'][data-orientation='vertical']:not(:last-child) {
+  border-end-end-radius: 0;
 }
 
 .ds-tab[data-variant='line'][data-orientation='vertical'][aria-selected='true'] {
