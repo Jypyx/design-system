@@ -4,6 +4,10 @@ import { ref } from 'vue'
 import Modal from './Modal.vue'
 import Button from '../button/Button.vue'
 import ButtonIcon from '../button-icon/ButtonIcon.vue'
+import Input from '../input/Input.vue'
+import Textarea from '../textarea/Textarea.vue'
+import Menu from '../menu/Menu.vue'
+import MenuItem from '../menu/MenuItem.vue'
 
 /* opens the modal in the automated (webdriver-driven) vitest run only,
    so the a11y scan covers the open dialog; in the Storybook UI stories
@@ -164,4 +168,52 @@ export const NotDismissible: Story = {
     title: 'Import in progress',
     subtitle: 'Clicking outside will not close this modal',
   },
+}
+
+/**
+ * A form inside the modal, including a Menu used as a select — two
+ * top-layer overlays stacked. Things to try: the menu panel opens above
+ * the modal (popovers stack over the dialog in the top layer), Tab
+ * cycles through the fields without escaping the dialog, and Escape
+ * unwinds one layer at a time — open menu first, then the modal.
+ */
+export const FormWithMenu: Story = {
+  parameters: { controls: { disable: true } },
+  render: () => ({
+    components: { Modal, Button, Input, Textarea, Menu, MenuItem },
+    setup: () => ({
+      open: ref(false),
+      name: ref(''),
+      description: ref(''),
+      team: ref(''),
+    }),
+    template: `
+      <Button @click="open = true">Open modal</Button>
+      <Modal v-model:open="open" title="New project" subtitle="Fill in the details, then create">
+        <div style="display: flex; flex-direction: column; gap: var(--spacing-4);">
+          <Input v-model="name" label="Project name" placeholder="Q3 roadmap" required />
+          <div>
+            <span style="display: block; margin-bottom: var(--spacing-1); font-size: var(--text-sm); font-weight: var(--font-weight-medium);">Team</span>
+            <Menu>
+              <Button variant="outlined" icon-end="expand_more">{{ team || 'Choose a team' }}</Button>
+              <template #items>
+                <MenuItem icon-start="palette" label="Design" @click="team = 'Design'" />
+                <MenuItem icon-start="code" label="Engineering" @click="team = 'Engineering'" />
+                <MenuItem icon-start="campaign" label="Marketing" @click="team = 'Marketing'" />
+                <MenuItem icon-start="database" label="IT" @click="team = 'IT'" />
+                <MenuItem icon-start="analytics" label="Sales" @click="team = 'Sales'" />
+                <MenuItem icon-start="conversion_path" label="Custom Success" @click="team = 'Custom Success'" />
+                <MenuItem icon-start="support_agent" label="Support" disabled @click="team = 'Support'" />
+              </template>
+            </Menu>
+          </div>
+          <Textarea v-model="description" label="Description" placeholder="What is this project about?" :rows="3" />
+        </div>
+        <template #footer>
+          <Button variant="text" @click="open = false">Cancel</Button>
+          <Button color="primary" @click="open = false">Create project</Button>
+        </template>
+      </Modal>
+    `,
+  }),
 }
