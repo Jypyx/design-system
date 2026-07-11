@@ -3,7 +3,10 @@
     "allow": [
       "PowerShell(npx vitest run --project=storybook *)",
       "PowerShell(npm run storybook -- --no-open)",
-      "PowerShell(npm run build)"
+      "PowerShell(npm run build)",
+      "PowerShell(npx vitest run --project=storybook src/components/combobox/Combobox.stories.ts)",
+      "PowerShell(Invoke-WebRequest -Uri \"http://localhost:6006/iframe.html?viewMode=story&id=components-combobox--default\" -UseBasicParsing -TimeoutSec 10)",
+      "PowerShell(node \"C:\\\\Users\\\\Xavier\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\d--Dev-design-system\\\\f00fd17e-b734-44c1-8fc6-18e4bd45ed59\\\\scratchpad\\\\combobox-verify.mjs\")"
     ]
   }
 }

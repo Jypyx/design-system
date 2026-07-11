@@ -47,6 +47,15 @@ export type {
   ChipVariant,
 } from './chip/Chip.types'
 
+export { default as Combobox } from './combobox/Combobox.vue'
+export type {
+  ComboboxModelValue,
+  ComboboxOption,
+  ComboboxProps,
+  ComboboxSize,
+  ComboboxValue,
+} from './combobox/Combobox.types'
+
 export { default as Icon } from './icon/Icon.vue'
 export type { IconProps } from './icon/Icon.types'
 

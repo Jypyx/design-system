@@ -1,0 +1,127 @@
+/* ============================================================
+ * LAYER 3 — Component tokens: Combobox
+ * Consumes Layer 2 semantic tokens only; light + dark come for
+ * free because the semantic layer resolves via light-dark().
+ *
+ * The field mirrors the Input tokens (heights 28/36/44/52 match
+ * Button) and the popover mirrors the Menu panel, so a Combobox
+ * lines up with both when placed side by side.
+ *
+ *   --combobox-surface            field background
+ *   --combobox-border-color       field border
+ *   --combobox-accent             focus border + selected check icon
+ *   --combobox-text-color         value text
+ *   --combobox-placeholder-color  placeholder text
+ *   --combobox-icon-color         chevron, clear button, spinner
+ *   --combobox-label-color        label above the field
+ *   --combobox-hint-color         hint under the field
+ *
+ * The popover is a DOM child of .ds-combobox (the top layer does
+ * not break custom-property inheritance), so every token lives
+ * on the root.
+ * ============================================================ */
+
+.ds-combobox {
+  /* field size — default 'sm' (36px), mirrors Input */
+  --combobox-height: 36px;
+  --combobox-padding-inline: var(--spacing-3);
+  --combobox-font-size: var(--text-sm);
+  --combobox-gap: var(--spacing-2);
+  --combobox-stack-gap: var(--spacing-1\.5);
+  --combobox-radius: var(--radius-md);
+  --combobox-icon-size: 20px;
+  --combobox-label-font-size: var(--text-sm);
+  --combobox-meta-font-size: var(--text-xs);
+  --combobox-chips-gap: var(--spacing-1);
+
+  /* field colors — mirrors Input */
+  --combobox-surface: var(--surface-raised);
+  --combobox-border-color: var(--border-strong);
+  --combobox-accent: var(--color-primary);
+  --combobox-text-color: var(--text);
+  --combobox-placeholder-color: var(--text-muted);
+  --combobox-icon-color: var(--text-muted);
+  --combobox-label-color: var(--text);
+  --combobox-hint-color: var(--text-muted);
+
+  /* popover panel — mirrors Menu */
+  --combobox-popover-bg: var(--surface-raised);
+  --combobox-popover-border: var(--border);
+  --combobox-popover-radius: var(--radius-lg);
+  --combobox-popover-shadow: var(--shadow-lg);
+  --combobox-popover-padding: var(--spacing-1);
+  --combobox-popover-gap: var(--spacing-1);
+  --combobox-popover-max-height: 280px;
+
+  /* option rows — mirror .ds-menu-item ('sm' density) */
+  --combobox-option-min-height: 36px;
+  --combobox-option-gap: var(--spacing-2\.5);
+  --combobox-option-padding-block: var(--spacing-2);
+  --combobox-option-padding-inline: var(--spacing-2);
+  --combobox-option-radius: var(--radius-md);
+  --combobox-option-font-size: var(--text-sm);
+  --combobox-group-label-color: var(--text-muted);
+  --combobox-group-label-font-size: var(--text-xs);
+}
+
+/* --- sizes (field mirrors Input, rows follow the field density) --- */
+
+.ds-combobox[data-size='xs'] {
+  --combobox-height: 28px;
+  --combobox-padding-inline: var(--spacing-2\.5);
+  --combobox-font-size: var(--text-xs);
+  --combobox-gap: var(--spacing-1\.5);
+  --combobox-radius: var(--radius-sm);
+  --combobox-icon-size: 16px;
+  --combobox-label-font-size: var(--text-xs);
+
+  --combobox-option-min-height: 28px;
+  --combobox-option-padding-block: var(--spacing-1);
+  --combobox-option-font-size: var(--text-xs);
+}
+
+.ds-combobox[data-size='md'] {
+  --combobox-height: 44px;
+  --combobox-padding-inline: var(--spacing-3\.5);
+  --combobox-font-size: var(--text-base);
+  --combobox-gap: var(--spacing-2\.5);
+  --combobox-radius: var(--radius-lg);
+  --combobox-label-font-size: var(--text-base);
+  --combobox-meta-font-size: var(--text-sm);
+
+  --combobox-option-min-height: 40px;
+  --combobox-option-font-size: var(--text-base);
+}
+
+.ds-combobox[data-size='lg'] {
+  --combobox-height: 52px;
+  --combobox-padding-inline: var(--spacing-4);
+  --combobox-font-size: var(--text-lg);
+  --combobox-gap: var(--spacing-3);
+  --combobox-radius: var(--radius-lg);
+  --combobox-icon-size: 24px;
+  --combobox-label-font-size: var(--text-lg);
+  --combobox-meta-font-size: var(--text-sm);
+
+  --combobox-option-min-height: 44px;
+  --combobox-option-font-size: var(--text-base);
+}
+
+/* --- states (mirror Input) ---------------------------------------- */
+
+.ds-combobox[data-invalid] {
+  --combobox-border-color: var(--color-danger);
+  --combobox-accent: var(--color-danger);
+  --combobox-hint-color: var(--color-danger);
+}
+
+/* grey out everything; must stay after the other state sections */
+.ds-combobox[data-disabled] {
+  --combobox-surface: var(--surface-disabled);
+  --combobox-border-color: var(--border);
+  --combobox-text-color: var(--text-disabled);
+  --combobox-placeholder-color: var(--text-disabled);
+  --combobox-icon-color: var(--text-disabled);
+  --combobox-label-color: var(--text-disabled);
+  --combobox-hint-color: var(--text-disabled);
+}
