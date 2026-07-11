@@ -130,7 +130,7 @@ onBeforeUnmount(() => {
      position-area grid cell does the placement instead */
   position: fixed;
   inset: auto;
-  margin: var(--tooltip-gap);
+  margin: 0;
   border: 0;
   width: max-content;
   max-width: var(--tooltip-max-width);
@@ -151,7 +151,25 @@ onBeforeUnmount(() => {
 
 /* --- placement (CSS anchor positioning) ------------------------- */
 /* the popover is laid out in the 3×3 position-area grid around its
-   anchor; the margin above acts as the anchor↔bubble gap */
+   anchor; the anchor↔bubble gap is a margin on the anchor-facing
+   side only — a margin on the other sides would push the bubble off
+   the anchor edge it is aligned to (top-start, top-end, …) */
+
+.ds-tooltip[data-placement^='top'] {
+  margin-bottom: var(--tooltip-gap);
+}
+
+.ds-tooltip[data-placement^='bottom'] {
+  margin-top: var(--tooltip-gap);
+}
+
+.ds-tooltip[data-placement='left'] {
+  margin-right: var(--tooltip-gap);
+}
+
+.ds-tooltip[data-placement='right'] {
+  margin-left: var(--tooltip-gap);
+}
 
 .ds-tooltip[data-placement='top'] {
   position-area: top;
