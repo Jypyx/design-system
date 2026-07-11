@@ -26,7 +26,7 @@
   --modal-radius: var(--radius-xl);
   --modal-shadow: var(--shadow-xl);
   --modal-padding-inline: var(--spacing-6);
-  --modal-padding-block: var(--spacing-6);
+  --modal-padding-block: var(--spacing-5);
   --modal-header-gap: var(--spacing-2);
   --modal-footer-gap: var(--spacing-2);
   --modal-title-font-size: var(--text-lg);
@@ -37,7 +37,7 @@
 
 .ds-modal-alert {
   --modal-width: 400px;
-  --modal-padding-inline: var(--spacing-5);
+  /* --modal-padding-inline: var(--spacing-5);
   --modal-padding-block: var(--spacing-4);
-  --modal-title-font-size: var(--text-base);
+  --modal-title-font-size: var(--text-base); */
 }

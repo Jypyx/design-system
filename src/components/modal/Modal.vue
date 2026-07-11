@@ -137,7 +137,7 @@ defineExpose({
   display: flex;
   align-items: flex-start;
   gap: var(--modal-header-gap);
-  padding: var(--modal-padding-block) var(--modal-padding-inline) var(--spacing-5);
+  padding: var(--modal-padding-block) var(--modal-padding-inline) var(--spacing-4);
 }
 
 .ds-modal-heading {
@@ -227,7 +227,7 @@ defineExpose({
   justify-content: flex-end;
   align-items: center;
   gap: var(--modal-footer-gap);
-  padding: var(--spacing-5) var(--modal-padding-inline) var(--modal-padding-block);
+  padding: var(--spacing-4) var(--modal-padding-inline) var(--modal-padding-block);
 }
 
 /* --- enter / exit transition --------------------------------------- */
