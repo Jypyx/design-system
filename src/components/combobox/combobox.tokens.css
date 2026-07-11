@@ -33,6 +33,10 @@
   --combobox-label-font-size: var(--text-sm);
   --combobox-meta-font-size: var(--text-xs);
   --combobox-chips-gap: var(--spacing-1);
+  /* height of the chips rendered inside the field (mirrors the Chip sizes:
+     xs = 20px, sm = 26px, md = 32px); the input and the field padding are
+     derived from it so rows keep the same height with or without chips */
+  --combobox-chip-height: 20px;
 
   /* field colors — mirrors Input */
   --combobox-surface: var(--surface-raised);
@@ -74,6 +78,7 @@
   --combobox-radius: var(--radius-sm);
   --combobox-icon-size: 16px;
   --combobox-label-font-size: var(--text-xs);
+  --combobox-chip-height: 20px;
 
   --combobox-option-min-height: 28px;
   --combobox-option-padding-block: var(--spacing-1);
@@ -88,6 +93,7 @@
   --combobox-radius: var(--radius-lg);
   --combobox-label-font-size: var(--text-base);
   --combobox-meta-font-size: var(--text-sm);
+  --combobox-chip-height: 26px;
 
   --combobox-option-min-height: 40px;
   --combobox-option-font-size: var(--text-base);
@@ -102,6 +108,7 @@
   --combobox-icon-size: 24px;
   --combobox-label-font-size: var(--text-lg);
   --combobox-meta-font-size: var(--text-sm);
+  --combobox-chip-height: 32px;
 
   --combobox-option-min-height: 44px;
   --combobox-option-font-size: var(--text-base);

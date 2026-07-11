@@ -572,8 +572,12 @@ defineExpose({
   border-color: color-mix(in oklab, var(--combobox-border-color) 50%, var(--text));
 }
 
+/* the padding centers a single row (chip-height tall, see the control's
+   min-height) exactly within --combobox-height, so there is never any
+   slack to redistribute: when the chips wrap, the first row stays put
+   and the field only grows downward */
 .ds-combobox[data-multiple] .ds-combobox-field {
-  padding-block: var(--spacing-1);
+  padding-block: calc((var(--combobox-height) - var(--combobox-chip-height) - 2px) / 2);
 }
 
 /* text inputs always match :focus-visible, so keyboard and mouse focus
@@ -605,6 +609,8 @@ defineExpose({
   box-sizing: border-box;
   flex: 1;
   min-width: 60px;
+  /* as tall as a chip so the row height is identical with and without chips */
+  min-height: var(--combobox-chip-height);
   margin: 0;
   padding: 0;
   border: none;
@@ -613,6 +619,15 @@ defineExpose({
   font-family: inherit;
   font-size: var(--combobox-font-size);
   color: inherit;
+}
+
+/* with chips in the field, the input only takes space while focused:
+   collapsed to zero width it always fits on the chips line instead of
+   reserving an empty row below them; clicking the field focuses it
+   (see onFieldClick), which expands it for typing */
+.ds-combobox-chips + .ds-combobox-control:not(:focus) {
+  flex: 0 0 0px;
+  min-width: 0;
 }
 
 .ds-combobox-control::placeholder {
