@@ -1,0 +1,139 @@
+/* ============================================================
+ * LAYER 3 — Component tokens: Chip
+ * Consumes Layer 2 semantic tokens only; light + dark come for
+ * free because the semantic layer resolves via light-dark().
+ * Size scale mirrors Badge (minus 'dot').
+ *
+ *   --chip-size            height
+ *   --chip-padding-inline  horizontal padding of the body
+ *   --chip-font-size       label font size
+ *   --chip-gap             gap between icons and label
+ *   --chip-radius          corner radius ('pill' shape forces radius-full)
+ *   --chip-icon-size       icon size (close icon is 2px smaller)
+ *   --chip-close-size      diameter of the round close button
+ *   --chip-accent          fill color of the filled variant
+ *   --chip-on-accent       content color on top of the fill
+ *   --chip-tint            color of the tonal / outlined variants
+ *   --chip-outline         border color of the outlined variant
+ *   --chip-fill-border     hairline border on the filled variant
+ *                          (only visible on the neutral chip)
+ * ============================================================ */
+
+.ds-chip {
+  /* size — default 'sm' (26px) */
+  --chip-size: 26px;
+  --chip-padding-inline: var(--spacing-2);
+  --chip-font-size: var(--text-xs);
+  --chip-gap: var(--spacing-1\.5);
+  --chip-radius: var(--radius-md);
+  --chip-icon-size: 16px;
+  --chip-close-size: 20px;
+
+  /* color — default 'neutral': white chip, dark grey in dark theme */
+  --chip-accent: var(--surface-raised);
+  --chip-on-accent: var(--text);
+  --chip-tint: var(--text);
+  --chip-outline: var(--border-strong);
+  --chip-fill-border: var(--border);
+}
+
+/* --- sizes ---------------------------------------------------- */
+
+.ds-chip[data-size='xs'] {
+  --chip-size: 20px;
+  --chip-padding-inline: var(--spacing-1\.5);
+  --chip-font-size: var(--text-2xs);
+  --chip-gap: var(--spacing-1);
+  --chip-radius: var(--radius-sm);
+  --chip-icon-size: 14px;
+  --chip-close-size: 16px;
+}
+
+.ds-chip[data-size='md'] {
+  --chip-size: 32px;
+  --chip-padding-inline: var(--spacing-2\.5);
+  --chip-font-size: var(--text-sm);
+  --chip-gap: var(--spacing-2);
+  --chip-icon-size: 18px;
+  --chip-close-size: 24px;
+}
+
+.ds-chip[data-size='lg'] {
+  --chip-size: 38px;
+  --chip-padding-inline: var(--spacing-3);
+  --chip-font-size: var(--text-base);
+  --chip-gap: var(--spacing-2);
+  --chip-radius: var(--radius-lg);
+  --chip-icon-size: 20px;
+  --chip-close-size: 28px;
+}
+
+.ds-chip[data-size='xl'] {
+  --chip-size: 42px;
+  --chip-padding-inline: var(--spacing-3\.5);
+  --chip-font-size: var(--text-lg);
+  --chip-gap: var(--spacing-2\.5);
+  --chip-radius: var(--radius-lg);
+  --chip-icon-size: 20px;
+  --chip-close-size: 30px;
+}
+
+/* --- shape ------------------------------------------------------ */
+
+.ds-chip[data-shape='pill'] {
+  --chip-radius: var(--radius-full);
+}
+
+/* --- colors --------------------------------------------------- */
+
+.ds-chip:not([data-color='neutral']) {
+  --chip-outline: var(--chip-tint);
+  --chip-fill-border: transparent;
+}
+
+.ds-chip[data-color='primary'] {
+  --chip-accent: var(--color-primary);
+  --chip-on-accent: var(--color-on-primary);
+  --chip-tint: var(--color-primary);
+}
+
+.ds-chip[data-color='success'] {
+  --chip-accent: var(--color-success);
+  --chip-on-accent: var(--color-on-success);
+  --chip-tint: var(--color-success);
+}
+
+.ds-chip[data-color='danger'] {
+  --chip-accent: var(--color-danger);
+  --chip-on-accent: var(--color-on-danger);
+  --chip-tint: var(--color-danger);
+}
+
+.ds-chip[data-color='warning'] {
+  --chip-accent: var(--color-warning);
+  --chip-on-accent: var(--color-on-warning);
+  /* amber is too light to be readable as text — pull it toward the
+     text color so tonal / outlined variants keep contrast */
+  --chip-tint: color-mix(in oklab, var(--color-warning) 70%, var(--text));
+}
+
+.ds-chip[data-color='custom'] {
+  /* --chip-accent holds the arbitrary user color (inline style set by
+     the component); derive a black-or-white content for the filled
+     variant from its lightness (l < 0.62 → white, else black) and a
+     theme-aware tint for tonal / outlined */
+  --chip-on-accent: oklch(from var(--chip-accent) clamp(0, (0.62 - l) * infinity, 1) 0 h);
+  --chip-tint: color-mix(in oklab, var(--chip-accent) 70%, var(--text));
+}
+
+/* --- disabled -------------------------------------------------- */
+/* grey out whatever the color prop says; every variant derives its
+   own look from these tokens (must stay after the color section) */
+
+.ds-chip[data-disabled] {
+  --chip-accent: var(--surface-disabled);
+  --chip-on-accent: var(--text-disabled);
+  --chip-tint: var(--text-disabled);
+  --chip-outline: var(--border);
+  --chip-fill-border: transparent;
+}

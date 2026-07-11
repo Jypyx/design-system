@@ -38,6 +38,15 @@ export type { ButtonIconProps, ButtonIconShape } from './button-icon/ButtonIcon.
 export { default as Checkbox } from './checkbox/Checkbox.vue'
 export type { CheckboxLabelPosition, CheckboxProps } from './checkbox/Checkbox.types'
 
+export { default as Chip } from './chip/Chip.vue'
+export type {
+  ChipColor,
+  ChipProps,
+  ChipShape,
+  ChipSize,
+  ChipVariant,
+} from './chip/Chip.types'
+
 export { default as Icon } from './icon/Icon.vue'
 export type { IconProps } from './icon/Icon.types'
 
