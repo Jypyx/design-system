@@ -257,7 +257,7 @@ const onKeydown = (event: KeyboardEvent) => {
   box-sizing: border-box;
   appearance: none;
   margin: 0;
-  margin-inline-end: calc((var(--chip-size) - 2px - var(--chip-close-size)) / 2);
+  margin-inline-end: calc((var(--chip-size) - var(--chip-close-size)) / 2);
   padding: 0;
   background: none;
   border: none;
