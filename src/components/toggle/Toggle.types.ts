@@ -1,15 +1,22 @@
 import type { ButtonColor, ButtonSize } from '../button/Button.types'
 import type { ToggleGroupValue } from '../toggle-group/ToggleGroup.types'
 
-/** Pressed look; the rest state is transparent for both */
-export type ToggleVariant = 'tonal' | 'flat'
+/**
+ * Off → on state pair. Single names rest transparent: 'tonal' and 'flat'
+ * name the pressed look only. Compound names spell both states:
+ * 'outlined-tonal' / 'outlined-flat' rest outlined, 'tonal-flat' rests tonal.
+ */
+export type ToggleVariant = 'tonal' | 'flat' | 'outlined-tonal' | 'outlined-flat' | 'tonal-flat'
 
 export interface ToggleProps {
   /**
-   * Look of the pressed state: 'tonal' (default) fills with a tint of the
-   * color, 'flat' fills with the solid accent. At rest both are transparent.
+   * Off → on look: 'tonal' (default) and 'flat' are transparent at rest and
+   * fill with a tint / the solid accent when pressed; 'outlined-tonal' and
+   * 'outlined-flat' rest outlined; 'tonal-flat' rests tonal, presses flat.
    */
   variant?: ToggleVariant
+  /** Fills the Material Symbols icons while pressed (FILL variation axis) */
+  fillIcon?: boolean
   size?: ButtonSize
   color?: ButtonColor
   disabled?: boolean

@@ -10,8 +10,13 @@ const meta = {
     modelValue: { control: 'boolean', description: 'v-model — the pressed state' },
     variant: {
       control: 'select',
-      options: ['tonal', 'flat'],
-      description: 'Pressed look: tinted (tonal) or solid fill (flat); rest is transparent',
+      options: ['tonal', 'flat', 'outlined-tonal', 'outlined-flat', 'tonal-flat'],
+      description:
+        'Off → on pair: single names rest transparent; compound names spell both states',
+    },
+    fillIcon: {
+      control: 'boolean',
+      description: 'Fills the Material Symbols icons while pressed',
     },
     size: { control: 'select', options: ['xs', 'sm', 'md', 'lg'] },
     color: {
@@ -33,6 +38,7 @@ const meta = {
     size: 'sm',
     color: 'neutral',
     disabled: false,
+    fillIcon: false,
   },
   render: (args) => ({
     components: { Toggle },
@@ -47,17 +53,24 @@ type Story = StoryObj<typeof meta>
 export const Default: Story = {}
 
 /**
- * Both variants are transparent at rest; the `variant` prop only picks the
- * pressed look — `tonal` fills with a tint, `flat` with the solid accent.
+ * The `variant` prop names the off → on pair. `tonal` and `flat` are
+ * transparent at rest and only name the pressed look; `outlined-tonal`,
+ * `outlined-flat` and `tonal-flat` spell both states.
  */
 export const Variants: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
     components: { Toggle },
+    setup: () => ({
+      variants: ['tonal', 'flat', 'outlined-tonal', 'outlined-flat', 'tonal-flat'],
+    }),
     template: `
-      <div style="display: flex; gap: var(--spacing-2); align-items: center;">
-        <Toggle variant="tonal" :model-value="true">Tonal</Toggle>
-        <Toggle variant="flat" :model-value="true">Flat</Toggle>
+      <div style="display: grid; grid-template-columns: repeat(3, max-content); gap: var(--spacing-3); align-items: center;">
+        <template v-for="v in variants" :key="v">
+          <span style="font-family: var(--font-sans); font-size: var(--text-sm); color: var(--text-muted);">{{ v }}</span>
+          <Toggle :variant="v">Off</Toggle>
+          <Toggle :variant="v" :model-value="true">On</Toggle>
+        </template>
       </div>
     `,
   }),
@@ -100,15 +113,18 @@ export const Sizes: Story = {
 /**
  * With the `icon` prop (and no text) the toggle becomes square, like an
  * icon-only Button. `label` is required: it is the accessible name.
+ * `fill-icon` swaps the Material Symbols to their filled shape while
+ * pressed (animated FILL variation axis).
  */
 export const IconOnly: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
     components: { Toggle },
-    setup: () => ({ starred: ref(true), muted: ref(false) }),
+    setup: () => ({ starred: ref(true), liked: ref(true), muted: ref(false) }),
     template: `
       <div style="display: flex; gap: var(--spacing-2); align-items: center;">
-        <Toggle v-model="starred" icon="star" label="Star" />
+        <Toggle v-model="starred" icon="star" label="Star" fill-icon />
+        <Toggle v-model="liked" icon="favorite" label="Like" fill-icon variant="outlined-tonal" color="danger" />
         <Toggle v-model="muted" icon="notifications_off" label="Mute" variant="flat" color="danger" />
       </div>
     `,

@@ -46,6 +46,7 @@ const iconProps = (icon: string) => (/[./:]/.test(icon) ? { src: icon } : { name
     :data-color="color"
     :data-variant="variant"
     :data-icon-only="icon && !$slots.default ? '' : undefined"
+    :data-fill-icon="fillIcon ? '' : undefined"
     @click="onClick"
   >
     <slot name="icon-start">
@@ -95,7 +96,7 @@ const iconProps = (icon: string) => (/[./:]/.test(icon) ? { src: icon } : { name
   outline-offset: var(--focus-ring-offset);
 }
 
-/* --- rest: transparent for both variants (Button text recipes) --- */
+/* --- rest: transparent by default (Button text recipes) ----------- */
 
 .ds-toggle:hover:not(:disabled) {
   background-color: color-mix(in oklab, var(--toggle-tint) 10%, transparent);
@@ -105,33 +106,56 @@ const iconProps = (icon: string) => (/[./:]/.test(icon) ? { src: icon } : { name
   background-color: color-mix(in oklab, var(--toggle-tint) 16%, transparent);
 }
 
-/* --- pressed: tonal (Button tonal recipes) ------------------------ */
+/* --- rest: outlined (outlined-tonal / outlined-flat) ---------------- */
+/* the border persists while pressed tonal; the pressed flat rule below
+   overrides it with the fill border */
 
-.ds-toggle[aria-pressed='true'][data-variant='tonal'] {
+.ds-toggle[data-variant^='outlined'] {
+  border-color: var(--toggle-outline);
+}
+
+/* --- rest: tonal (tonal-flat) --------------------------------------- */
+
+.ds-toggle[data-variant='tonal-flat'] {
   background-color: color-mix(in oklab, var(--toggle-tint) 14%, transparent);
 }
 
-.ds-toggle[aria-pressed='true'][data-variant='tonal']:hover:not(:disabled) {
+.ds-toggle[data-variant='tonal-flat']:hover:not(:disabled) {
   background-color: color-mix(in oklab, var(--toggle-tint) 22%, transparent);
 }
 
-.ds-toggle[aria-pressed='true'][data-variant='tonal']:active:not(:disabled) {
+.ds-toggle[data-variant='tonal-flat']:active:not(:disabled) {
   background-color: color-mix(in oklab, var(--toggle-tint) 30%, transparent);
 }
 
-/* --- pressed: flat (Button flat recipes) -------------------------- */
+/* --- pressed: tonal ('tonal', 'outlined-tonal' — Button tonal recipes) */
 
-.ds-toggle[aria-pressed='true'][data-variant='flat'] {
+.ds-toggle[aria-pressed='true'][data-variant$='tonal'] {
+  background-color: color-mix(in oklab, var(--toggle-tint) 14%, transparent);
+}
+
+.ds-toggle[aria-pressed='true'][data-variant$='tonal']:hover:not(:disabled) {
+  background-color: color-mix(in oklab, var(--toggle-tint) 22%, transparent);
+}
+
+.ds-toggle[aria-pressed='true'][data-variant$='tonal']:active:not(:disabled) {
+  background-color: color-mix(in oklab, var(--toggle-tint) 30%, transparent);
+}
+
+/* --- pressed: flat ('flat', 'outlined-flat', 'tonal-flat' — Button
+   flat recipes) ----------------------------------------------------- */
+
+.ds-toggle[aria-pressed='true'][data-variant$='flat'] {
   background-color: var(--toggle-accent);
   border-color: var(--toggle-fill-border);
   color: var(--toggle-on-accent);
 }
 
-.ds-toggle[aria-pressed='true'][data-variant='flat']:hover:not(:disabled) {
+.ds-toggle[aria-pressed='true'][data-variant$='flat']:hover:not(:disabled) {
   background-color: color-mix(in oklab, var(--toggle-accent) 90%, var(--toggle-on-accent));
 }
 
-.ds-toggle[aria-pressed='true'][data-variant='flat']:active:not(:disabled) {
+.ds-toggle[aria-pressed='true'][data-variant$='flat']:active:not(:disabled) {
   background-color: color-mix(in oklab, var(--toggle-accent) 82%, var(--toggle-on-accent));
 }
 
@@ -154,5 +178,11 @@ const iconProps = (icon: string) => (/[./:]/.test(icon) ? { src: icon } : { name
 
 .ds-toggle > .ds-icon {
   --icon-size: var(--toggle-icon-size);
+}
+
+/* fill-icon: Material Symbols swap to their filled shape while pressed
+   (Icon already transitions the FILL variation axis) */
+.ds-toggle[data-fill-icon][aria-pressed='true'] .ds-icon {
+  --icon-fill: 1;
 }
 </style>

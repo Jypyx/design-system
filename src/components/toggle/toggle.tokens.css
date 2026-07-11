@@ -5,9 +5,10 @@
  *
  * Sizes mirror Button so toggles and buttons align in toolbars.
  *
- *   --toggle-tint        rest / hover color + tonal pressed fill
+ *   --toggle-tint        rest / hover color + tonal fill
  *   --toggle-accent      fill of the flat pressed state
  *   --toggle-on-accent   content color on top of the flat fill
+ *   --toggle-outline     border of the outlined-* variants at rest
  *   --toggle-fill-border hairline border on the flat pressed state
  *   --toggle-icon-size   size of Material Symbols icons
  * ============================================================ */
@@ -26,6 +27,7 @@
   --toggle-tint: var(--text);
   --toggle-accent: var(--text);
   --toggle-on-accent: var(--text-inverse);
+  --toggle-outline: var(--border-strong);
   --toggle-fill-border: transparent;
 }
 
@@ -58,6 +60,10 @@
 }
 
 /* --- colors --------------------------------------------------- */
+
+.ds-toggle:not([data-color='neutral']) {
+  --toggle-outline: var(--toggle-tint);
+}
 
 .ds-toggle[data-color='primary'] {
   --toggle-accent: var(--color-primary);
@@ -93,5 +99,6 @@
   --toggle-tint: var(--text-disabled);
   --toggle-accent: var(--surface-disabled);
   --toggle-on-accent: var(--text-disabled);
+  --toggle-outline: var(--border);
   --toggle-fill-border: transparent;
 }
