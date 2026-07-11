@@ -15,6 +15,9 @@ export type {
   AvatarSize,
 } from './avatar/Avatar.types'
 
+export { default as Badge } from './badge/Badge.vue'
+export type { BadgeColor, BadgeProps, BadgeSize, BadgeVariant } from './badge/Badge.types'
+
 export { default as Breadcrumb } from './breadcrumb/Breadcrumb.vue'
 export type { BreadcrumbItem, BreadcrumbProps } from './breadcrumb/Breadcrumb.types'
 

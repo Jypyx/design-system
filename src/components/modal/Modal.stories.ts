@@ -119,8 +119,8 @@ export const HeaderActions: Story = {
       <Modal v-model:open="open" title="Report — Q3" subtitle="Generated a few seconds ago">
         <p style="margin: 0;">Revenue is up 12% quarter over quarter.</p>
         <template #header-actions>
-          <ButtonIcon icon="download" variant="text" label="Download" />
-          <ButtonIcon icon="open_in_full" variant="text" label="Expand" />
+          <ButtonIcon icon="download" variant="tonal" color="primary" label="Download" />
+          <ButtonIcon icon="open_in_full" variant="tonal" color="primary" label="Expand" />
         </template>
         <template #footer>
           <Button color="primary" @click="open = false">Done</Button>

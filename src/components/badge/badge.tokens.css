@@ -1,0 +1,99 @@
+/* ============================================================
+ * LAYER 3 — Component tokens: Badge
+ * Consumes Layer 2 semantic tokens only; light + dark come for
+ * free because the semantic layer resolves via light-dark().
+ *
+ *   --badge-size           height (and min-width, so one digit stays round)
+ *   --badge-padding-inline horizontal padding around the content
+ *   --badge-font-size      content font size
+ *   --badge-accent         fill color of the filled variant
+ *   --badge-on-accent      content color on top of the fill
+ *   --badge-tint           color of the tonal / outlined variants
+ *   --badge-outline        border color of the outlined variant
+ *   --badge-fill-border    hairline border on the filled variant
+ *                          (only visible on the neutral badge)
+ * ============================================================ */
+
+.ds-badge {
+  /* size — default 'sm' (26px) */
+  --badge-size: 26px;
+  --badge-padding-inline: var(--spacing-2);
+  --badge-font-size: var(--text-xs);
+
+  /* color — default 'primary' */
+  --badge-accent: var(--color-primary);
+  --badge-on-accent: var(--color-on-primary);
+  --badge-tint: var(--color-primary);
+  --badge-outline: var(--badge-tint);
+  --badge-fill-border: transparent;
+}
+
+/* --- sizes ---------------------------------------------------- */
+
+.ds-badge[data-size='dot'] {
+  --badge-size: 10px;
+  --badge-padding-inline: 0;
+}
+
+.ds-badge[data-size='xs'] {
+  --badge-size: 20px;
+  --badge-padding-inline: var(--spacing-1\.5);
+  --badge-font-size: var(--text-2xs);
+}
+
+.ds-badge[data-size='md'] {
+  --badge-size: 32px;
+  --badge-padding-inline: var(--spacing-2\.5);
+  --badge-font-size: var(--text-sm);
+}
+
+.ds-badge[data-size='lg'] {
+  --badge-size: 38px;
+  --badge-padding-inline: var(--spacing-3);
+  --badge-font-size: var(--text-base);
+}
+
+.ds-badge[data-size='xl'] {
+  --badge-size: 42px;
+  --badge-padding-inline: var(--spacing-3\.5);
+  --badge-font-size: var(--text-lg);
+}
+
+/* --- colors --------------------------------------------------- */
+
+.ds-badge[data-color='neutral'] {
+  --badge-accent: var(--surface-raised);
+  --badge-on-accent: var(--text);
+  --badge-tint: var(--text);
+  --badge-outline: var(--border-strong);
+  --badge-fill-border: var(--border);
+}
+
+.ds-badge[data-color='success'] {
+  --badge-accent: var(--color-success);
+  --badge-on-accent: var(--color-on-success);
+  --badge-tint: var(--color-success);
+}
+
+.ds-badge[data-color='danger'] {
+  --badge-accent: var(--color-danger);
+  --badge-on-accent: var(--color-on-danger);
+  --badge-tint: var(--color-danger);
+}
+
+.ds-badge[data-color='warning'] {
+  --badge-accent: var(--color-warning);
+  --badge-on-accent: var(--color-on-warning);
+  /* amber is too light to be readable as text — pull it toward the
+     text color so tonal / outlined variants keep contrast */
+  --badge-tint: color-mix(in oklab, var(--color-warning) 70%, var(--text));
+}
+
+.ds-badge[data-color='custom'] {
+  /* --badge-accent holds the arbitrary user color (inline style set by
+     the component); derive a black-or-white content for the filled
+     variant from its lightness (l < 0.62 → white, else black) and a
+     theme-aware tint for tonal / outlined */
+  --badge-on-accent: oklch(from var(--badge-accent) clamp(0, (0.62 - l) * infinity, 1) 0 h);
+  --badge-tint: color-mix(in oklab, var(--badge-accent) 70%, var(--text));
+}
