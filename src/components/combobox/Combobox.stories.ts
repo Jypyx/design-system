@@ -109,6 +109,32 @@ export const Sizes: Story = {
 }
 
 /**
+ * Every size in multiple mode: the chips wrap onto new lines when they
+ * reach the edge of the field, and the field grows with them.
+ */
+export const MultipleSizes: Story = {
+  parameters: { controls: { disable: true } },
+  render: () => ({
+    components: { Combobox },
+    setup: () => ({
+      countries,
+      xs: ref(['fr', 'de', 'es', 'it', 'jp']),
+      sm: ref(['fr', 'de', 'es', 'it', 'jp']),
+      md: ref(['fr', 'de', 'es', 'it']),
+      lg: ref(['fr', 'de', 'es', 'it']),
+    }),
+    template: `
+      <div style="display: flex; flex-direction: column; gap: var(--spacing-5); max-width: 320px;">
+        <Combobox v-model="xs" size="xs" multiple clearable label="Extra small" :options="countries" />
+        <Combobox v-model="sm" size="sm" multiple clearable label="Small (default)" :options="countries" />
+        <Combobox v-model="md" size="md" multiple clearable label="Medium" :options="countries" />
+        <Combobox v-model="lg" size="lg" multiple clearable label="Large" :options="countries" />
+      </div>
+    `,
+  }),
+}
+
+/**
  * `multiple` turns the v-model into an array and renders the selection as
  * closable Chips. The list stays open between picks, the query is kept so
  * several matches can be selected under one filter, and Backspace on an

@@ -349,51 +349,55 @@ defineExpose({
       @mousedown="onFieldMousedown"
       @click="onFieldClick"
     >
-      <!-- @click.stop: removing a chip must not toggle the list -->
-      <div v-if="multiple && selectedOptions.length" class="ds-combobox-chips" @click.stop>
-        <template v-if="chips">
-          <Chip
-            v-for="option in visibleSelected"
-            :key="option.value"
-            :label="option.label"
-            :size="chipSize"
-            :disabled="disabled"
-            closable
-            :close-label="`Remove ${option.label}`"
-            @close="deselect(option.value)"
-          />
-        </template>
-        <span v-else class="ds-combobox-selection-text">
-          {{ visibleSelected.map((option) => option.label).join(', ') }}
-        </span>
-        <span v-if="hiddenCount" class="ds-combobox-overflow" :title="hiddenLabels">
-          +{{ hiddenCount }}
-        </span>
-      </div>
+      <!-- chips and input share the same wrapping flex lines: the chips
+           wrapper is display: contents and only exists so that removing a
+           chip (@click.stop) does not toggle the list -->
+      <div class="ds-combobox-content">
+        <div v-if="multiple && selectedOptions.length" class="ds-combobox-chips" @click.stop>
+          <template v-if="chips">
+            <Chip
+              v-for="option in visibleSelected"
+              :key="option.value"
+              :label="option.label"
+              :size="chipSize"
+              :disabled="disabled"
+              closable
+              :close-label="`Remove ${option.label}`"
+              @close="deselect(option.value)"
+            />
+          </template>
+          <span v-else class="ds-combobox-selection-text">
+            {{ visibleSelected.map((option) => option.label).join(', ') }}
+          </span>
+          <span v-if="hiddenCount" class="ds-combobox-overflow" :title="hiddenLabels">
+            +{{ hiddenCount }}
+          </span>
+        </div>
 
-      <input
-        :id="inputId"
-        ref="input"
-        class="ds-combobox-control"
-        type="text"
-        role="combobox"
-        autocomplete="off"
-        :value="displayValue"
-        :placeholder="selected.length ? undefined : placeholder"
-        :disabled="disabled"
-        :aria-label="ariaLabel"
-        :aria-expanded="isOpen ? 'true' : 'false'"
-        :aria-controls="listboxId"
-        aria-autocomplete="list"
-        :aria-activedescendant="isOpen ? activeId : undefined"
-        :aria-invalid="invalid ? 'true' : undefined"
-        :aria-required="required ? 'true' : undefined"
-        :aria-busy="isLoading ? 'true' : undefined"
-        :aria-describedby="hint ? hintId : undefined"
-        @input="onInput"
-        @keydown="onKeydown"
-        @blur="closeList"
-      />
+        <input
+          :id="inputId"
+          ref="input"
+          class="ds-combobox-control"
+          type="text"
+          role="combobox"
+          autocomplete="off"
+          :value="displayValue"
+          :placeholder="selected.length ? undefined : placeholder"
+          :disabled="disabled"
+          :aria-label="ariaLabel"
+          :aria-expanded="isOpen ? 'true' : 'false'"
+          :aria-controls="listboxId"
+          aria-autocomplete="list"
+          :aria-activedescendant="isOpen ? activeId : undefined"
+          :aria-invalid="invalid ? 'true' : undefined"
+          :aria-required="required ? 'true' : undefined"
+          :aria-busy="isLoading ? 'true' : undefined"
+          :aria-describedby="hint ? hintId : undefined"
+          @input="onInput"
+          @keydown="onKeydown"
+          @blur="closeList"
+        />
+      </div>
 
       <button
         v-if="showClear"
@@ -548,7 +552,9 @@ defineExpose({
   display: flex;
   align-items: center;
   gap: var(--combobox-gap);
-  height: var(--combobox-height);
+  /* min-height, not height: in multiple mode the field grows when the
+     chips wrap onto extra lines */
+  min-height: var(--combobox-height);
   padding-inline: var(--combobox-padding-inline);
   min-width: 0;
   background-color: var(--combobox-surface);
@@ -566,10 +572,14 @@ defineExpose({
   border-color: color-mix(in oklab, var(--combobox-border-color) 50%, var(--text));
 }
 
+.ds-combobox[data-multiple] .ds-combobox-field {
+  padding-block: var(--spacing-1);
+}
+
 /* text inputs always match :focus-visible, so keyboard and mouse focus
    both show the focus style. The box-shadow visually thickens the 1px
    border to 2px without any layout shift */
-.ds-combobox:not([data-disabled]) .ds-combobox-field:has(> .ds-combobox-control:focus-visible) {
+.ds-combobox:not([data-disabled]) .ds-combobox-field:has(.ds-combobox-control:focus-visible) {
   border-color: var(--combobox-accent);
   box-shadow: 0 0 0 1px var(--combobox-accent);
 }
@@ -580,11 +590,21 @@ defineExpose({
 
 /* --- native input --------------------------------------------------- */
 
+/* chips + input flow together and wrap onto new lines when the chips
+   reach the edge of the field */
+.ds-combobox-content {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--combobox-chips-gap);
+  flex: 1;
+  min-width: 0;
+}
+
 .ds-combobox-control {
   box-sizing: border-box;
   flex: 1;
   min-width: 60px;
-  height: 100%;
   margin: 0;
   padding: 0;
   border: none;
@@ -606,18 +626,15 @@ defineExpose({
 
 /* --- chips / text selection inside the field ------------------------- */
 
+/* the wrapper only exists for event delegation (@click.stop); its children
+   participate directly in the .ds-combobox-content wrapping flex lines */
 .ds-combobox-chips {
-  display: flex;
-  align-items: center;
-  gap: var(--combobox-chips-gap);
-  flex: none;
-  max-width: 60%;
-  min-width: 0;
-  overflow: hidden;
+  display: contents;
 }
 
 .ds-combobox-selection-text {
   min-width: 0;
+  max-width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -770,6 +787,11 @@ defineExpose({
    declared after :hover so it wins when both apply */
 .ds-combobox-option[data-active]:not([aria-disabled='true']) {
   background-color: color-mix(in oklab, var(--text) 14%, transparent);
+}
+
+/* selected options read in the accent color, matching their check icon */
+.ds-combobox-option[aria-selected='true'] {
+  color: var(--combobox-accent);
 }
 
 .ds-combobox-option[aria-disabled='true'] {
