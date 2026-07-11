@@ -105,6 +105,20 @@ export type {
 export { default as Switch } from './switch/Switch.vue'
 export type { SwitchLabelPosition, SwitchProps } from './switch/Switch.types'
 
+export { default as Tabs } from './tabs/Tabs.vue'
+export { default as Tab } from './tabs/Tab.vue'
+export { default as TabPanel } from './tabs/TabPanel.vue'
+export type {
+  TabPanelProps,
+  TabProps,
+  TabsModelValue,
+  TabsOrientation,
+  TabsPlacement,
+  TabsProps,
+  TabsValue,
+  TabsVariant,
+} from './tabs/Tabs.types'
+
 export { default as Textarea } from './textarea/Textarea.vue'
 export type { TextareaProps, TextareaSize } from './textarea/Textarea.types'
 

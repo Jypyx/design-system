@@ -1,0 +1,111 @@
+/* ============================================================
+ * LAYER 3 — Component tokens: Tabs
+ * Consumes Layer 2 semantic tokens only; light + dark come for
+ * free because the semantic layer resolves via light-dark().
+ *
+ * Sizes are aligned on Button (28 / 36 / 44 / 52px).
+ *
+ *   --tabs-text            content color of unselected tabs
+ *   --tabs-tint            accent: selected line tab + its underline,
+ *                          hover washes
+ *   --tabs-accent          pill fill of the selected inset tab
+ *   --tabs-on-accent       content color on top of the pill fill
+ *   --tabs-border          hairline of the line variant's bar
+ *   --tabs-indicator-size  thickness of the line variant's underline
+ *   --tabs-track-*         grey track of the inset variant
+ *   --tabs-icon-size       size of Material Symbols icons
+ * ============================================================ */
+
+.ds-tabs {
+  /* size — default 'sm' (36px) */
+  --tabs-height: 36px;
+  --tabs-padding-inline: var(--spacing-4);
+  --tabs-font-size: var(--text-sm);
+  --tabs-gap: var(--spacing-2);
+  --tabs-radius: var(--radius-md);
+  --tabs-icon-size: 20px;
+
+  /* line variant */
+  --tabs-border: var(--border);
+  --tabs-indicator-size: 2px;
+
+  /* inset variant — track greys derive from the text color so they
+     hold up on any surface, in both themes */
+  --tabs-track-bg: color-mix(in oklab, var(--text) 8%, transparent);
+  --tabs-track-padding: var(--spacing-1);
+  --tabs-track-gap: var(--spacing-1);
+  --tabs-track-radius: calc(var(--tabs-radius) + var(--tabs-track-padding));
+
+  /* color — default 'neutral': raised pill, text-colored underline */
+  --tabs-text: var(--text-muted);
+  --tabs-tint: var(--text);
+  --tabs-accent: var(--surface-raised);
+  --tabs-on-accent: var(--text);
+}
+
+/* --- sizes ---------------------------------------------------- */
+
+.ds-tabs[data-size='xs'] {
+  --tabs-height: 28px;
+  --tabs-padding-inline: var(--spacing-3);
+  --tabs-font-size: var(--text-xs);
+  --tabs-gap: var(--spacing-1\.5);
+  --tabs-radius: var(--radius-sm);
+  --tabs-icon-size: 16px;
+}
+
+.ds-tabs[data-size='md'] {
+  --tabs-height: 44px;
+  --tabs-padding-inline: var(--spacing-5);
+  --tabs-font-size: var(--text-base);
+  --tabs-gap: var(--spacing-2\.5);
+  --tabs-radius: var(--radius-lg);
+}
+
+.ds-tabs[data-size='lg'] {
+  --tabs-height: 52px;
+  --tabs-padding-inline: var(--spacing-6);
+  --tabs-font-size: var(--text-lg);
+  --tabs-gap: var(--spacing-3);
+  --tabs-radius: var(--radius-lg);
+  --tabs-icon-size: 24px;
+}
+
+/* --- colors --------------------------------------------------- */
+
+.ds-tabs[data-color='primary'] {
+  --tabs-tint: var(--color-primary);
+  --tabs-accent: var(--color-primary);
+  --tabs-on-accent: var(--color-on-primary);
+}
+
+.ds-tabs[data-color='success'] {
+  --tabs-tint: var(--color-success);
+  --tabs-accent: var(--color-success);
+  --tabs-on-accent: var(--color-on-success);
+}
+
+.ds-tabs[data-color='danger'] {
+  --tabs-tint: var(--color-danger);
+  --tabs-accent: var(--color-danger);
+  --tabs-on-accent: var(--color-on-danger);
+}
+
+.ds-tabs[data-color='warning'] {
+  --tabs-accent: var(--color-warning);
+  --tabs-on-accent: var(--color-on-warning);
+  /* amber is too light to be readable as text — pull it toward the
+     text color so the line variant and hover washes keep contrast */
+  --tabs-tint: color-mix(in oklab, var(--color-warning) 70%, var(--text));
+}
+
+/* --- disabled -------------------------------------------------- */
+/* per-tab: grey out whatever the color prop says (set on the tab
+   element itself, so it wins over the group's inherited tokens) */
+
+.ds-tab:disabled {
+  --tabs-text: var(--text-disabled);
+  --tabs-tint: var(--text-disabled);
+  --tabs-accent: var(--surface-disabled);
+  --tabs-on-accent: var(--text-disabled);
+}
