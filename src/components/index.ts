@@ -56,11 +56,18 @@ export type {
   ComboboxValue,
 } from './combobox/Combobox.types'
 
+export { default as Dialog } from './dialog/Dialog.vue'
+export { default as DialogAlert } from './dialog/DialogAlert.vue'
+export type { DialogAlertProps, DialogProps, DialogRole } from './dialog/Dialog.types'
+
 export { default as Icon } from './icon/Icon.vue'
 export type { IconProps } from './icon/Icon.types'
 
 export { default as Input } from './input/Input.vue'
 export type { InputProps, InputSize, InputType } from './input/Input.types'
+
+export { default as InputOTP } from './input-otp/InputOTP.vue'
+export type { InputOTPFormat, InputOTPProps } from './input-otp/InputOTP.types'
 
 export { default as Menu } from './menu/Menu.vue'
 export { default as MenuItem } from './menu/MenuItem.vue'
@@ -73,13 +80,6 @@ export type {
   MenuPlacement,
   MenuProps,
 } from './menu/Menu.types'
-
-export { default as Modal } from './modal/Modal.vue'
-export { default as ModalAlert } from './modal/ModalAlert.vue'
-export type { ModalAlertProps, ModalProps, ModalRole } from './modal/Modal.types'
-
-export { default as OTPInput } from './otp-input/OTPInput.vue'
-export type { OTPInputFormat, OTPInputProps } from './otp-input/OTPInput.types'
 
 export { default as ProgressCircular } from './progress-circular/ProgressCircular.vue'
 export type {

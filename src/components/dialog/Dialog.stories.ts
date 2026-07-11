@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import { userEvent, within } from 'storybook/test'
 import { ref } from 'vue'
-import Modal from './Modal.vue'
+import Dialog from './Dialog.vue'
 import Button from '../button/Button.vue'
 import ButtonIcon from '../button-icon/ButtonIcon.vue'
 import Input from '../input/Input.vue'
@@ -9,17 +9,17 @@ import Textarea from '../textarea/Textarea.vue'
 import Menu from '../menu/Menu.vue'
 import MenuItem from '../menu/MenuItem.vue'
 
-/* opens the modal in the automated (webdriver-driven) vitest run only,
+/* opens the dialog in the automated (webdriver-driven) vitest run only,
    so the a11y scan covers the open dialog; in the Storybook UI stories
    start closed and the trigger opens them */
-const openModal = async ({ canvasElement }: { canvasElement: HTMLElement }) => {
+const openDialog = async ({ canvasElement }: { canvasElement: HTMLElement }) => {
   if (!navigator.webdriver) return
-  await userEvent.click(within(canvasElement).getByRole('button', { name: 'Open modal' }))
+  await userEvent.click(within(canvasElement).getByRole('button', { name: 'Open dialog' }))
 }
 
 const meta = {
-  title: 'Components/Modal',
-  component: Modal,
+  title: 'Components/Dialog',
+  component: Dialog,
   tags: ['autodocs'],
   argTypes: {
     title: { control: 'text' },
@@ -45,11 +45,11 @@ const meta = {
     closeLabel: 'Close',
   },
   render: (args) => ({
-    components: { Modal, Button },
+    components: { Dialog, Button },
     setup: () => ({ args, open: ref(false) }),
     template: `
-      <Button @click="open = true">Open modal</Button>
-      <Modal v-bind="args" v-model:open="open">
+      <Button @click="open = true">Open dialog</Button>
+      <Dialog v-bind="args" v-model:open="open">
         <p style="margin: 0;">
           Your profile is shown on shared documents and in the members list.
           Update your display name and role, then save your changes.
@@ -58,11 +58,11 @@ const meta = {
           <Button variant="text" @click="open = false">Cancel</Button>
           <Button color="primary" @click="open = false">Save changes</Button>
         </template>
-      </Modal>
+      </Dialog>
     `,
   }),
-  play: openModal,
-} satisfies Meta<typeof Modal>
+  play: openDialog,
+} satisfies Meta<typeof Dialog>
 
 export default meta
 type Story = StoryObj<typeof meta>
@@ -70,7 +70,7 @@ type Story = StoryObj<typeof meta>
 export const Default: Story = {}
 
 /**
- * When the content is taller than the modal, the body scrolls and 1px
+ * When the content is taller than the dialog, the body scrolls and 1px
  * borders mark the scrollport edges — pure CSS (scroll- vs local-attached
  * background layers). Each border only shows while there is more content
  * on its side: none at the top before scrolling, none at the bottom once
@@ -79,11 +79,11 @@ export const Default: Story = {}
 export const ScrollableContent: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    components: { Modal, Button },
+    components: { Dialog, Button },
     setup: () => ({ open: ref(false) }),
     template: `
-      <Button @click="open = true">Open modal</Button>
-      <Modal v-model:open="open" title="Terms of service" subtitle="Last updated July 2026">
+      <Button @click="open = true">Open dialog</Button>
+      <Dialog v-model:open="open" title="Terms of service" subtitle="Last updated July 2026">
         <p v-for="i in 14" :key="i" style="margin: 0 0 var(--spacing-4);">
           {{ i }}. These terms govern the use of the service. By accessing or
           using the service you agree to be bound by them, including any
@@ -93,12 +93,12 @@ export const ScrollableContent: Story = {
           <Button variant="text" @click="open = false">Decline</Button>
           <Button color="primary" @click="open = false">Accept</Button>
         </template>
-      </Modal>
+      </Dialog>
     `,
   }),
 }
 
-/** The `width` prop takes any CSS width; the modal still shrinks to fit small viewports. */
+/** The `width` prop takes any CSS width; the dialog still shrinks to fit small viewports. */
 export const CustomWidth: Story = {
   parameters: { controls: { disable: true } },
   args: {
@@ -112,11 +112,11 @@ export const CustomWidth: Story = {
 export const HeaderActions: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    components: { Modal, Button, ButtonIcon },
+    components: { Dialog, Button, ButtonIcon },
     setup: () => ({ open: ref(false) }),
     template: `
-      <Button @click="open = true">Open modal</Button>
-      <Modal v-model:open="open" title="Report — Q3" subtitle="Generated a few seconds ago">
+      <Button @click="open = true">Open dialog</Button>
+      <Dialog v-model:open="open" title="Report — Q3" subtitle="Generated a few seconds ago">
         <p style="margin: 0;">Revenue is up 12% quarter over quarter.</p>
         <template #header-actions>
           <ButtonIcon icon="download" variant="tonal" color="primary" label="Download" />
@@ -125,7 +125,7 @@ export const HeaderActions: Story = {
         <template #footer>
           <Button color="primary" @click="open = false">Done</Button>
         </template>
-      </Modal>
+      </Dialog>
     `,
   }),
 }
@@ -138,11 +138,11 @@ export const HeaderActions: Story = {
 export const CustomHeader: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    components: { Modal, Button },
+    components: { Dialog, Button },
     setup: () => ({ open: ref(false) }),
     template: `
-      <Button @click="open = true">Open modal</Button>
-      <Modal v-model:open="open" aria-label="Search files">
+      <Button @click="open = true">Open dialog</Button>
+      <Dialog v-model:open="open" aria-label="Search files">
         <template #header>
           <input
             type="search"
@@ -152,7 +152,7 @@ export const CustomHeader: Story = {
           />
         </template>
         <p style="margin: 0; color: var(--text-muted);">Start typing to see results.</p>
-      </Modal>
+      </Dialog>
     `,
   }),
 }
@@ -166,21 +166,21 @@ export const NotDismissible: Story = {
   args: {
     dismissible: false,
     title: 'Import in progress',
-    subtitle: 'Clicking outside will not close this modal',
+    subtitle: 'Clicking outside will not close this dialog',
   },
 }
 
 /**
- * A form inside the modal, including a Menu used as a select — two
+ * A form inside the dialog, including a Menu used as a select — two
  * top-layer overlays stacked. Things to try: the menu panel opens above
- * the modal (popovers stack over the dialog in the top layer), Tab
+ * the dialog (popovers stack over the dialog in the top layer), Tab
  * cycles through the fields without escaping the dialog, and Escape
- * unwinds one layer at a time — open menu first, then the modal.
+ * unwinds one layer at a time — open menu first, then the dialog.
  */
 export const FormWithMenu: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    components: { Modal, Button, Input, Textarea, Menu, MenuItem },
+    components: { Dialog, Button, Input, Textarea, Menu, MenuItem },
     setup: () => ({
       open: ref(false),
       name: ref(''),
@@ -188,8 +188,8 @@ export const FormWithMenu: Story = {
       team: ref(''),
     }),
     template: `
-      <Button @click="open = true">Open modal</Button>
-      <Modal v-model:open="open" title="New project" subtitle="Fill in the details, then create">
+      <Button @click="open = true">Open dialog</Button>
+      <Dialog v-model:open="open" title="New project" subtitle="Fill in the details, then create">
         <div style="display: flex; flex-direction: column; gap: var(--spacing-4);">
           <Input v-model="name" label="Project name" placeholder="Q3 roadmap" required />
           <div>
@@ -213,7 +213,7 @@ export const FormWithMenu: Story = {
           <Button variant="text" @click="open = false">Cancel</Button>
           <Button color="primary" @click="open = false">Create project</Button>
         </template>
-      </Modal>
+      </Dialog>
     `,
   }),
 }

@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import './modal.tokens.css'
+import './dialog.tokens.css'
 import { onMounted, useId, useTemplateRef, watch } from 'vue'
 import ButtonIcon from '../button-icon/ButtonIcon.vue'
-import type { ModalProps } from './Modal.types'
+import type { DialogProps } from './Dialog.types'
 
-const props = withDefaults(defineProps<ModalProps>(), {
+const props = withDefaults(defineProps<DialogProps>(), {
   closable: true,
   dismissible: true,
   role: 'dialog',
@@ -15,8 +15,8 @@ const open = defineModel<boolean>('open', { default: false })
 const emit = defineEmits<{ close: [] }>()
 
 const uid = useId()
-const titleId = `ds-modal-title-${uid}`
-const bodyId = `ds-modal-body-${uid}`
+const titleId = `ds-dialog-title-${uid}`
+const bodyId = `ds-dialog-body-${uid}`
 
 const dialog = useTemplateRef<HTMLDialogElement>('dialog')
 
@@ -44,9 +44,9 @@ onMounted(() => {
 defineExpose({
   /** the native dialog element */
   dialog,
-  /** opens the modal (top layer, via showModal) */
+  /** opens the dialog (top layer, via showModal) */
   show,
-  /** closes the modal */
+  /** closes the dialog */
   close,
 })
 </script>
@@ -54,30 +54,30 @@ defineExpose({
 <template>
   <dialog
     ref="dialog"
-    class="ds-modal"
+    class="ds-dialog"
     :role="role === 'alertdialog' ? 'alertdialog' : undefined"
     :closedby="dismissible ? 'any' : 'closerequest'"
     :aria-labelledby="!$slots.header && title ? titleId : undefined"
     :aria-describedby="role === 'alertdialog' ? bodyId : undefined"
-    :style="width ? { '--modal-width': width } : undefined"
+    :style="width ? { '--dialog-width': width } : undefined"
     @close="onClose"
   >
     <header
       v-if="title || subtitle || $slots.header || $slots['header-actions'] || closable"
-      class="ds-modal-header"
+      class="ds-dialog-header"
     >
-      <div class="ds-modal-heading">
+      <div class="ds-dialog-heading">
         <slot name="header">
-          <h2 v-if="title" :id="titleId" class="ds-modal-title">{{ title }}</h2>
-          <p v-if="subtitle" class="ds-modal-subtitle">{{ subtitle }}</p>
+          <h2 v-if="title" :id="titleId" class="ds-dialog-title">{{ title }}</h2>
+          <p v-if="subtitle" class="ds-dialog-subtitle">{{ subtitle }}</p>
         </slot>
       </div>
-      <div v-if="$slots['header-actions']" class="ds-modal-header__actions">
+      <div v-if="$slots['header-actions']" class="ds-dialog-header__actions">
           <slot name="header-actions" />
       </div>
       <ButtonIcon
         v-if="closable"
-        class="ds-modal-close"
+        class="ds-dialog-close"
         icon="close"
         variant="text"
         :label="closeLabel"
@@ -85,20 +85,20 @@ defineExpose({
       />
     </header>
 
-    <div :id="bodyId" class="ds-modal-body">
-      <div class="ds-modal-content">
+    <div :id="bodyId" class="ds-dialog-body">
+      <div class="ds-dialog-content">
         <slot />
       </div>
     </div>
 
-    <footer v-if="$slots.footer" class="ds-modal-footer">
+    <footer v-if="$slots.footer" class="ds-dialog-footer">
       <slot name="footer" />
     </footer>
   </dialog>
 </template>
 
 <style>
-.ds-modal {
+.ds-dialog {
   /* self-contained: never rely on a host-app reset */
   box-sizing: border-box;
   /* restate the UA top-layer centering so a host reset can't break it */
@@ -109,12 +109,12 @@ defineExpose({
   border: none;
   /* responsive with zero media queries: the preferred width/height,
      capped to the viewport minus a gutter on every side */
-  width: min(var(--modal-width), calc(100vw - 2 * var(--modal-gutter)));
-  max-height: min(var(--modal-max-height), calc(100dvh - 2 * var(--modal-gutter)));
-  border-radius: var(--modal-radius);
-  background-color: var(--modal-bg);
+  width: min(var(--dialog-width), calc(100vw - 2 * var(--dialog-gutter)));
+  max-height: min(var(--dialog-max-height), calc(100dvh - 2 * var(--dialog-gutter)));
+  border-radius: var(--dialog-radius);
+  background-color: var(--dialog-bg);
   color: var(--text);
-  box-shadow: var(--modal-shadow);
+  box-shadow: var(--dialog-shadow);
   font-family: var(--font-sans);
   /* display must stay on [open] only: putting it on this base selector
      would defeat the UA's dialog:not([open]) { display: none } (a closed
@@ -122,52 +122,52 @@ defineExpose({
   flex-direction: column;
 }
 
-.ds-modal[open] {
+.ds-dialog[open] {
   display: flex;
 }
 
 /* showModal() makes the rest of the page inert but does not stop it
-   from scrolling; lock the host scroll only while a ds-modal is open */
-:root:has(.ds-modal:modal) {
+   from scrolling; lock the host scroll only while a ds-dialog is open */
+:root:has(.ds-dialog:modal) {
   overflow: hidden;
 }
 
 /* --- header ------------------------------------------------------ */
 
-.ds-modal-header {
+.ds-dialog-header {
   flex: none;
   display: flex;
   align-items: flex-start;
-  gap: var(--modal-header-gap);
-  padding: var(--modal-padding-block) var(--modal-padding-inline) var(--spacing-4);
+  gap: var(--dialog-header-gap);
+  padding: var(--dialog-padding-block) var(--dialog-padding-inline) var(--spacing-4);
 }
 
-.ds-modal-header__actions {
+.ds-dialog-header__actions {
   display: flex;
   align-items: center;
-  gap: var(--modal-header-actions-gap);
+  gap: var(--dialog-header-actions-gap);
 }
 
-.ds-modal-heading {
+.ds-dialog-heading {
   flex: 1;
   min-width: 0;
 }
 
-.ds-modal-title {
+.ds-dialog-title {
   margin: 0;
-  font-size: var(--modal-title-font-size);
+  font-size: var(--dialog-title-font-size);
   font-weight: var(--font-weight-semibold);
   line-height: 1.3;
 }
 
-.ds-modal-subtitle {
+.ds-dialog-subtitle {
   margin: 0;
-  font-size: var(--modal-subtitle-font-size);
+  font-size: var(--dialog-subtitle-font-size);
   line-height: 1.5;
   color: var(--text-muted);
 }
 
-.ds-modal-close {
+.ds-dialog-close {
   /* pull the 36px hit area into the padding so the icon lines up with
      the title and the header edge */
   margin: calc(-1 * var(--spacing-1)) calc(-1 * var(--spacing-2)) 0 0;
@@ -175,7 +175,7 @@ defineExpose({
 
 /* --- body (scroller) ---------------------------------------------- */
 
-.ds-modal-body {
+.ds-dialog-body {
   flex: 1 1 auto;
   min-height: 0;
   overflow: auto;
@@ -184,17 +184,17 @@ defineExpose({
 
 /* vertical padding lives on the inner wrapper: the body itself must
    stay padding-free so the edge borders below hug the scrollport */
-.ds-modal-content {
-  padding: var(--spacing-1) var(--modal-padding-inline);
+.ds-dialog-content {
+  padding: var(--spacing-1) var(--dialog-padding-inline);
 }
 
-/* a section-less modal keeps comfortable outer padding */
-.ds-modal-body:first-child .ds-modal-content {
-  padding-block-start: var(--modal-padding-block);
+/* a section-less dialog keeps comfortable outer padding */
+.ds-dialog-body:first-child .ds-dialog-content {
+  padding-block-start: var(--dialog-padding-block);
 }
 
-.ds-modal-body:last-child .ds-modal-content {
-  padding-block-end: var(--modal-padding-block);
+.ds-dialog-body:last-child .ds-dialog-content {
+  padding-block-end: var(--dialog-padding-block);
 }
 
 /* --- scroll edge borders ------------------------------------------ */
@@ -205,12 +205,12 @@ defineExpose({
    when you reach the end — and no overflow means no lines at all.
    Covers are listed first: earlier background layers paint on top. */
 
-.ds-modal-body {
+.ds-dialog-body {
   background-image:
-    linear-gradient(var(--modal-bg), var(--modal-bg)),
-    linear-gradient(var(--modal-bg), var(--modal-bg)),
-    linear-gradient(var(--modal-edge), var(--modal-edge)),
-    linear-gradient(var(--modal-edge), var(--modal-edge));
+    linear-gradient(var(--dialog-bg), var(--dialog-bg)),
+    linear-gradient(var(--dialog-bg), var(--dialog-bg)),
+    linear-gradient(var(--dialog-edge), var(--dialog-edge)),
+    linear-gradient(var(--dialog-edge), var(--dialog-edge));
   background-position:
     left top,
     left bottom,
@@ -228,21 +228,21 @@ defineExpose({
 
 /* --- footer -------------------------------------------------------- */
 
-.ds-modal-footer {
+.ds-dialog-footer {
   flex: none;
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-end;
   align-items: center;
-  gap: var(--modal-footer-gap);
-  padding: var(--spacing-4) var(--modal-padding-inline) var(--modal-padding-block);
+  gap: var(--dialog-footer-gap);
+  padding: var(--spacing-4) var(--dialog-padding-inline) var(--dialog-padding-block);
 }
 
 /* --- enter / exit transition --------------------------------------- */
 /* allow-discrete on display + overlay keeps the dialog in the top layer
    while the exit transition plays after close() removes [open] */
 
-.ds-modal {
+.ds-dialog {
   opacity: 0;
   transform: scale(0.98);
   transition:
@@ -252,19 +252,19 @@ defineExpose({
     display var(--duration-150) allow-discrete;
 }
 
-.ds-modal[open] {
+.ds-dialog[open] {
   opacity: 1;
   transform: none;
 }
 
 @starting-style {
-  .ds-modal[open] {
+  .ds-dialog[open] {
     opacity: 0;
     transform: scale(0.98);
   }
 }
 
-.ds-modal::backdrop {
+.ds-dialog::backdrop {
   /* custom properties inherit onto ::backdrop from the dialog */
   background-color: var(--surface-overlay);
   opacity: 0;
@@ -274,12 +274,12 @@ defineExpose({
     display var(--duration-150) allow-discrete;
 }
 
-.ds-modal[open]::backdrop {
+.ds-dialog[open]::backdrop {
   opacity: 1;
 }
 
 @starting-style {
-  .ds-modal[open]::backdrop {
+  .ds-dialog[open]::backdrop {
     opacity: 0;
   }
 }

@@ -22,8 +22,8 @@ directly through the canvas iframe, bypassing the manager UI:
 http://localhost:6006/iframe.html?id=<story-id>&viewMode=story
 ```
 
-Story ids derive from the CSF title: `Components/Modal` + export
-`ScrollableContent` → `components-modal--scrollable-content`.
+Story ids derive from the CSF title: `Components/Dialog` + export
+`ScrollableContent` → `components-dialog--scrollable-content`.
 
 Gotchas learned:
 

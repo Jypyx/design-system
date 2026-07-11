@@ -1,5 +1,5 @@
 /* ============================================================
- * LAYER 3 — Component tokens: OTPInput
+ * LAYER 3 — Component tokens: InputOTP
  * Consumes Layer 2 semantic tokens only; light + dark come for
  * free because the semantic layer resolves via light-dark().
  *

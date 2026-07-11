@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
-import './otp-input.tokens.css'
+import './input-otp.tokens.css'
 import Icon from '../icon/Icon.vue'
 import Input from '../input/Input.vue'
-import type { OTPInputFormat, OTPInputProps } from './OTPInput.types'
+import type { InputOTPFormat, InputOTPProps } from './InputOTP.types'
 
-const props = withDefaults(defineProps<OTPInputProps>(), {
+const props = withDefaults(defineProps<InputOTPProps>(), {
   length: 6,
   format: 'numeric',
   size: 'sm',
@@ -22,7 +22,7 @@ const emit = defineEmits<{ complete: [code: string] }>()
 /** The code as a compact string of the filled characters, in slot order */
 const model = defineModel<string>({ default: '' })
 
-const FORMAT_RE: Record<OTPInputFormat, RegExp> = {
+const FORMAT_RE: Record<InputOTPFormat, RegExp> = {
   numeric: /[0-9]/,
   alpha: /[a-zA-Z]/,
   alphanumeric: /[0-9a-zA-Z]/,

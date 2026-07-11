@@ -1,12 +1,12 @@
 import type { InputSize } from '../input/Input.types'
 
-export type OTPInputFormat = 'numeric' | 'alpha' | 'alphanumeric'
+export type InputOTPFormat = 'numeric' | 'alpha' | 'alphanumeric'
 
-export interface OTPInputProps {
+export interface InputOTPProps {
   /** Number of characters in the code (ignored when pattern is set) */
   length?: number
   /** Characters the code accepts (default 'numeric') */
-  format?: OTPInputFormat
+  format?: InputOTPFormat
   /** Field size, forwarded to the underlying Input */
   size?: InputSize
   /**

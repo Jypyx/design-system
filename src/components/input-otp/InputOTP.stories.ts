@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import { ref } from 'vue'
-import OTPInput from './OTPInput.vue'
+import InputOTP from './InputOTP.vue'
 
 const meta = {
-  title: 'Components/OTPInput',
-  component: OTPInput,
+  title: 'Components/InputOTP',
+  component: InputOTP,
   tags: ['autodocs'],
   argTypes: {
     modelValue: { control: 'text', description: 'v-model — the code as a string' },
@@ -40,11 +40,11 @@ const meta = {
     invalid: false,
   },
   render: (args) => ({
-    components: { OTPInput },
+    components: { InputOTP },
     setup: () => ({ args }),
-    template: '<OTPInput v-bind="args" />',
+    template: '<InputOTP v-bind="args" />',
   }),
-} satisfies Meta<typeof OTPInput>
+} satisfies Meta<typeof InputOTP>
 
 export default meta
 type Story = StoryObj<typeof meta>
@@ -54,12 +54,12 @@ export const Default: Story = {}
 export const Formats: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    components: { OTPInput },
+    components: { InputOTP },
     template: `
       <div style="display: flex; flex-direction: column; gap: var(--spacing-4); align-items: flex-start;">
-        <OTPInput :length="6" format="numeric" model-value="042786" />
-        <OTPInput :length="6" format="alpha" model-value="wYzKpQ" />
-        <OTPInput :length="6" format="alphanumeric" model-value="a1B2c3" />
+        <InputOTP :length="6" format="numeric" model-value="042786" />
+        <InputOTP :length="6" format="alpha" model-value="wYzKpQ" />
+        <InputOTP :length="6" format="alphanumeric" model-value="a1B2c3" />
       </div>
     `,
   }),
@@ -68,13 +68,13 @@ export const Formats: Story = {
 export const Sizes: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    components: { OTPInput },
+    components: { InputOTP },
     template: `
       <div style="display: flex; flex-direction: column; gap: var(--spacing-4); align-items: flex-start;">
-        <OTPInput size="xs" :length="4" model-value="1234" />
-        <OTPInput size="sm" :length="4" model-value="1234" />
-        <OTPInput size="md" :length="4" model-value="1234" />
-        <OTPInput size="lg" :length="4" model-value="1234" />
+        <InputOTP size="xs" :length="4" model-value="1234" />
+        <InputOTP size="sm" :length="4" model-value="1234" />
+        <InputOTP size="md" :length="4" model-value="1234" />
+        <InputOTP size="lg" :length="4" model-value="1234" />
       </div>
     `,
   }),
@@ -84,11 +84,11 @@ export const Sizes: Story = {
 export const WithSeparator: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    components: { OTPInput },
+    components: { InputOTP },
     template: `
       <div style="display: flex; flex-direction: column; gap: var(--spacing-4); align-items: flex-start;">
-        <OTPInput :length="4" separator="remove" model-value="1234" />
-        <OTPInput :length="3" separator="fiber_manual_record" model-value="589" />
+        <InputOTP :length="4" separator="remove" model-value="1234" />
+        <InputOTP :length="3" separator="fiber_manual_record" model-value="589" />
       </div>
     `,
   }),
@@ -98,11 +98,11 @@ export const WithSeparator: Story = {
 export const Attached: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    components: { OTPInput },
+    components: { InputOTP },
     template: `
       <div style="display: flex; flex-direction: column; gap: var(--spacing-4); align-items: flex-start;">
-        <OTPInput :length="6" attached model-value="042786" />
-        <OTPInput :length="6" attached size="md" />
+        <InputOTP :length="6" attached model-value="042786" />
+        <InputOTP :length="6" attached size="md" />
       </div>
     `,
   }),
@@ -116,12 +116,12 @@ export const Attached: Story = {
 export const Pattern: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    components: { OTPInput },
+    components: { InputOTP },
     template: `
       <div style="display: flex; flex-direction: column; gap: var(--spacing-4); align-items: flex-start;">
-        <OTPInput pattern="GT - ###" format="numeric" model-value="589" />
-        <OTPInput pattern="##.###.###" format="numeric" model-value="55555867" />
-        <OTPInput pattern="### - ###" format="alphanumeric" attached />
+        <InputOTP pattern="GT - ###" format="numeric" model-value="589" />
+        <InputOTP pattern="##.###.###" format="numeric" model-value="55555867" />
+        <InputOTP pattern="### - ###" format="alphanumeric" attached />
       </div>
     `,
   }),
@@ -131,20 +131,20 @@ export const Pattern: Story = {
 export const Loading: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    components: { OTPInput },
-    template: `<OTPInput :length="6" is-loading model-value="042786" />`,
+    components: { InputOTP },
+    template: `<InputOTP :length="6" is-loading model-value="042786" />`,
   }),
 }
 
 export const States: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    components: { OTPInput },
+    components: { InputOTP },
     template: `
       <div style="display: flex; flex-direction: column; gap: var(--spacing-4); align-items: flex-start;">
-        <OTPInput :length="4" model-value="12" />
-        <OTPInput :length="4" model-value="1234" invalid />
-        <OTPInput :length="4" model-value="1234" disabled />
+        <InputOTP :length="4" model-value="12" />
+        <InputOTP :length="4" model-value="1234" invalid />
+        <InputOTP :length="4" model-value="1234" disabled />
       </div>
     `,
   }),
@@ -154,7 +154,7 @@ export const States: Story = {
 export const VModelAndComplete: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    components: { OTPInput },
+    components: { InputOTP },
     setup: () => {
       const code = ref('')
       const completed = ref('')
@@ -162,7 +162,7 @@ export const VModelAndComplete: Story = {
     },
     template: `
       <div style="display: flex; flex-direction: column; gap: var(--spacing-3); align-items: flex-start;">
-        <OTPInput v-model="code" :length="4" @complete="completed = $event" />
+        <InputOTP v-model="code" :length="4" @complete="completed = $event" />
         <p style="margin: 0; font-family: var(--font-sans); font-size: var(--text-sm); color: var(--text-muted);">
           value: “{{ code }}” — complete: “{{ completed }}”
         </p>

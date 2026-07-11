@@ -1,31 +1,31 @@
 <script setup lang="ts">
-import './modal.tokens.css'
+import './dialog.tokens.css'
 import { useTemplateRef } from 'vue'
-import Modal from './Modal.vue'
-import type { ModalAlertProps } from './Modal.types'
+import Dialog from './Dialog.vue'
+import type { DialogAlertProps } from './Dialog.types'
 
-defineProps<ModalAlertProps>()
+defineProps<DialogAlertProps>()
 
 const open = defineModel<boolean>('open', { default: false })
 const emit = defineEmits<{ close: [] }>()
 
-const modal = useTemplateRef<InstanceType<typeof Modal>>('modal')
+const dialog = useTemplateRef<InstanceType<typeof Dialog>>('dialog')
 
 defineExpose({
   /** opens the alert (top layer, via showModal) */
-  show: () => modal.value?.show(),
+  show: () => dialog.value?.show(),
   /** closes the alert */
-  close: () => modal.value?.close(),
+  close: () => dialog.value?.close(),
 })
 </script>
 
 <template>
   <!-- no close X and no backdrop dismiss: the user must pick an action
        from the footer (Escape stays available, native to showModal) -->
-  <Modal
-    ref="modal"
+  <Dialog
+    ref="dialog"
     v-model:open="open"
-    class="ds-modal-alert"
+    class="ds-dialog-alert"
     role="alertdialog"
     :closable="false"
     :dismissible="false"
@@ -41,5 +41,5 @@ defineExpose({
     <template v-if="$slots.footer" #footer>
       <slot name="footer" />
     </template>
-  </Modal>
+  </Dialog>
 </template>

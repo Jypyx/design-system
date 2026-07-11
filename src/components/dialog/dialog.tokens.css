@@ -1,0 +1,44 @@
+/* ============================================================
+ * LAYER 3 — Component tokens: Dialog / DialogAlert
+ * Consumes Layer 2 semantic tokens only; light + dark come for
+ * free because the semantic layer resolves via light-dark().
+ *
+ *   --dialog-width           preferred width; the panel never grows
+ *                            past the viewport minus the gutter
+ *                            (overridable per instance via the width prop)
+ *   --dialog-gutter          minimum space kept between the panel and
+ *                            the viewport edges on small screens
+ *   --dialog-max-height      height cap (also viewport-capped)
+ *   --dialog-bg              panel background
+ *   --dialog-edge            color of the top/bottom content borders,
+ *                            shown only while the body overflows
+ *   --dialog-padding-inline  left/right padding of all three sections
+ *   --dialog-padding-block   top padding of the header / bottom padding
+ *                            of the footer
+ * ============================================================ */
+
+.ds-dialog {
+  --dialog-width: 560px;
+  --dialog-gutter: var(--spacing-4);
+  --dialog-max-height: calc(100dvh - 2 * var(--dialog-gutter));
+  --dialog-bg: var(--surface-raised);
+  --dialog-edge: var(--border);
+  --dialog-radius: var(--radius-xl);
+  --dialog-shadow: var(--shadow-xl);
+  --dialog-padding-inline: var(--spacing-6);
+  --dialog-padding-block: var(--spacing-5);
+  --dialog-header-gap: var(--spacing-3);
+  --dialog-header-actions-gap: var(--spacing-2);
+  --dialog-footer-gap: var(--spacing-2);
+  --dialog-title-font-size: var(--text-lg);
+  --dialog-subtitle-font-size: var(--text-sm);
+}
+
+/* --- alert: same anatomy, tighter ------------------------------- */
+
+.ds-dialog-alert {
+  --dialog-width: 400px;
+  /* --dialog-padding-inline: var(--spacing-5);
+  --dialog-padding-block: var(--spacing-4);
+  --dialog-title-font-size: var(--text-base); */
+}

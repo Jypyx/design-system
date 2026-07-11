@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import { userEvent, within } from 'storybook/test'
 import { ref } from 'vue'
-import ModalAlert from './ModalAlert.vue'
+import DialogAlert from './DialogAlert.vue'
 import Button from '../button/Button.vue'
 
 /* opens the alert in the automated (webdriver-driven) vitest run only,
@@ -13,8 +13,8 @@ const openAlert = async ({ canvasElement }: { canvasElement: HTMLElement }) => {
 }
 
 const meta = {
-  title: 'Components/ModalAlert',
-  component: ModalAlert,
+  title: 'Components/DialogAlert',
+  component: DialogAlert,
   tags: ['autodocs'],
   argTypes: {
     title: { control: 'text' },
@@ -29,11 +29,11 @@ const meta = {
     subtitle: 'This action cannot be undone',
   },
   render: (args) => ({
-    components: { ModalAlert, Button },
+    components: { DialogAlert, Button },
     setup: () => ({ args, open: ref(false) }),
     template: `
       <Button color="danger" variant="tonal" @click="open = true">Open alert</Button>
-      <ModalAlert v-bind="args" v-model:open="open">
+      <DialogAlert v-bind="args" v-model:open="open">
         <p style="margin: 0;">
           The project, its documents and its share links will be permanently
           removed for every member.
@@ -42,11 +42,11 @@ const meta = {
           <Button variant="text" @click="open = false">Cancel</Button>
           <Button color="danger" @click="open = false">Delete project</Button>
         </template>
-      </ModalAlert>
+      </DialogAlert>
     `,
   }),
   play: openAlert,
-} satisfies Meta<typeof ModalAlert>
+} satisfies Meta<typeof DialogAlert>
 
 export default meta
 type Story = StoryObj<typeof meta>
@@ -65,17 +65,17 @@ export const Default: Story = {}
 export const WithAutofocus: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    components: { ModalAlert, Button },
+    components: { DialogAlert, Button },
     setup: () => ({ open: ref(false) }),
     template: `
       <Button color="danger" variant="tonal" @click="open = true">Open alert</Button>
-      <ModalAlert v-model:open="open" title="Discard draft?" subtitle="Your changes will be lost">
+      <DialogAlert v-model:open="open" title="Discard draft?" subtitle="Your changes will be lost">
         <p style="margin: 0;">You edited this reply 2 minutes ago.</p>
         <template #footer>
           <Button variant="text" autofocus @click="open = false">Keep editing</Button>
           <Button color="danger" @click="open = false">Discard</Button>
         </template>
-      </ModalAlert>
+      </DialogAlert>
     `,
   }),
 }

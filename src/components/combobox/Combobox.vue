@@ -305,7 +305,7 @@ function onKeydown(event: KeyboardEvent) {
     }
     case 'Escape':
       if (!isOpen.value) return
-      /* stopPropagation so an ancestor Modal does not close as well */
+      /* stopPropagation so an ancestor Dialog does not close as well */
       event.preventDefault()
       event.stopPropagation()
       closeList()
