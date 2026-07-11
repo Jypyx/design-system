@@ -1,0 +1,19 @@
+/* ============================================================
+ * LAYER 3 — Component tokens: ToggleGroup
+ * Consumes Layer 2 semantic tokens only; light + dark come for
+ * free because the semantic layer resolves via light-dark().
+ *
+ *   --toggle-group-gap     space between toggles (0 when attached)
+ *   --toggle-group-border  border of the toggles in attached mode
+ * ============================================================ */
+
+.ds-toggle-group {
+  --toggle-group-gap: var(--spacing-1);
+  --toggle-group-border: var(--border-strong);
+}
+
+/* attached mode: the flat pressed state keeps the shared border color
+   instead of its own fill border, so the glue line never breaks */
+.ds-toggle-group[data-attached] > .ds-toggle {
+  --toggle-fill-border: var(--toggle-group-border);
+}

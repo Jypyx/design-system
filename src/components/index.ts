@@ -119,5 +119,15 @@ export type {
   ToastSize,
 } from './toast/Toast.types'
 
+export { default as Toggle } from './toggle/Toggle.vue'
+export type { ToggleProps, ToggleVariant } from './toggle/Toggle.types'
+
+export { default as ToggleGroup } from './toggle-group/ToggleGroup.vue'
+export type {
+  ToggleGroupModelValue,
+  ToggleGroupProps,
+  ToggleGroupValue,
+} from './toggle-group/ToggleGroup.types'
+
 export { default as Tooltip } from './tooltip/Tooltip.vue'
 export type { TooltipPlacement, TooltipProps } from './tooltip/Tooltip.types'

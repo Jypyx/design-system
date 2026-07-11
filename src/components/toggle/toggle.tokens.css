@@ -1,0 +1,97 @@
+/* ============================================================
+ * LAYER 3 — Component tokens: Toggle
+ * Consumes Layer 2 semantic tokens only; light + dark come for
+ * free because the semantic layer resolves via light-dark().
+ *
+ * Sizes mirror Button so toggles and buttons align in toolbars.
+ *
+ *   --toggle-tint        rest / hover color + tonal pressed fill
+ *   --toggle-accent      fill of the flat pressed state
+ *   --toggle-on-accent   content color on top of the flat fill
+ *   --toggle-fill-border hairline border on the flat pressed state
+ *   --toggle-icon-size   size of Material Symbols icons
+ * ============================================================ */
+
+.ds-toggle {
+  /* size — default 'sm' (36px) */
+  --toggle-height: 36px;
+  --toggle-padding-inline: var(--spacing-4);
+  --toggle-font-size: var(--text-sm);
+  --toggle-gap: var(--spacing-2);
+  --toggle-radius: var(--radius-md);
+  --toggle-icon-size: 20px;
+
+  /* color — default 'neutral': the flat pressed state inverts (text-colored
+     fill) so it stays unmistakable on any surface, in both themes */
+  --toggle-tint: var(--text);
+  --toggle-accent: var(--text);
+  --toggle-on-accent: var(--text-inverse);
+  --toggle-fill-border: transparent;
+}
+
+/* --- sizes ---------------------------------------------------- */
+
+.ds-toggle[data-size='xs'] {
+  --toggle-height: 28px;
+  --toggle-padding-inline: var(--spacing-3);
+  --toggle-font-size: var(--text-xs);
+  --toggle-gap: var(--spacing-1\.5);
+  --toggle-radius: var(--radius-sm);
+  --toggle-icon-size: 16px;
+}
+
+.ds-toggle[data-size='md'] {
+  --toggle-height: 44px;
+  --toggle-padding-inline: var(--spacing-5);
+  --toggle-font-size: var(--text-base);
+  --toggle-gap: var(--spacing-2\.5);
+  --toggle-radius: var(--radius-lg);
+}
+
+.ds-toggle[data-size='lg'] {
+  --toggle-height: 52px;
+  --toggle-padding-inline: var(--spacing-6);
+  --toggle-font-size: var(--text-lg);
+  --toggle-gap: var(--spacing-3);
+  --toggle-radius: var(--radius-lg);
+  --toggle-icon-size: 24px;
+}
+
+/* --- colors --------------------------------------------------- */
+
+.ds-toggle[data-color='primary'] {
+  --toggle-accent: var(--color-primary);
+  --toggle-on-accent: var(--color-on-primary);
+  --toggle-tint: var(--color-primary);
+}
+
+.ds-toggle[data-color='success'] {
+  --toggle-accent: var(--color-success);
+  --toggle-on-accent: var(--color-on-success);
+  --toggle-tint: var(--color-success);
+}
+
+.ds-toggle[data-color='danger'] {
+  --toggle-accent: var(--color-danger);
+  --toggle-on-accent: var(--color-on-danger);
+  --toggle-tint: var(--color-danger);
+}
+
+.ds-toggle[data-color='warning'] {
+  --toggle-accent: var(--color-warning);
+  --toggle-on-accent: var(--color-on-warning);
+  /* amber is too light to be readable as text — pull it toward the
+     text color so the rest / tonal states keep contrast */
+  --toggle-tint: color-mix(in oklab, var(--color-warning) 70%, var(--text));
+}
+
+/* --- disabled -------------------------------------------------- */
+/* grey out whatever the color prop says; every state derives its
+   own look from these tokens (must stay after the color section) */
+
+.ds-toggle:disabled {
+  --toggle-tint: var(--text-disabled);
+  --toggle-accent: var(--surface-disabled);
+  --toggle-on-accent: var(--text-disabled);
+  --toggle-fill-border: transparent;
+}
