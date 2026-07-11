@@ -20,7 +20,8 @@
   "scripts": {
     "build": "vue-tsc -b && vite build",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "chromatic": "npx chromatic --project-token=chpt_67bd326ed7debba"
   },
   "peerDependencies": {
     "vue": "^3.5.0"
@@ -36,6 +37,7 @@
     "@vitest/browser-playwright": "^4.1.10",
     "@vitest/coverage-v8": "^4.1.10",
     "@vue/tsconfig": "^0.9.1",
+    "chromatic": "^18.0.1",
     "playwright": "^1.61.1",
     "storybook": "^10.4.6",
     "typescript": "~6.0.2",
