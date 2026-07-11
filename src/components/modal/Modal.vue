@@ -137,7 +137,7 @@ defineExpose({
   display: flex;
   align-items: flex-start;
   gap: var(--modal-header-gap);
-  padding: var(--modal-padding-block) var(--modal-padding-inline) var(--spacing-3);
+  padding: var(--modal-padding-block) var(--modal-padding-inline) var(--spacing-5);
 }
 
 .ds-modal-heading {
@@ -153,7 +153,7 @@ defineExpose({
 }
 
 .ds-modal-subtitle {
-  margin: var(--spacing-1) 0 0;
+  margin: 0;
   font-size: var(--modal-subtitle-font-size);
   line-height: 1.5;
   color: var(--text-muted);
@@ -177,7 +177,7 @@ defineExpose({
 /* vertical padding lives on the inner wrapper: the body itself must
    stay padding-free so the edge borders below hug the scrollport */
 .ds-modal-content {
-  padding: var(--spacing-2) var(--modal-padding-inline);
+  padding: var(--spacing-1) var(--modal-padding-inline);
 }
 
 /* a section-less modal keeps comfortable outer padding */
@@ -227,7 +227,7 @@ defineExpose({
   justify-content: flex-end;
   align-items: center;
   gap: var(--modal-footer-gap);
-  padding: var(--spacing-3) var(--modal-padding-inline) var(--modal-padding-block);
+  padding: var(--spacing-5) var(--modal-padding-inline) var(--modal-padding-block);
 }
 
 /* --- enter / exit transition --------------------------------------- */
