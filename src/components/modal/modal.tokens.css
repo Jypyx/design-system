@@ -27,7 +27,8 @@
   --modal-shadow: var(--shadow-xl);
   --modal-padding-inline: var(--spacing-6);
   --modal-padding-block: var(--spacing-5);
-  --modal-header-gap: var(--spacing-2);
+  --modal-header-gap: var(--spacing-3);
+  --modal-header-actions-gap: var(--spacing-2);
   --modal-footer-gap: var(--spacing-2);
   --modal-title-font-size: var(--text-lg);
   --modal-subtitle-font-size: var(--text-sm);

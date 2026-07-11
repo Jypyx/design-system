@@ -72,7 +72,9 @@ defineExpose({
           <p v-if="subtitle" class="ds-modal-subtitle">{{ subtitle }}</p>
         </slot>
       </div>
-      <slot name="header-actions" />
+      <div v-if="$slots['header-actions']" class="ds-modal-header__actions">
+          <slot name="header-actions" />
+      </div>
       <ButtonIcon
         v-if="closable"
         class="ds-modal-close"
@@ -138,6 +140,12 @@ defineExpose({
   align-items: flex-start;
   gap: var(--modal-header-gap);
   padding: var(--modal-padding-block) var(--modal-padding-inline) var(--spacing-4);
+}
+
+.ds-modal-header__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--modal-header-actions-gap);
 }
 
 .ds-modal-heading {
