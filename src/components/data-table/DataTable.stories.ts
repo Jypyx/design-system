@@ -220,6 +220,7 @@ export const ServerMode: Story = {
       const total = ref(0)
       const loading = ref(false)
       const page = ref(1)
+      const pageSize = ref(10)
       const sort = ref<DataTableSort | null>(null)
       const search = ref('')
 
@@ -245,19 +246,20 @@ export const ServerMode: Story = {
             if (direction === 'desc') data.reverse()
           }
           total.value = data.length
-          rows.value = data.slice((page.value - 1) * 10, page.value * 10)
+          rows.value = data.slice((page.value - 1) * pageSize.value, page.value * pageSize.value)
           loading.value = false
         }, 400)
       }
 
-      watch([page, sort, search], load)
+      watch([page, pageSize, sort, search], load)
       load()
 
-      return { columns, rows, total, loading, page, sort, search }
+      return { columns, rows, total, loading, page, pageSize, sort, search }
     },
     template: `
       <DataTable
         v-model:page="page"
+        v-model:page-size="pageSize"
         v-model:sort="sort"
         v-model:search="search"
         :columns="columns"
