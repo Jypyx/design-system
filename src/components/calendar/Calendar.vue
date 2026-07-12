@@ -124,7 +124,12 @@ const pickerActive = ref(0)
 
 const today = startOfDay(new Date())
 
-const monthTitle = computed(() => monthFormat.value.format(visibleMonth.value))
+/* 4 characters max so the header never resizes with the month; the
+   aria-live region below keeps announcing the full month name */
+const monthTitle = computed(() => {
+  const month = monthFormat.value.format(visibleMonth.value)
+  return month.length <= 4 ? month : `${month.slice(0, 3)}.`
+})
 const yearTitle = computed(() => formatYear(visibleMonth.value.getFullYear()))
 
 /* the years view lists a fixed window (bounded by min / max when set)
@@ -338,7 +343,6 @@ interface DayCell {
   rangeStart: boolean
   rangeEnd: boolean
   inRange: boolean
-  band: 'start' | 'middle' | 'end' | undefined
   preview: boolean
   today: boolean
   tabbable: boolean
@@ -360,15 +364,11 @@ function toCell(date: Date): DayCell {
     ? rangeStart || rangeEnd
     : selectedDate.value !== null && time === selectedDate.value.getTime()
   const band = activeBand.value
-  const bandPosition =
-    band && time >= band.from && time <= band.to
-      ? time === band.from
-        ? ('start' as const)
-        : time === band.to
-          ? ('end' as const)
-          : ('middle' as const)
-      : undefined
-  const inRange = bandPosition === 'middle' && band !== null && !band.preview
+  /* the band only spans the days strictly between the range ends (the
+     caps show their circle alone); the pending preview runs from after
+     the start up to the anchor, which has no circle yet */
+  const inRange = band !== null && !band.preview && time > band.from && time < band.to
+  const preview = band !== null && band.preview && time > band.from && time <= band.to
   const isToday = time === today.getTime()
   const events = eventsByDay.value.get(time) ?? []
   return {
@@ -383,8 +383,7 @@ function toCell(date: Date): DayCell {
     rangeStart,
     rangeEnd,
     inRange,
-    band: bandPosition,
-    preview: bandPosition !== undefined && band !== null && band.preview,
+    preview,
     today: isToday,
     tabbable: selectable && time === focusedDate.value.getTime(),
     label: dayLabelFormat.value.format(date),
@@ -667,7 +666,6 @@ defineExpose({
               :data-range-start="cell.rangeStart ? '' : undefined"
               :data-range-end="cell.rangeEnd ? '' : undefined"
               :data-in-range="cell.inRange ? '' : undefined"
-              :data-band="cell.band"
               :data-preview="cell.preview ? '' : undefined"
               @click="selectDate(cell.date)"
               @mouseenter="onDayHover(cell.date)"
@@ -696,7 +694,7 @@ defineExpose({
               :data-disabled="!cell.hidden && cell.disabled ? '' : undefined"
               :data-today="!cell.hidden && cell.today ? '' : undefined"
               :data-selected="!cell.hidden && cell.selected ? '' : undefined"
-              :data-band="cell.hidden ? undefined : cell.band"
+              :data-in-range="!cell.hidden && cell.inRange ? '' : undefined"
               :data-preview="!cell.hidden && cell.preview ? '' : undefined"
             >
               <template v-if="!cell.hidden">
@@ -833,7 +831,10 @@ defineExpose({
 /* --- body: same box for the three views -------------------------------- */
 
 .ds-calendar-body {
-  width: calc(7 * var(--cal-cell-size));
+  /* intrinsic size unchanged, but the grid stretches with the calendar
+     when a consumer gives it a width */
+  width: 100%;
+  min-width: calc(7 * var(--cal-cell-size));
   height: calc(var(--cal-weekday-height) + 6 * var(--cal-cell-size) + 6 * var(--cal-gap));
 }
 
@@ -848,7 +849,7 @@ defineExpose({
 /* no column gap: the range band must run continuously across cells */
 .ds-calendar-row {
   display: grid;
-  grid-template-columns: repeat(7, var(--cal-cell-size));
+  grid-template-columns: repeat(7, minmax(var(--cal-cell-size), 1fr));
 }
 
 .ds-calendar-weekday {
@@ -861,6 +862,8 @@ defineExpose({
   color: var(--cal-weekday-color);
 }
 
+/* the cell stretches with its grid column; the fixed-size content circle
+   stays centered so it never turns into a pill */
 .ds-calendar-day {
   position: relative;
   box-sizing: border-box;
@@ -868,7 +871,8 @@ defineExpose({
   margin: 0;
   padding: 0;
   display: inline-flex;
-  width: var(--cal-cell-size);
+  align-items: center;
+  justify-content: center;
   height: var(--cal-cell-size);
   border: none;
   border-radius: var(--cal-cell-radius);
@@ -889,33 +893,27 @@ button.ds-calendar-day {
 }
 
 /* the range band paints on ::before, under the .ds-calendar-day-content
-   circle that follows it in DOM order — no z-index needed */
-.ds-calendar-day[data-band]::before {
+   circle that follows it in DOM order — no z-index needed; it only spans
+   the days strictly between the range ends (the caps show their circle
+   alone, with no split background) */
+.ds-calendar-day:is([data-in-range], [data-preview])::before {
   content: '';
   position: absolute;
   inset: 0;
   background-color: var(--cal-range-bg);
 }
 
-/* half bands keep the selected circles as the range end caps */
-.ds-calendar-day[data-band='start']::before {
-  inset-inline-start: 50%;
-}
-
-.ds-calendar-day[data-band='end']::before {
-  inset-inline-end: 50%;
-}
-
-.ds-calendar-day[data-band][data-preview]::before {
+.ds-calendar-day[data-preview]::before {
   background-color: var(--cal-preview-bg);
 }
 
 .ds-calendar-day-content {
+  flex: none;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
-  height: 100%;
+  width: var(--cal-cell-size);
+  height: var(--cal-cell-size);
   border-radius: var(--cal-cell-radius);
   transition:
     background-color var(--duration-150) var(--ease-out),
@@ -940,13 +938,22 @@ button.ds-calendar-day[data-selected]:hover .ds-calendar-day-content {
   font-weight: var(--font-weight-medium);
 }
 
+/* an adjacent day is merely faded — being non-selectable because of
+   selectAdjacentDays does not make it disabled */
 .ds-calendar-day[data-adjacent] {
   color: var(--cal-adjacent-color);
 }
 
-.ds-calendar-day[aria-disabled='true'] {
+/* declared after the adjacent rule: a day reads as disabled (grey +
+   struck through) only when it is actually blocked — aria-disabled on
+   selectable buttons, data-disabled on the inert adjacent spans */
+.ds-calendar-day:is([aria-disabled='true'], [data-disabled]) {
   color: var(--cal-disabled-color);
   cursor: not-allowed;
+}
+
+.ds-calendar-day:is([aria-disabled='true'], [data-disabled]) .ds-calendar-day-content {
+  text-decoration: line-through;
 }
 
 /* --- event dots ------------------------------------------------------------- */
@@ -973,54 +980,28 @@ button.ds-calendar-day[data-selected]:hover .ds-calendar-day-content {
   background-color: var(--cal-on-accent);
 }
 
-/* --- months / years pickers ---------------------------------------------------- */
+/* --- months / years pickers (Button grids) ---------------------------------- */
 
 .ds-calendar-picker {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(4, 1fr);
+  align-items: center;
   gap: var(--spacing-1);
   width: 100%;
   height: 100%;
 }
 
-.ds-calendar-option {
-  box-sizing: border-box;
-  appearance: none;
-  margin: 0;
-  padding: 0;
-  border: none;
-  border-radius: var(--cal-cell-radius);
-  background: none;
-  font-family: inherit;
-  font-size: var(--cal-font-size);
-  color: inherit;
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-  transition:
-    background-color var(--duration-150) var(--ease-out),
-    color var(--duration-150) var(--ease-out);
+.ds-calendar-picker .ds-btn {
+  width: 100%;
 }
 
-.ds-calendar-option:hover:not([aria-disabled='true']) {
-  background-color: var(--cal-hover-bg);
-}
-
-.ds-calendar-option:focus-visible {
-  outline: var(--focus-ring);
-  outline-offset: var(--focus-ring-offset);
-}
-
-/* declared after hover so the current month / year always reads selected */
-.ds-calendar-option[aria-pressed='true'] {
-  background-color: var(--cal-accent);
-  color: var(--cal-on-accent);
-  font-weight: var(--font-weight-medium);
-}
-
-.ds-calendar-option[aria-disabled='true'] {
-  color: var(--cal-disabled-color);
-  cursor: not-allowed;
+/* the years list keeps the fixed body height and scrolls instead of paging */
+.ds-calendar-picker[data-scroll] {
+  grid-template-rows: none;
+  grid-auto-rows: min-content;
+  align-content: start;
+  overflow-y: auto;
 }
 
 /* --- footer ---------------------------------------------------------------------- */

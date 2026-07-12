@@ -145,8 +145,9 @@ export const MonthAndYearViews: Story = {
     await expect(canvas.getByRole('button', { name: 'Previous month' })).toBeDisabled()
     await expect(canvas.getByRole('button', { name: 'Next month' })).toBeDisabled()
     await userEvent.click(canvas.getByRole('button', { name: 'Mar' }))
+    /* the toggle label is capped at 4 characters ('March' → 'Mar.') */
     await waitFor(() =>
-      expect(canvas.getByRole('button', { name: 'Choose month' })).toHaveTextContent('March'),
+      expect(canvas.getByRole('button', { name: 'Choose month' })).toHaveTextContent('Mar.'),
     )
     await expect(canvas.getByRole('grid')).toBeInTheDocument()
     await userEvent.click(canvas.getByRole('button', { name: 'Choose year' }))
