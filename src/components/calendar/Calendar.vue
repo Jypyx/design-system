@@ -555,7 +555,6 @@ defineExpose({
           size="xs"
           variant="text"
           color="neutral"
-          shape="round"
           icon="chevron_left"
           class="ds-calendar-chevron"
           :label="prevMonthLabel"
@@ -578,7 +577,6 @@ defineExpose({
           size="xs"
           variant="text"
           color="neutral"
-          shape="round"
           icon="chevron_right"
           class="ds-calendar-chevron"
           :label="nextMonthLabel"
@@ -592,7 +590,6 @@ defineExpose({
           size="xs"
           variant="text"
           color="neutral"
-          shape="round"
           icon="chevron_left"
           class="ds-calendar-chevron"
           :label="prevYearLabel"
@@ -615,7 +612,6 @@ defineExpose({
           size="xs"
           variant="text"
           color="neutral"
-          shape="round"
           icon="chevron_right"
           class="ds-calendar-chevron"
           :label="nextYearLabel"
@@ -898,7 +894,13 @@ button.ds-calendar-day {
   cursor: pointer;
 }
 
+/* the ring wraps the fixed content circle, not the stretched cell,
+   so it stays round at any calendar width */
 .ds-calendar-day:focus-visible {
+  outline: none;
+}
+
+.ds-calendar-day:focus-visible .ds-calendar-day-content {
   outline: var(--focus-ring);
   outline-offset: var(--focus-ring-offset);
 }
@@ -918,12 +920,16 @@ button.ds-calendar-day {
   background-color: var(--cal-preview-bg);
 }
 
+/* the caps hug the fixed content circle even when the cell is wider:
+   the outer edge pulls in to the circle's edge (0 at minimum width) */
 .ds-calendar-day[data-range-start]::before {
+  inset-inline-start: calc(50% - var(--cal-cell-size) / 2);
   border-start-start-radius: var(--cal-cell-radius);
   border-end-start-radius: var(--cal-cell-radius);
 }
 
 .ds-calendar-day:is([data-range-end], [data-preview-end])::before {
+  inset-inline-end: calc(50% - var(--cal-cell-size) / 2);
   border-start-end-radius: var(--cal-cell-radius);
   border-end-end-radius: var(--cal-cell-radius);
 }
