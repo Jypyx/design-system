@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import './date-picker.tokens.css'
-import { computed, nextTick, ref, useId, useTemplateRef } from 'vue'
+import { computed, nextTick, onMounted, ref, useId, useTemplateRef, watch } from 'vue'
 import Calendar from '../calendar/Calendar.vue'
 import Icon from '../icon/Icon.vue'
+import Input from '../input/Input.vue'
 import { toISODate } from '../calendar/date-utils'
 import type {
   CalendarDateRange,
@@ -39,20 +40,34 @@ defineSlots<{
   footer?: () => unknown
 }>()
 
-/* one dashed-ident per instance ties the field (anchor-name) to its
+/* one dashed-ident per instance ties the Input's field (anchor-name, set
+   in CSS through the inherited --_dp-anchor custom property) to the
    popover (position-anchor); all placement logic then lives in CSS */
 const uid = useId()
 const anchorName = `--ds-datepicker-${uid}`
-const inputId = `ds-datepicker-input-${uid}`
 const panelId = `ds-datepicker-panel-${uid}`
-const hintId = `ds-datepicker-hint-${uid}`
 
-const input = ref<HTMLInputElement | null>(null)
+const root = useTemplateRef<HTMLElement>('root')
+const inputComponent = useTemplateRef<InstanceType<typeof Input>>('inputComponent')
+const nativeInput = computed(() => inputComponent.value?.input ?? null)
 const panel = ref<HTMLElement | null>(null)
-const field = useTemplateRef<HTMLElement>('field')
 const calendar = useTemplateRef<InstanceType<typeof Calendar>>('calendar')
 
 const isOpen = ref(false)
+
+/* Input renders the label / hint itself; the popup contract must land on
+   its native input, out of reach of fallthrough attrs (they stop at the
+   Input root) — same wiring-by-hand as Menu's slotted trigger */
+onMounted(() => {
+  const el = nativeInput.value
+  el?.setAttribute('aria-haspopup', 'dialog')
+  el?.setAttribute('aria-controls', panelId)
+  el?.setAttribute('aria-expanded', 'false')
+})
+
+watch(isOpen, (open) => {
+  nativeInput.value?.setAttribute('aria-expanded', open ? 'true' : 'false')
+})
 
 /* --- selection / display ---------------------------------------------- */
 
@@ -107,7 +122,7 @@ const calendarProps = computed(() => ({
 function open() {
   const el = panel.value
   if (props.disabled || !el || el.matches(':popover-open')) return
-  input.value?.focus()
+  inputComponent.value?.focus()
   el.showPopover()
   calendar.value?.setView('days')
   nextTick(() => calendar.value?.focus())
@@ -136,10 +151,12 @@ function onFieldPointerdown() {
   wasOpenOnPointerdown = panel.value?.matches(':popover-open') ?? false
 }
 
-function onFieldClick() {
+function onFieldClick(event: MouseEvent) {
   const wasOpen = wasOpenOnPointerdown
   wasOpenOnPointerdown = false
   if (props.disabled) return
+  /* the listener sits on the Input root: hint clicks are not field clicks */
+  if (!(event.target as Element).closest('.ds-input-field, .ds-input-label')) return
   if (wasOpen || panel.value?.matches(':popover-open')) {
     close()
     return
@@ -161,7 +178,7 @@ function onInputKeydown(event: KeyboardEvent) {
 function onPanelFocusout(event: FocusEvent) {
   const next = event.relatedTarget as Node | null
   if (!next) return
-  if (panel.value?.contains(next) || field.value?.contains(next)) return
+  if (root.value?.contains(next)) return
   close()
 }
 
@@ -189,7 +206,7 @@ const showClear = computed(() => {
 function clear() {
   model.value = props.range ? { start: null, end: null } : null
   emit('clear')
-  input.value?.focus()
+  inputComponent.value?.focus()
 }
 
 /* --- native form submission ------------------------------------------------ */
@@ -205,9 +222,9 @@ const hiddenValues = computed<string[]>(() => {
 
 defineExpose({
   /** the native input element */
-  input,
+  input: nativeInput,
   /** focuses the native input */
-  focus: () => input.value?.focus(),
+  focus: () => inputComponent.value?.focus(),
   /** opens the calendar popover */
   open,
   /** closes the calendar popover */
@@ -217,54 +234,45 @@ defineExpose({
 
 <template>
   <div
+    ref="root"
     class="ds-datepicker"
+    :style="`--_dp-anchor: ${anchorName}`"
     :data-size="size"
     :data-open="isOpen ? '' : undefined"
     :data-disabled="disabled ? '' : undefined"
     :data-invalid="invalid ? '' : undefined"
   >
-    <label v-if="label" class="ds-datepicker-label" :for="inputId">
-      {{ label }}<span v-if="required" class="ds-datepicker-required" aria-hidden="true"> *</span>
-    </label>
-
-    <div
-      ref="field"
-      class="ds-datepicker-field"
-      :style="`anchor-name: ${anchorName}`"
+    <Input
+      ref="inputComponent"
+      :model-value="display"
+      readonly
+      :size="size"
+      :label="label"
+      :aria-label="label ? undefined : ariaLabel"
+      :placeholder="placeholder"
+      :hint="hint"
+      :disabled="disabled"
+      :required="required"
+      :invalid="invalid"
       @pointerdown="onFieldPointerdown"
       @click="onFieldClick"
+      @keydown="onInputKeydown"
     >
-      <input
-        :id="inputId"
-        ref="input"
-        class="ds-datepicker-control"
-        type="text"
-        readonly
-        :value="display"
-        :placeholder="placeholder"
-        :disabled="disabled"
-        :aria-label="label ? undefined : ariaLabel"
-        aria-haspopup="dialog"
-        :aria-expanded="isOpen ? 'true' : 'false'"
-        :aria-controls="panelId"
-        :aria-invalid="invalid ? 'true' : undefined"
-        :aria-required="required ? 'true' : undefined"
-        :aria-describedby="hint ? hintId : undefined"
-        @keydown="onInputKeydown"
-      />
-
-      <button
-        v-if="showClear"
-        class="ds-datepicker-affix"
-        type="button"
-        :aria-label="clearLabel"
-        @click.stop="clear"
-      >
-        <Icon name="close" />
-      </button>
-
-      <Icon name="calendar_today" class="ds-datepicker-icon" />
-    </div>
+      <!-- Input's own clearable is blocked on readonly fields, so the
+           clear button rides in the icon-end slot next to the calendar icon -->
+      <template #icon-end>
+        <button
+          v-if="showClear"
+          class="ds-datepicker-clear"
+          type="button"
+          :aria-label="clearLabel"
+          @click.stop="clear"
+        >
+          <Icon name="close" />
+        </button>
+        <Icon name="calendar_today" class="ds-datepicker-icon" />
+      </template>
+    </Input>
 
     <div
       :id="panelId"
@@ -274,7 +282,6 @@ defineExpose({
       role="dialog"
       :aria-label="label || ariaLabel"
       :data-placement="placement"
-      :style="`position-anchor: ${anchorName}`"
       @toggle="onToggle"
       @focusout="onPanelFocusout"
     >
@@ -288,10 +295,6 @@ defineExpose({
       </Calendar>
     </div>
 
-    <div v-if="hint" class="ds-datepicker-meta">
-      <span :id="hintId" class="ds-datepicker-hint">{{ hint }}</span>
-    </div>
-
     <!-- native form submission: the visible input holds display text, never a name -->
     <input v-for="value in hiddenValues" :key="value" type="hidden" :name="name" :value="value" />
   </div>
@@ -302,101 +305,33 @@ defineExpose({
   /* self-contained: never rely on a host-app reset */
   box-sizing: border-box;
   margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: var(--datepicker-stack-gap);
   min-width: 0;
-  font-family: var(--font-sans);
 }
 
-/* --- label --------------------------------------------------------- */
+/* --- field: an Input dressed as a picker trigger ---------------------- */
 
-.ds-datepicker-label {
-  font-size: var(--datepicker-label-font-size);
-  font-weight: var(--font-weight-medium);
-  line-height: 1.25;
-  color: var(--datepicker-label-color);
-  user-select: none;
+/* the popover anchors to the Input's field box, not the whole component
+   (label and hint included); the dashed-ident travels through the
+   inherited --_dp-anchor custom property because Input owns that element */
+.ds-datepicker .ds-input-field {
+  anchor-name: var(--_dp-anchor);
 }
 
-.ds-datepicker-required {
-  color: var(--color-danger);
-}
-
-/* --- field --------------------------------------------------------- */
-
-.ds-datepicker-field {
-  box-sizing: border-box;
-  display: flex;
-  align-items: center;
-  gap: var(--datepicker-gap);
-  height: var(--datepicker-height);
-  padding-inline: var(--datepicker-padding-inline);
-  min-width: 0;
-  background-color: var(--datepicker-surface);
-  border: 1px solid var(--datepicker-border-color);
-  border-radius: var(--datepicker-radius);
-  color: var(--datepicker-text-color);
+/* the readonly field acts as one big button */
+.ds-datepicker:not([data-disabled]) .ds-input-field,
+.ds-datepicker:not([data-disabled]) .ds-input-control {
   cursor: pointer;
-  transition:
-    background-color var(--duration-150) var(--ease-out),
-    border-color var(--duration-150) var(--ease-out),
-    box-shadow var(--duration-150) var(--ease-out);
 }
 
-.ds-datepicker:not([data-disabled]) .ds-datepicker-field:hover {
-  border-color: color-mix(in oklab, var(--datepicker-border-color) 50%, var(--text));
+/* Input mutes its hover affordance on readonly fields; a picker field
+   stays interactive, so bring it back */
+.ds-datepicker:not([data-disabled]) .ds-input[data-readonly] .ds-input-field:hover {
+  border-color: color-mix(in oklab, var(--input-border-color) 50%, var(--text));
 }
 
-/* text inputs always match :focus-visible, so keyboard and mouse focus
-   both show the focus style. The box-shadow visually thickens the 1px
-   border to 2px without any layout shift */
-.ds-datepicker:not([data-disabled])
-  .ds-datepicker-field:has(.ds-datepicker-control:focus-visible) {
-  border-color: var(--datepicker-accent);
-  box-shadow: 0 0 0 1px var(--datepicker-accent);
-}
+/* --- clear button (mirrors .ds-input-affix) ----------------------------- */
 
-.ds-datepicker[data-disabled] .ds-datepicker-field {
-  cursor: not-allowed;
-}
-
-/* --- native input ---------------------------------------------------- */
-
-.ds-datepicker-control {
-  box-sizing: border-box;
-  flex: 1;
-  min-width: 0;
-  margin: 0;
-  padding: 0;
-  border: none;
-  background: none;
-  outline: none;
-  font-family: inherit;
-  font-size: var(--datepicker-font-size);
-  color: inherit;
-  /* readonly: the whole field acts as one button */
-  cursor: inherit;
-}
-
-.ds-datepicker-control::placeholder {
-  color: var(--datepicker-placeholder-color);
-  opacity: 1;
-}
-
-/* --- calendar icon, clear button -------------------------------------- */
-
-.ds-datepicker-field > .ds-icon,
-.ds-datepicker-affix > .ds-icon {
-  --icon-size: var(--datepicker-icon-size);
-}
-
-.ds-datepicker-icon {
-  pointer-events: none;
-  color: var(--datepicker-icon-color);
-}
-
-.ds-datepicker-affix {
+.ds-datepicker-clear {
   box-sizing: border-box;
   appearance: none;
   display: inline-flex;
@@ -408,14 +343,23 @@ defineExpose({
   border: none;
   border-radius: var(--radius-sm);
   background: none;
-  color: var(--datepicker-icon-color);
+  color: var(--input-icon-color);
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
   transition: color var(--duration-150) var(--ease-out);
 }
 
-.ds-datepicker-affix:hover {
-  color: var(--datepicker-text-color);
+.ds-datepicker-clear:hover {
+  color: var(--input-text-color);
+}
+
+.ds-datepicker-clear:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: 1px;
+}
+
+.ds-datepicker-clear > .ds-icon {
+  --icon-size: var(--input-icon-size);
 }
 
 /* --- popover (CSS anchor positioning, mirrors Menu) -------------------- */
@@ -428,6 +372,7 @@ defineExpose({
   position: fixed;
   inset: auto;
   margin: 0;
+  position-anchor: var(--_dp-anchor);
   width: max-content;
   padding: var(--datepicker-popover-padding);
   border: 1px solid var(--datepicker-popover-border);
@@ -503,14 +448,5 @@ defineExpose({
     opacity: 0;
     transform: scale(0.98);
   }
-}
-
-/* --- hint ----------------------------------------------------------------- */
-
-.ds-datepicker-meta {
-  display: flex;
-  font-size: var(--datepicker-meta-font-size);
-  line-height: 1.25;
-  color: var(--datepicker-hint-color);
 }
 </style>

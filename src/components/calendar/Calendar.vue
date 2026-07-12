@@ -2,7 +2,6 @@
 import './calendar.tokens.css'
 import { computed, nextTick, ref, useTemplateRef, watch } from 'vue'
 import Button from '../button/Button.vue'
-import Icon from '../icon/Icon.vue'
 import {
   addDays,
   addMonths,
@@ -57,8 +56,6 @@ defineSlots<{
 
 const root = useTemplateRef<HTMLElement>('root')
 const body = useTemplateRef<HTMLElement>('body')
-const monthToggle = useTemplateRef<HTMLButtonElement>('monthToggle')
-const yearToggle = useTemplateRef<HTMLButtonElement>('yearToggle')
 
 /* --- selection (normalized to local midnight) ------------------------ */
 
@@ -122,21 +119,21 @@ const focusedDate = ref(initialDate)
 const visibleMonth = ref(startOfMonth(initialDate))
 /* pointer anchor of the range preview */
 const hoverDate = ref<Date | null>(null)
-/* first year of the years-view page (pages of 12, stable across visits) */
-const yearPageStart = ref(Math.floor(visibleMonth.value.getFullYear() / 12) * 12)
 /* roving-tabindex index inside the months / years grids */
 const pickerActive = ref(0)
 
 const today = startOfDay(new Date())
 
 const monthTitle = computed(() => monthFormat.value.format(visibleMonth.value))
-const yearTitle = computed(() =>
-  view.value === 'years'
-    ? `${formatYear(yearPageStart.value)} – ${formatYear(yearPageStart.value + 11)}`
-    : formatYear(visibleMonth.value.getFullYear()),
-)
+const yearTitle = computed(() => formatYear(visibleMonth.value.getFullYear()))
 
-const years = computed(() => Array.from({ length: 12 }, (_, i) => yearPageStart.value + i))
+/* the years view lists a fixed window (bounded by min / max when set)
+   and scrolls to the current year — no paging state */
+const years = computed(() => {
+  const start = props.minDate?.getFullYear() ?? today.getFullYear() - 100
+  const end = props.maxDate?.getFullYear() ?? today.getFullYear() + 100
+  return Array.from({ length: Math.max(1, end - start + 1) }, (_, i) => start + i)
+})
 
 /* --- month navigation (steppers) --------------------------------------- */
 
@@ -167,11 +164,7 @@ function goToMonth(target: Date) {
 }
 
 const stepMonth = (direction: number) => goToMonth(addMonths(visibleMonth.value, direction))
-
-function stepYear(direction: number) {
-  if (view.value === 'years') yearPageStart.value += direction * 12
-  else goToMonth(addMonths(visibleMonth.value, direction * 12))
-}
+const stepYear = (direction: number) => goToMonth(addMonths(visibleMonth.value, direction * 12))
 
 /* a stepper stays enabled as long as it can move at all (partial steps
    near the min / max bounds land on the bound) */
@@ -180,16 +173,8 @@ const canStep = (months: number) =>
 
 const canPrevMonth = computed(() => canStep(-1))
 const canNextMonth = computed(() => canStep(1))
-const canPrevYear = computed(() =>
-  view.value === 'years'
-    ? props.minDate == null || yearPageStart.value - 1 >= props.minDate.getFullYear()
-    : canStep(-12),
-)
-const canNextYear = computed(() =>
-  view.value === 'years'
-    ? props.maxDate == null || yearPageStart.value + 12 <= props.maxDate.getFullYear()
-    : canStep(12),
-)
+const canPrevYear = computed(() => canStep(-12))
+const canNextYear = computed(() => canStep(12))
 
 /* --- days / months / years views ---------------------------------------- */
 
@@ -198,24 +183,28 @@ async function focusActive() {
   body.value?.querySelector<HTMLElement>('[tabindex="0"]')?.focus()
 }
 
-function toggleView(target: 'months' | 'years') {
+async function toggleView(target: 'months' | 'years') {
   if (view.value === target) {
     view.value = 'days'
     return
   }
   view.value = target
-  if (target === 'months') {
-    pickerActive.value = visibleMonth.value.getMonth()
-  } else {
-    yearPageStart.value = Math.floor(visibleMonth.value.getFullYear() / 12) * 12
-    pickerActive.value = visibleMonth.value.getFullYear() - yearPageStart.value
-  }
-  focusActive()
+  pickerActive.value =
+    target === 'months'
+      ? visibleMonth.value.getMonth()
+      : Math.max(0, years.value.indexOf(visibleMonth.value.getFullYear()))
+  await nextTick()
+  const active = body.value?.querySelector<HTMLElement>('[tabindex="0"]')
+  /* the years list scrolls: center the current year before focusing */
+  if (target === 'years') active?.scrollIntoView({ block: 'center' })
+  active?.focus()
 }
 
 /* Escape backs out of a picker view; focus returns to the toggle that opened it */
 function closePicker() {
-  const toggle = view.value === 'months' ? monthToggle.value : yearToggle.value
+  const selector =
+    view.value === 'months' ? '.ds-calendar-toggle-month' : '.ds-calendar-toggle-year'
+  const toggle = root.value?.querySelector<HTMLElement>(selector)
   view.value = 'days'
   nextTick(() => toggle?.focus())
 }
@@ -248,8 +237,8 @@ function pickYear(year: number) {
   focusActive()
 }
 
-/* both picker grids are 12 buttons in 3 columns */
-function onPickerKeydown(event: KeyboardEvent) {
+/* both picker grids are 3 columns wide; `count` bounds the roving index */
+function onPickerKeydown(event: KeyboardEvent, count: number) {
   let [prevKey, nextKey] = ['ArrowLeft', 'ArrowRight']
   if (root.value && getComputedStyle(root.value).direction === 'rtl')
     [prevKey, nextKey] = [nextKey, prevKey]
@@ -272,7 +261,7 @@ function onPickerKeydown(event: KeyboardEvent) {
       next = 0
       break
     case 'End':
-      next = 11
+      next = count - 1
       break
     case 'Escape':
       /* backing out of the picker must not close a surrounding popover
@@ -285,7 +274,7 @@ function onPickerKeydown(event: KeyboardEvent) {
       return
   }
   event.preventDefault()
-  pickerActive.value = Math.min(11, Math.max(0, next))
+  pickerActive.value = Math.min(count - 1, Math.max(0, next))
   focusActive()
 }
 
@@ -557,6 +546,8 @@ defineExpose({
     :data-range="range ? '' : undefined"
   >
     <div class="ds-calendar-header">
+      <!-- stepping is meaningless while a picker grid is open: the
+           chevrons stay visible but disable (the toggles remain active) -->
       <div class="ds-calendar-nav ds-calendar-nav-month">
         <Button
           size="xs"
@@ -564,29 +555,32 @@ defineExpose({
           color="neutral"
           shape="round"
           icon="chevron_left"
+          class="ds-calendar-chevron"
           :label="prevMonthLabel"
-          :disabled="!canPrevMonth"
+          :disabled="view !== 'days' || !canPrevMonth"
           @click="stepMonth(-1)"
         />
-        <button
-          ref="monthToggle"
-          type="button"
-          class="ds-calendar-toggle"
+        <Button
+          size="xs"
+          variant="text"
+          color="neutral"
+          icon-end="arrow_drop_down"
+          class="ds-calendar-toggle ds-calendar-toggle-month"
           :aria-label="monthSelectLabel"
           :aria-expanded="view === 'months' ? 'true' : 'false'"
           @click="toggleView('months')"
         >
           {{ monthTitle }}
-          <Icon name="arrow_drop_down" class="ds-calendar-toggle-arrow" />
-        </button>
+        </Button>
         <Button
           size="xs"
           variant="text"
           color="neutral"
           shape="round"
           icon="chevron_right"
+          class="ds-calendar-chevron"
           :label="nextMonthLabel"
-          :disabled="!canNextMonth"
+          :disabled="view !== 'days' || !canNextMonth"
           @click="stepMonth(1)"
         />
       </div>
@@ -598,29 +592,32 @@ defineExpose({
           color="neutral"
           shape="round"
           icon="chevron_left"
+          class="ds-calendar-chevron"
           :label="prevYearLabel"
-          :disabled="!canPrevYear"
+          :disabled="view === 'years' || !canPrevYear"
           @click="stepYear(-1)"
         />
-        <button
-          ref="yearToggle"
-          type="button"
-          class="ds-calendar-toggle"
+        <Button
+          size="xs"
+          variant="text"
+          color="neutral"
+          icon-end="arrow_drop_down"
+          class="ds-calendar-toggle ds-calendar-toggle-year"
           :aria-label="yearSelectLabel"
           :aria-expanded="view === 'years' ? 'true' : 'false'"
           @click="toggleView('years')"
         >
           {{ yearTitle }}
-          <Icon name="arrow_drop_down" class="ds-calendar-toggle-arrow" />
-        </button>
+        </Button>
         <Button
           size="xs"
           variant="text"
           color="neutral"
           shape="round"
           icon="chevron_right"
+          class="ds-calendar-chevron"
           :label="nextYearLabel"
-          :disabled="!canNextYear"
+          :disabled="view === 'years' || !canNextYear"
           @click="stepYear(1)"
         />
       </div>
@@ -696,6 +693,7 @@ defineExpose({
               role="gridcell"
               aria-hidden="true"
               :data-adjacent="cell.adjacent && !cell.hidden ? '' : undefined"
+              :data-disabled="!cell.hidden && cell.disabled ? '' : undefined"
               :data-today="!cell.hidden && cell.today ? '' : undefined"
               :data-selected="!cell.hidden && cell.selected ? '' : undefined"
               :data-band="cell.hidden ? undefined : cell.band"
@@ -724,41 +722,46 @@ defineExpose({
         class="ds-calendar-picker"
         role="group"
         :aria-label="monthSelectLabel"
-        @keydown="onPickerKeydown"
+        @keydown="onPickerKeydown($event, 12)"
       >
-        <button
+        <!-- aria-disabled (not disabled) keeps blocked options focusable so
+             arrow keys can traverse them; pickMonth guards the activation -->
+        <Button
           v-for="(name, index) in monthNames"
           :key="name"
-          type="button"
-          class="ds-calendar-option"
+          size="sm"
+          :variant="index === visibleMonth.getMonth() ? 'flat' : 'text'"
+          :color="index === visibleMonth.getMonth() ? 'primary' : 'neutral'"
           :tabindex="index === pickerActive ? 0 : -1"
           :aria-pressed="index === visibleMonth.getMonth() ? 'true' : 'false'"
           :aria-disabled="isMonthDisabled(index) ? 'true' : undefined"
           @click="pickMonth(index)"
         >
           {{ name }}
-        </button>
+        </Button>
       </div>
 
       <div
         v-else
         class="ds-calendar-picker"
+        data-scroll
         role="group"
         :aria-label="yearSelectLabel"
-        @keydown="onPickerKeydown"
+        @keydown="onPickerKeydown($event, years.length)"
       >
-        <button
+        <Button
           v-for="(year, index) in years"
           :key="year"
-          type="button"
-          class="ds-calendar-option"
+          size="sm"
+          :variant="year === visibleMonth.getFullYear() ? 'flat' : 'text'"
+          :color="year === visibleMonth.getFullYear() ? 'primary' : 'neutral'"
           :tabindex="index === pickerActive ? 0 : -1"
           :aria-pressed="year === visibleMonth.getFullYear() ? 'true' : 'false'"
           :aria-disabled="isYearDisabled(year) ? 'true' : undefined"
           @click="pickYear(year)"
         >
           {{ formatYear(year) }}
-        </button>
+        </Button>
       </div>
     </div>
 
@@ -798,59 +801,18 @@ defineExpose({
   align-items: center;
 }
 
-/* stepping months makes no sense while picking a month / year */
-.ds-calendar[data-view='months'] .ds-calendar-nav-month .ds-btn {
-  visibility: hidden;
-}
-
-.ds-calendar[data-view='years'] .ds-calendar-nav-month {
-  visibility: hidden;
-}
-
-/* previous / next chevrons keep pointing backward / forward in RTL */
-.ds-calendar:dir(rtl) .ds-calendar-nav .ds-btn .ds-icon {
+/* previous / next chevrons keep pointing backward / forward in RTL
+   (scoped to the chevrons: the toggles' drop-down arrow rotates below) */
+.ds-calendar:dir(rtl) .ds-calendar-chevron .ds-icon {
   transform: scaleX(-1);
 }
 
-.ds-calendar-toggle {
-  box-sizing: border-box;
-  appearance: none;
-  margin: 0;
-  display: inline-flex;
-  align-items: center;
-  height: 28px;
-  padding: 0 var(--spacing-1) 0 var(--spacing-2);
-  border: none;
-  border-radius: var(--radius-md);
-  background: none;
-  font-family: inherit;
-  font-size: var(--cal-toggle-font-size);
-  font-weight: var(--font-weight-medium);
-  line-height: 1;
-  color: inherit;
-  white-space: nowrap;
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-  transition: background-color var(--duration-150) var(--ease-out);
-}
-
-.ds-calendar-toggle:hover {
-  background-color: var(--cal-hover-bg);
-}
-
-.ds-calendar-toggle:focus-visible {
-  outline: var(--focus-ring);
-  outline-offset: var(--focus-ring-offset);
-}
-
-.ds-calendar-toggle-arrow {
-  --icon-size: 20px;
-
+.ds-calendar-toggle .ds-icon {
   color: var(--text-muted);
   transition: transform var(--duration-150) var(--ease-out);
 }
 
-.ds-calendar-toggle[aria-expanded='true'] .ds-calendar-toggle-arrow {
+.ds-calendar-toggle[aria-expanded='true'] .ds-icon {
   transform: rotate(180deg);
 }
 

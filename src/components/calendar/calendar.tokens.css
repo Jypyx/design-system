@@ -21,14 +21,14 @@
   --cal-weekday-height: 28px;
   --cal-font-size: var(--text-sm);
   --cal-weekday-font-size: var(--text-xs);
-  --cal-toggle-font-size: var(--text-sm);
 
   /* colors */
   --cal-text: var(--text);
   --cal-accent: var(--color-primary);
   --cal-on-accent: var(--color-on-primary);
   --cal-weekday-color: var(--text-muted);
-  --cal-adjacent-color: var(--text-muted);
+  /* clearly fainter than the current-month days, still distinct from disabled */
+  --cal-adjacent-color: color-mix(in oklab, var(--text-muted) 50%, transparent);
   --cal-disabled-color: var(--text-disabled);
   --cal-hover-bg: color-mix(in oklab, var(--text) 8%, transparent);
   --cal-range-bg: color-mix(in oklab, var(--cal-accent) 14%, transparent);

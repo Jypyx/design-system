@@ -141,6 +141,9 @@ export const MonthAndYearViews: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement)
     await userEvent.click(canvas.getByRole('button', { name: 'Choose month' }))
+    /* the steppers stay visible but disable while a picker grid is open */
+    await expect(canvas.getByRole('button', { name: 'Previous month' })).toBeDisabled()
+    await expect(canvas.getByRole('button', { name: 'Next month' })).toBeDisabled()
     await userEvent.click(canvas.getByRole('button', { name: 'Mar' }))
     await waitFor(() =>
       expect(canvas.getByRole('button', { name: 'Choose month' })).toHaveTextContent('March'),
