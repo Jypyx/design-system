@@ -99,6 +99,15 @@ export type {
   MenuProps,
 } from './menu/Menu.types'
 
+export { default as Pagination } from './pagination/Pagination.vue'
+export type {
+  PaginationColor,
+  PaginationNavButtons,
+  PaginationProps,
+  PaginationSize,
+  PaginationVariant,
+} from './pagination/Pagination.types'
+
 export { default as ProgressCircular } from './progress-circular/ProgressCircular.vue'
 export type {
   ProgressCircularColor,

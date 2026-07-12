@@ -1,0 +1,10 @@
+/* ============================================================
+ * LAYER 3 — Component tokens: Pagination
+ * Pagination is Buttons glued in a ButtonGroup, so nearly all
+ * of its look comes from Button tokens; only the ellipsis
+ * separator is its own.
+ * ============================================================ */
+
+.ds-pagination {
+  --pagination-ellipsis-color: var(--text-muted);
+}
