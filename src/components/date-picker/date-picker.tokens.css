@@ -1,0 +1,96 @@
+/* ============================================================
+ * LAYER 3 — Component tokens: DatePicker
+ * Consumes Layer 2 semantic tokens only; light + dark come for
+ * free because the semantic layer resolves via light-dark().
+ *
+ * The field mirrors the Input / Combobox tokens (heights
+ * 28/36/44/52 match Button) and the popover mirrors the Menu
+ * panel, so a DatePicker lines up with both side by side.
+ *
+ * The popover is a DOM child of .ds-datepicker (the top layer
+ * does not break custom-property inheritance), so every token
+ * lives on the root.
+ * ============================================================ */
+
+.ds-datepicker {
+  /* field size — default 'sm' (36px), mirrors Input */
+  --datepicker-height: 36px;
+  --datepicker-padding-inline: var(--spacing-3);
+  --datepicker-font-size: var(--text-sm);
+  --datepicker-gap: var(--spacing-2);
+  --datepicker-stack-gap: var(--spacing-1\.5);
+  --datepicker-radius: var(--radius-md);
+  --datepicker-icon-size: 20px;
+  --datepicker-label-font-size: var(--text-sm);
+  --datepicker-meta-font-size: var(--text-xs);
+
+  /* field colors — mirrors Input */
+  --datepicker-surface: var(--surface-raised);
+  --datepicker-border-color: var(--border-strong);
+  --datepicker-accent: var(--color-primary);
+  --datepicker-text-color: var(--text);
+  --datepicker-placeholder-color: var(--text-muted);
+  --datepicker-icon-color: var(--text-muted);
+  --datepicker-label-color: var(--text);
+  --datepicker-hint-color: var(--text-muted);
+
+  /* popover panel — mirrors Menu */
+  --datepicker-popover-bg: var(--surface-raised);
+  --datepicker-popover-border: var(--border);
+  --datepicker-popover-radius: var(--radius-lg);
+  --datepicker-popover-shadow: var(--shadow-lg);
+  --datepicker-popover-padding: var(--spacing-1);
+  --datepicker-popover-gap: var(--spacing-1);
+}
+
+/* --- sizes (mirror Input / Combobox) ------------------------------- */
+
+.ds-datepicker[data-size='xs'] {
+  --datepicker-height: 28px;
+  --datepicker-padding-inline: var(--spacing-2\.5);
+  --datepicker-font-size: var(--text-xs);
+  --datepicker-gap: var(--spacing-1\.5);
+  --datepicker-radius: var(--radius-sm);
+  --datepicker-icon-size: 16px;
+  --datepicker-label-font-size: var(--text-xs);
+}
+
+.ds-datepicker[data-size='md'] {
+  --datepicker-height: 44px;
+  --datepicker-padding-inline: var(--spacing-3\.5);
+  --datepicker-font-size: var(--text-base);
+  --datepicker-gap: var(--spacing-2\.5);
+  --datepicker-radius: var(--radius-lg);
+  --datepicker-label-font-size: var(--text-base);
+  --datepicker-meta-font-size: var(--text-sm);
+}
+
+.ds-datepicker[data-size='lg'] {
+  --datepicker-height: 52px;
+  --datepicker-padding-inline: var(--spacing-4);
+  --datepicker-font-size: var(--text-lg);
+  --datepicker-gap: var(--spacing-3);
+  --datepicker-radius: var(--radius-lg);
+  --datepicker-icon-size: 24px;
+  --datepicker-label-font-size: var(--text-lg);
+  --datepicker-meta-font-size: var(--text-sm);
+}
+
+/* --- states (mirror Input) ------------------------------------------ */
+
+.ds-datepicker[data-invalid] {
+  --datepicker-border-color: var(--color-danger);
+  --datepicker-accent: var(--color-danger);
+  --datepicker-hint-color: var(--color-danger);
+}
+
+/* grey out everything; must stay after the other state sections */
+.ds-datepicker[data-disabled] {
+  --datepicker-surface: var(--surface-disabled);
+  --datepicker-border-color: var(--border);
+  --datepicker-text-color: var(--text-disabled);
+  --datepicker-placeholder-color: var(--text-disabled);
+  --datepicker-icon-color: var(--text-disabled);
+  --datepicker-label-color: var(--text-disabled);
+  --datepicker-hint-color: var(--text-disabled);
+}

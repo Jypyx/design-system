@@ -1,0 +1,48 @@
+/* ============================================================
+ * LAYER 3 — Component tokens: Calendar
+ * Consumes Layer 2 semantic tokens only; light + dark come for
+ * free because the semantic layer resolves via light-dark().
+ *
+ *   --cal-cell-size        width & height of a day cell (density)
+ *   --cal-accent           selected circle, today ring, range band tint
+ *   --cal-hover-bg         hover wash on days / options / toggles
+ *   --cal-range-bg         band between the range start and end
+ *   --cal-preview-bg       lighter band while the end date is pending
+ *   --cal-dot-*            event dot palette (semantic names)
+ * ============================================================ */
+
+.ds-calendar {
+  /* layout */
+  --cal-cell-size: 36px;
+  --cal-gap: var(--spacing-0\.5);
+  --cal-padding: var(--spacing-2);
+  --cal-radius: var(--radius-lg);
+  --cal-cell-radius: var(--radius-full);
+  --cal-weekday-height: 28px;
+  --cal-font-size: var(--text-sm);
+  --cal-weekday-font-size: var(--text-xs);
+  --cal-toggle-font-size: var(--text-sm);
+
+  /* colors */
+  --cal-text: var(--text);
+  --cal-accent: var(--color-primary);
+  --cal-on-accent: var(--color-on-primary);
+  --cal-weekday-color: var(--text-muted);
+  --cal-adjacent-color: var(--text-muted);
+  --cal-disabled-color: var(--text-disabled);
+  --cal-hover-bg: color-mix(in oklab, var(--text) 8%, transparent);
+  --cal-range-bg: color-mix(in oklab, var(--cal-accent) 14%, transparent);
+  --cal-preview-bg: color-mix(in oklab, var(--cal-accent) 7%, transparent);
+
+  /* event dots */
+  --cal-dot-size: 4px;
+  --cal-dot-gap: var(--spacing-0\.5);
+  --cal-dot-primary: var(--color-primary);
+  --cal-dot-success: var(--color-success);
+  --cal-dot-danger: var(--color-danger);
+  --cal-dot-warning: var(--color-warning);
+
+  /* footer */
+  --cal-footer-padding: var(--spacing-2);
+  --cal-footer-border: var(--border);
+}

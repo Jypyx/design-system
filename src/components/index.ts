@@ -33,6 +33,19 @@ export type {
 export { default as ButtonGroup } from './button-group/ButtonGroup.vue'
 export type { ButtonGroupProps } from './button-group/ButtonGroup.types'
 
+export { default as Calendar } from './calendar/Calendar.vue'
+export type {
+  CalendarDateRange,
+  CalendarDayScope,
+  CalendarDisabledDates,
+  CalendarEvent,
+  CalendarEventColor,
+  CalendarModelValue,
+  CalendarProps,
+  CalendarView,
+  CalendarWeekday,
+} from './calendar/Calendar.types'
+
 export { default as Checkbox } from './checkbox/Checkbox.vue'
 export type { CheckboxLabelPosition, CheckboxProps } from './checkbox/Checkbox.types'
 
@@ -53,6 +66,13 @@ export type {
   ComboboxSize,
   ComboboxValue,
 } from './combobox/Combobox.types'
+
+export { default as DatePicker } from './date-picker/DatePicker.vue'
+export type {
+  DatePickerPlacement,
+  DatePickerProps,
+  DatePickerSize,
+} from './date-picker/DatePicker.types'
 
 export { default as Dialog } from './dialog/Dialog.vue'
 export { default as DialogAlert } from './dialog/DialogAlert.vue'
