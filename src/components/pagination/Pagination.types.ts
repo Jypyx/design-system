@@ -13,6 +13,8 @@ export interface PaginationProps {
   /** variant of the inactive buttons (the active page always renders 'flat') */
   variant?: PaginationVariant
   navButtons?: PaginationNavButtons
+  /** glue the buttons into a seamless ButtonGroup instead of spacing them with a gap */
+  attached?: boolean
   /** Material Symbols name or image / SVG URL (same rules as Button icons) */
   prevIcon?: string
   nextIcon?: string

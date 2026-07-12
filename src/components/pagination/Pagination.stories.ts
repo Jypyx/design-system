@@ -33,6 +33,11 @@ const meta = {
       options: navModes,
       description: 'Prev / next buttons: hidden, icon-only, or icon + visible text',
     },
+    attached: {
+      control: 'boolean',
+      description:
+        'Glue the buttons into a seamless ButtonGroup; by default they are spaced with a gap',
+    },
     prevIcon: {
       control: 'text',
       description: 'Material Symbols Rounded name or image / SVG URL',
@@ -60,6 +65,7 @@ const meta = {
     color: 'primary',
     variant: 'outlined',
     navButtons: 'icon',
+    attached: false,
     disabled: false,
   },
   render: (args) => ({
@@ -73,6 +79,11 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 export const Default: Story = {}
+
+/** `attached` fuses the buttons into a seamless ButtonGroup instead of the default spaced row. */
+export const Attached: Story = {
+  args: { attached: true },
+}
 
 /** Prev / next buttons hidden, icon-only, or icon + text. */
 export const NavButtonModes: Story = {

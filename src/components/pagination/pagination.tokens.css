@@ -1,10 +1,11 @@
 /* ============================================================
  * LAYER 3 — Component tokens: Pagination
- * Pagination is Buttons glued in a ButtonGroup, so nearly all
- * of its look comes from Button tokens; only the ellipsis
- * separator is its own.
+ * Pagination is a row of Buttons (spaced by default, glued in a
+ * ButtonGroup when attached), so nearly all of its look comes
+ * from Button tokens; only the gap and the ellipsis are its own.
  * ============================================================ */
 
 .ds-pagination {
+  --pagination-gap: var(--spacing-1\.5);
   --pagination-ellipsis-color: var(--text-muted);
 }

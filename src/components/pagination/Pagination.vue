@@ -10,6 +10,7 @@ const props = withDefaults(defineProps<PaginationProps>(), {
   color: 'primary',
   variant: 'outlined',
   navButtons: 'icon',
+  attached: false,
   prevIcon: 'chevron_left',
   nextIcon: 'chevron_right',
   disabled: false,
@@ -53,9 +54,17 @@ function measure() {
   /* prev / next are measured, not assumed: icon-text width is content-dependent */
   const navBtns = Array.from(nav.querySelectorAll<HTMLElement>('.ds-pagination-nav'))
   const reserved = navBtns.reduce((sum, el) => sum + el.offsetWidth, 0)
-  /* glued group: k slots occupy k * (w - 1) + 1 because each non-first
-     item overlaps its neighbor's border by 1px */
-  fit.value = Math.floor((nav.clientWidth - reserved + navBtns.length - 1) / (slotWidth - 1))
+  /* seam: what each extra item adds beyond its own width — attached
+     buttons overlap their neighbor's border by 1px, spaced ones add
+     the flex gap (measured, so a --pagination-gap override is honored) */
+  const list = nav.firstElementChild
+  const gap = list ? parseFloat(getComputedStyle(list).columnGap) || 0 : 0
+  const seam = props.attached ? -1 : gap
+  /* k slots + navBtns.length nav buttons in one row:
+     total = reserved + k * slotWidth + (k + navBtns.length - 1) * seam */
+  fit.value = Math.floor(
+    (nav.clientWidth - reserved - (navBtns.length - 1) * seam) / (slotWidth + seam),
+  )
 }
 
 /* the root nav is display: block, so its clientWidth comes from the
@@ -100,8 +109,10 @@ const items = computed<PageItem[]>(() => {
 </script>
 
 <template>
-  <nav ref="root" class="ds-pagination" :aria-label="label">
-    <ButtonGroup>
+  <nav ref="root" class="ds-pagination" :data-attached="attached || undefined" :aria-label="label">
+    <!-- spaced (default): a plain flex row with a gap; attached: the
+         ButtonGroup fuses the buttons and collapses their borders -->
+    <component :is="attached ? ButtonGroup : 'div'" class="ds-pagination-list">
       <Button
         v-if="navButtons !== 'hidden'"
         class="ds-pagination-nav"
@@ -131,13 +142,14 @@ const items = computed<PageItem[]>(() => {
         >
           {{ item }}
         </Button>
-        <!-- inert group cell: .ds-btn + data-* give it Button's visuals
-             and the group seam without being a focusable control -->
+        <!-- inert cell: .ds-btn + data-* give it Button's sizing (and, when
+             attached, the group seam) without being a focusable control;
+             spaced mode renders it as plain text between the buttons -->
         <span
           v-else
           class="ds-btn ds-pagination-ellipsis"
           :data-size="size"
-          :data-variant="variant"
+          :data-variant="attached ? variant : 'text'"
           data-color="neutral"
           data-shape="square"
           >…</span
@@ -158,7 +170,7 @@ const items = computed<PageItem[]>(() => {
       >
         <template v-if="navButtons === 'icon-text'">{{ nextLabel }}</template>
       </Button>
-    </ButtonGroup>
+    </component>
   </nav>
 </template>
 
@@ -171,6 +183,18 @@ const items = computed<PageItem[]>(() => {
      the truncation measurement reads (see measure()) */
   display: block;
   font-family: var(--font-sans);
+}
+
+.ds-pagination .ds-pagination-list {
+  /* ButtonGroup already lays out inline-flex; this covers the plain
+     div of the spaced (default) mode */
+  display: inline-flex;
+}
+
+/* the gap only exists in spaced mode — inside a ButtonGroup it would
+   break the glued seam */
+.ds-pagination:not([data-attached]) .ds-pagination-list {
+  gap: var(--pagination-gap);
 }
 
 .ds-pagination .ds-btn.ds-pagination-ellipsis {
