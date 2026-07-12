@@ -86,13 +86,13 @@ export const Range: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement)
     const inRange = () => canvasElement.querySelectorAll('[data-in-range]')
-    await waitFor(() => expect(inRange().length).toBe(4))
+    await waitFor(() => expect(inRange().length).toBe(6))
     /* picking again restarts the range */
     await userEvent.click(canvas.getByRole('gridcell', { name: 'Saturday, June 20, 2026' }))
     await waitFor(() => expect(inRange().length).toBe(0))
     /* the next pick completes it */
     await userEvent.click(canvas.getByRole('gridcell', { name: 'Thursday, June 25, 2026' }))
-    await waitFor(() => expect(inRange().length).toBe(4))
+    await waitFor(() => expect(inRange().length).toBe(6))
     await expect(
       canvas.getByRole('gridcell', { name: 'Saturday, June 20, 2026' }),
     ).toHaveAttribute('data-range-start')

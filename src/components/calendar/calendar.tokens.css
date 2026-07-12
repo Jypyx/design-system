@@ -21,6 +21,7 @@
   --cal-weekday-height: 28px;
   --cal-font-size: var(--text-sm);
   --cal-weekday-font-size: var(--text-xs);
+  --cal-toggle-min-with: 75px;
 
   /* colors */
   --cal-text: var(--text);

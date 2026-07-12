@@ -344,6 +344,7 @@ interface DayCell {
   rangeEnd: boolean
   inRange: boolean
   preview: boolean
+  previewEnd: boolean
   today: boolean
   tabbable: boolean
   label: string
@@ -364,11 +365,12 @@ function toCell(date: Date): DayCell {
     ? rangeStart || rangeEnd
     : selectedDate.value !== null && time === selectedDate.value.getTime()
   const band = activeBand.value
-  /* the band only spans the days strictly between the range ends (the
-     caps show their circle alone); the pending preview runs from after
+  /* the band spans the range ends too (their circle paints on top of it,
+     and CSS rounds the band's outer edges); the pending preview runs from
      the start up to the anchor, which has no circle yet */
-  const inRange = band !== null && !band.preview && time > band.from && time < band.to
-  const preview = band !== null && band.preview && time > band.from && time <= band.to
+  const inRange = band !== null && !band.preview && time >= band.from && time <= band.to
+  const preview = band !== null && band.preview && time >= band.from && time <= band.to
+  const previewEnd = preview && time === band.to
   const isToday = time === today.getTime()
   const events = eventsByDay.value.get(time) ?? []
   return {
@@ -384,6 +386,7 @@ function toCell(date: Date): DayCell {
     rangeEnd,
     inRange,
     preview,
+    previewEnd,
     today: isToday,
     tabbable: selectable && time === focusedDate.value.getTime(),
     label: dayLabelFormat.value.format(date),
@@ -667,6 +670,7 @@ defineExpose({
               :data-range-end="cell.rangeEnd ? '' : undefined"
               :data-in-range="cell.inRange ? '' : undefined"
               :data-preview="cell.preview ? '' : undefined"
+              :data-preview-end="cell.previewEnd ? '' : undefined"
               @click="selectDate(cell.date)"
               @mouseenter="onDayHover(cell.date)"
             >
@@ -694,8 +698,11 @@ defineExpose({
               :data-disabled="!cell.hidden && cell.disabled ? '' : undefined"
               :data-today="!cell.hidden && cell.today ? '' : undefined"
               :data-selected="!cell.hidden && cell.selected ? '' : undefined"
+              :data-range-start="!cell.hidden && cell.rangeStart ? '' : undefined"
+              :data-range-end="!cell.hidden && cell.rangeEnd ? '' : undefined"
               :data-in-range="!cell.hidden && cell.inRange ? '' : undefined"
               :data-preview="!cell.hidden && cell.preview ? '' : undefined"
+              :data-preview-end="!cell.hidden && cell.previewEnd ? '' : undefined"
             >
               <template v-if="!cell.hidden">
                 <span class="ds-calendar-day-content">
@@ -805,6 +812,10 @@ defineExpose({
   transform: scaleX(-1);
 }
 
+.ds-calendar-toggle {
+  min-width: var(--cal-toggle-min-with);
+}
+
 .ds-calendar-toggle .ds-icon {
   color: var(--text-muted);
   transition: transform var(--duration-150) var(--ease-out);
@@ -893,9 +904,9 @@ button.ds-calendar-day {
 }
 
 /* the range band paints on ::before, under the .ds-calendar-day-content
-   circle that follows it in DOM order — no z-index needed; it only spans
-   the days strictly between the range ends (the caps show their circle
-   alone, with no split background) */
+   circle that follows it in DOM order — no z-index needed; it runs from
+   the range start to the end (or the preview anchor) and rounds off at
+   the caps below */
 .ds-calendar-day:is([data-in-range], [data-preview])::before {
   content: '';
   position: absolute;
@@ -905,6 +916,16 @@ button.ds-calendar-day {
 
 .ds-calendar-day[data-preview]::before {
   background-color: var(--cal-preview-bg);
+}
+
+.ds-calendar-day[data-range-start]::before {
+  border-start-start-radius: var(--cal-cell-radius);
+  border-end-start-radius: var(--cal-cell-radius);
+}
+
+.ds-calendar-day:is([data-range-end], [data-preview-end])::before {
+  border-start-end-radius: var(--cal-cell-radius);
+  border-end-end-radius: var(--cal-cell-radius);
 }
 
 .ds-calendar-day-content {

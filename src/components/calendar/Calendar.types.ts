@@ -39,7 +39,7 @@ export interface CalendarDayScope {
   adjacent: boolean
   rangeStart: boolean
   rangeEnd: boolean
-  /** Strictly between the range start and end */
+  /** Inside the committed range, start and end included */
   inRange: boolean
   /** The events of this day (see the `events` prop) */
   events: CalendarEvent[]
