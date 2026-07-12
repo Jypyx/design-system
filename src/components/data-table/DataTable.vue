@@ -1,9 +1,12 @@
 <script setup lang="ts" generic="T extends Record<string, unknown>">
 import './data-table.tokens.css'
 import { computed, onBeforeUnmount, ref, watch } from 'vue'
+import Button from '../button/Button.vue'
 import Checkbox from '../checkbox/Checkbox.vue'
 import Icon from '../icon/Icon.vue'
 import Input from '../input/Input.vue'
+import Menu from '../menu/Menu.vue'
+import MenuItem from '../menu/MenuItem.vue'
 import Pagination from '../pagination/Pagination.vue'
 import ProgressLinear from '../progress-linear/ProgressLinear.vue'
 import type {
@@ -14,7 +17,8 @@ import type {
 } from './DataTable.types'
 
 const props = withDefaults(defineProps<DataTableProps<T>>(), {
-  pageSize: 10,
+  pageSizeOptions: () => [10, 25, 50, 100],
+  pageSizeLabel: 'Rows per page',
   selectable: false,
   searchable: true,
   searchPlaceholder: 'Search…',
@@ -33,6 +37,8 @@ const props = withDefaults(defineProps<DataTableProps<T>>(), {
 
 /** current page, 1-based */
 const page = defineModel<number>('page', { default: 1 })
+/** rows per page — also settable from the footer menu (see pageSizeOptions) */
+const pageSize = defineModel<number>('pageSize', { default: 10 })
 /** active sort — null means unsorted */
 const sort = defineModel<DataTableSort | null>('sort', { default: null })
 /** search query (debounced: updates searchDebounce ms after typing stops) */
@@ -137,7 +143,7 @@ const sorted = computed<T[]>(() => {
 const pageCount = computed(() =>
   Math.max(
     1,
-    Math.ceil((serverMode.value ? props.total! : sorted.value.length) / props.pageSize),
+    Math.ceil((serverMode.value ? props.total! : sorted.value.length) / pageSize.value),
   ),
 )
 
@@ -149,10 +155,17 @@ const visibleRows = computed<T[]>(() =>
   serverMode.value
     ? props.rows
     : sorted.value.slice(
-        (currentPage.value - 1) * props.pageSize,
-        currentPage.value * props.pageSize,
+        (currentPage.value - 1) * pageSize.value,
+        currentPage.value * pageSize.value,
       ),
 )
+
+/** footer menu selection; a new page size restarts from the first page */
+function setPageSize(size: number) {
+  if (size === pageSize.value) return
+  pageSize.value = size
+  if (page.value !== 1) page.value = 1
+}
 
 /* --- sorting ------------------------------------------------------------ */
 
@@ -175,7 +188,7 @@ const ariaSort = (column: DataTableColumn<T>): 'ascending' | 'descending' | unde
 
 /** display index → index in the full (sorted) dataset, unique across pages */
 const rowIndex = (i: number) =>
-  serverMode.value ? i : (currentPage.value - 1) * props.pageSize + i
+  serverMode.value ? i : (currentPage.value - 1) * pageSize.value + i
 
 const keyOf = (row: T, index: number): DataTableRowKey => {
   if (typeof props.rowKey === 'function') return props.rowKey(row)
@@ -294,14 +307,15 @@ const colSpan = computed(() => props.columns.length + (props.selectable ? 1 : 0)
               </slot>
             </th>
           </tr>
+          <!-- zero-height row: the bar overlays the body without displacing it;
+               decorative — the region-level aria-busy already conveys loading -->
+          <tr v-if="loading" class="ds-table-progress" aria-hidden="true">
+            <th :colspan="colSpan">
+              <ProgressLinear indeterminate square :height="3" :label="loadingLabel" />
+            </th>
+          </tr>
         </thead>
         <tbody>
-          <!-- decorative: the region-level aria-busy already conveys loading -->
-          <tr v-if="loading" class="ds-table-progress" aria-hidden="true">
-            <td :colspan="colSpan">
-              <ProgressLinear indeterminate square :height="3" :label="loadingLabel" />
-            </td>
-          </tr>
           <tr
             v-for="(row, i) in visibleRows"
             :key="keyOf(row, rowIndex(i))"
@@ -336,8 +350,38 @@ const colSpan = computed(() => props.columns.length + (props.selectable ? 1 : 0)
       </table>
     </div>
 
-    <div v-if="pageCount > 1" class="ds-table-footer">
-      <Pagination v-model="page" :length="pageCount" size="xs" variant="text" :disabled="loading" />
+    <div v-if="pageCount > 1 || pageSizeOptions.length > 0" class="ds-table-footer">
+      <div v-if="pageSizeOptions.length > 0" class="ds-table-page-size">
+        <span aria-hidden="true">{{ pageSizeLabel }}</span>
+        <Menu placement="top-start" dense>
+          <Button
+            size="xs"
+            variant="text"
+            icon-end="arrow_drop_down"
+            :disabled="loading"
+            :aria-label="`${pageSizeLabel}: ${pageSize}`"
+          >
+            {{ pageSize }}
+          </Button>
+          <template #items>
+            <MenuItem
+              v-for="option in pageSizeOptions"
+              :key="option"
+              :label="String(option)"
+              :icon-end="option === pageSize ? 'check' : undefined"
+              @click="setPageSize(option)"
+            />
+          </template>
+        </Menu>
+      </div>
+      <Pagination
+        v-if="pageCount > 1"
+        v-model="page"
+        :length="pageCount"
+        size="xs"
+        variant="text"
+        :disabled="loading"
+      />
     </div>
   </div>
 </template>
@@ -476,7 +520,7 @@ const colSpan = computed(() => props.columns.length + (props.selectable ? 1 : 0)
 .ds-table[data-striped]
   .ds-table-table
   tbody
-  tr:nth-child(even of :not(.ds-table-progress, .ds-table-empty)):not([data-selected])
+  tr:nth-child(even of :not(.ds-table-empty)):not([data-selected])
   td {
   background-color: var(--dt-stripe-bg);
 }
@@ -484,7 +528,7 @@ const colSpan = computed(() => props.columns.length + (props.selectable ? 1 : 0)
 .ds-table[data-hover]
   .ds-table-table
   tbody
-  tr:not(.ds-table-progress, .ds-table-empty, [data-selected]):hover
+  tr:not(.ds-table-empty, [data-selected]):hover
   td {
   background-color: var(--dt-row-hover-bg);
 }
@@ -565,13 +609,30 @@ const colSpan = computed(() => props.columns.length + (props.selectable ? 1 : 0)
 
 /* --- loading / empty ----------------------------------------------------- */
 
-.ds-table-progress td {
-  block-size: auto;
+/* zero-height header row: the bar hangs below it in absolute position,
+   overlaying the first body row instead of displacing it */
+.ds-table-table thead .ds-table-progress th {
+  position: relative;
+  block-size: 0;
   padding: 0;
   border-block-end: none;
+  background: none;
 }
 
-.ds-table[data-loading] .ds-table-table tbody tr:not(.ds-table-progress) {
+.ds-table[data-sticky-header] .ds-table-table thead .ds-table-progress th {
+  /* rides along under the sticky header row */
+  position: sticky;
+  inset-block-start: var(--dt-header-height);
+  z-index: 1;
+}
+
+.ds-table-progress .ds-progress-linear {
+  position: absolute;
+  inset-inline: 0;
+  inset-block-start: 0;
+}
+
+.ds-table[data-loading] .ds-table-table tbody tr {
   opacity: var(--dt-loading-opacity);
   pointer-events: none;
 }
@@ -587,8 +648,18 @@ const colSpan = computed(() => props.columns.length + (props.selectable ? 1 : 0)
 
 .ds-table-footer {
   display: flex;
+  align-items: center;
   justify-content: flex-end;
+  gap: var(--dt-footer-gap);
   padding: var(--dt-footer-padding);
   border-block-start: 1px solid var(--dt-border-color);
+}
+
+.ds-table-page-size {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-1);
+  font-size: var(--text-xs);
+  color: var(--dt-muted-color);
 }
 </style>

@@ -46,6 +46,7 @@
   --dt-title-font-weight: var(--font-weight-medium);
   --dt-search-max-width: 280px;
   --dt-footer-padding: var(--spacing-2) var(--spacing-3);
+  --dt-footer-gap: var(--spacing-4);
 }
 
 /* --- density ---------------------------------------------------- */

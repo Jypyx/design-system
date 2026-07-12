@@ -3,7 +3,12 @@ import { expect, userEvent, waitFor, within } from 'storybook/test'
 import { ref, watch, type DefineComponent } from 'vue'
 import DataTable from './DataTable.vue'
 import Chip from '../chip/Chip.vue'
-import type { DataTableColumn, DataTableProps, DataTableSort } from './DataTable.types'
+import type {
+  DataTableColumn,
+  DataTableProps,
+  DataTableRowKey,
+  DataTableSort,
+} from './DataTable.types'
 
 const densities = ['default', 'compact'] as const
 
@@ -41,8 +46,17 @@ const columns: DataTableColumn<Dessert>[] = [
 ]
 
 /* Meta can't digest a generic component (its call signature doesn't match
-   ConcreteComponent), so the stories pin it to the fixture's row type */
-const DataTableDessert = DataTable as unknown as DefineComponent<DataTableProps<Dessert>>
+   ConcreteComponent), so the stories pin it to the fixture's row type;
+   the intersection re-adds the defineModel props absent from the Props type */
+const DataTableDessert = DataTable as unknown as DefineComponent<
+  DataTableProps<Dessert> & {
+    page?: number
+    pageSize?: number
+    sort?: DataTableSort | null
+    search?: string
+    selected?: DataTableRowKey[]
+  }
+>
 
 const meta = {
   title: 'Components/DataTable',
@@ -59,7 +73,12 @@ const meta = {
       control: 'number',
       description: 'Server-side row count — providing it switches to server mode',
     },
-    pageSize: { control: 'number' },
+    pageSize: { control: 'number', description: 'v-model:pageSize — rows per page' },
+    pageSizeOptions: {
+      control: 'object',
+      description: 'Choices of the rows-per-page footer menu; [] hides it',
+    },
+    pageSizeLabel: { control: 'text' },
     selectable: { control: 'boolean' },
     searchable: { control: 'boolean' },
     searchDebounce: { control: 'number', description: 'v-model:search debounce, in ms' },
@@ -158,6 +177,23 @@ export const Search: Story = {
     /* header row + the single match, once the 250ms debounce settles */
     await waitFor(() => expect(canvas.getAllByRole('row')).toHaveLength(2), { timeout: 2000 })
     await expect(canvas.getAllByRole('row')[1]).toHaveTextContent('Frozen yogurt')
+  },
+}
+
+/**
+ * The footer menu drives `v-model:pageSize` (choices come from
+ * `pageSizeOptions`); picking a new size goes back to the first page.
+ */
+export const PageSize: Story = {
+  args: { pageSize: 5, pageSizeOptions: [5, 10, 15] },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    await expect(canvas.getAllByRole('row')).toHaveLength(6)
+
+    await userEvent.click(canvas.getByRole('button', { name: 'Rows per page: 5' }))
+    await userEvent.click(await canvas.findByRole('menuitem', { name: '15' }))
+    /* header row + the 15 dessert rows, back on page 1 */
+    await waitFor(() => expect(canvas.getAllByRole('row')).toHaveLength(16))
   },
 }
 
@@ -325,6 +361,7 @@ export const StickyHeader: Story = {
     stickyHeader: true,
     height: '320px',
     pageSize: 30,
+    pageSizeOptions: [],
     searchable: false,
   },
 }
@@ -349,6 +386,7 @@ export const Empty: Story = {
           :columns="columns"
           :rows="[]"
           :searchable="false"
+          :page-size-options="[]"
           title="Default message"
           caption="Empty dessert list"
           empty-text="No desserts yet"
@@ -357,6 +395,7 @@ export const Empty: Story = {
           :columns="columns"
           :rows="[]"
           :searchable="false"
+          :page-size-options="[]"
           title="Empty slot"
           caption="Empty dessert list, custom slot"
         >

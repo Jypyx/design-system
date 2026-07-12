@@ -50,8 +50,14 @@ export interface DataTableProps<T = Record<string, unknown>> {
    * its API; total drives the page count.
    */
   total?: number
-  /** Rows per page (default 10) */
-  pageSize?: number
+  /**
+   * Choices of the rows-per-page menu in the footer (default [10, 25, 50,
+   * 100]); pass [] to hide it. The current value is the v-model:pageSize
+   * (default 10).
+   */
+  pageSizeOptions?: number[]
+  /** Text next to the rows-per-page menu */
+  pageSizeLabel?: string
   /** Checkbox column + select-all header checkbox; selection lives in v-model:selected */
   selectable?: boolean
   /** Search input in the toolbar (default true) */
