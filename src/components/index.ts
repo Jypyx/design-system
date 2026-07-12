@@ -67,6 +67,17 @@ export type {
   ComboboxValue,
 } from './combobox/Combobox.types'
 
+export { default as DataTable } from './data-table/DataTable.vue'
+export type {
+  DataTableAlign,
+  DataTableColumn,
+  DataTableDensity,
+  DataTableProps,
+  DataTableRowKey,
+  DataTableSort,
+  DataTableSortDirection,
+} from './data-table/DataTable.types'
+
 export { default as DatePicker } from './date-picker/DatePicker.vue'
 export type {
   DatePickerPlacement,

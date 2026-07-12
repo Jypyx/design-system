@@ -1,0 +1,57 @@
+/* ============================================================
+ * LAYER 3 — Component tokens: DataTable
+ * Consumes Layer 2 semantic tokens only; light + dark come for
+ * free because the semantic layer resolves via light-dark().
+ *
+ *   --dt-header-bg            header cell background — must stay
+ *                             opaque: sticky headers paint over rows
+ *   --dt-row-hover-bg         hover tint of body rows ([data-hover])
+ *   --dt-stripe-bg            even-row background ([data-striped])
+ *   --dt-row-selected-bg      background of selected rows
+ *   --dt-loading-opacity      body dimming while loading
+ * ============================================================ */
+
+.ds-table {
+  /* surfaces & structure */
+  --dt-bg: var(--surface);
+  --dt-border-color: var(--border);
+  --dt-radius: var(--radius-md);
+
+  /* typography */
+  --dt-font-size: var(--text-sm);
+  --dt-color: var(--text);
+  --dt-muted-color: var(--text-muted);
+  --dt-header-font-size: var(--text-sm);
+  --dt-header-font-weight: var(--font-weight-medium);
+  --dt-header-color: var(--text);
+  --dt-header-bg: var(--surface);
+
+  /* density — default (Material: 56px header, 52px rows) */
+  --dt-header-height: 56px;
+  --dt-row-height: 52px;
+  --dt-cell-padding-inline: var(--spacing-4);
+
+  /* interaction states */
+  --dt-row-hover-bg: color-mix(in oklab, var(--text) 5%, transparent);
+  --dt-stripe-bg: var(--surface-muted);
+  --dt-row-selected-bg: color-mix(in oklab, var(--color-primary) 10%, var(--surface));
+  --dt-row-selected-hover-bg: color-mix(in oklab, var(--color-primary) 16%, var(--surface));
+  --dt-sort-icon-size: 18px;
+  --dt-loading-opacity: 0.55;
+
+  /* toolbar / footer */
+  --dt-toolbar-padding: var(--spacing-3) var(--spacing-4);
+  --dt-toolbar-gap: var(--spacing-4);
+  --dt-title-font-size: var(--text-base);
+  --dt-title-font-weight: var(--font-weight-medium);
+  --dt-search-max-width: 280px;
+  --dt-footer-padding: var(--spacing-2) var(--spacing-3);
+}
+
+/* --- density ---------------------------------------------------- */
+
+.ds-table[data-density='compact'] {
+  --dt-header-height: 44px;
+  --dt-row-height: 40px;
+  --dt-cell-padding-inline: var(--spacing-3);
+}
