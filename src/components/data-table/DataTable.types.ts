@@ -70,6 +70,15 @@ export interface DataTableProps<T = Record<string, unknown>> {
   /** Indeterminate progress bar under the header + dimmed body */
   loading?: boolean
   density?: DataTableDensity
+  /**
+   * Below a 600px-wide container, rows restack into label / value cards,
+   * header sorting moves to a toolbar menu and select-all becomes a bar
+   * above the cards. Pure CSS (container query): the switch follows the
+   * component's own container, not the viewport.
+   */
+  responsive?: boolean
+  /** Accessible name of the toolbar sort menu (card mode) */
+  sortLabel?: string
   /** Zebra striping of body rows */
   striped?: boolean
   /** Row hover highlight (default true) */

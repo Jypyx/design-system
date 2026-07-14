@@ -26,6 +26,8 @@ const props = withDefaults(defineProps<DataTableProps<T>>(), {
   searchDebounce: 250,
   loading: false,
   density: 'default',
+  responsive: false,
+  sortLabel: 'Sort by',
   striped: false,
   hover: true,
   stickyHeader: false,
@@ -184,6 +186,9 @@ const ariaSort = (column: DataTableColumn<T>): 'ascending' | 'descending' | unde
       : 'descending'
     : undefined
 
+/* card mode replaces the (hidden) header sort buttons with a toolbar menu */
+const sortableColumns = computed(() => props.columns.filter((c) => c.sortable))
+
 /* --- selection ----------------------------------------------------------- */
 
 /** display index → index in the full (sorted) dataset, unique across pages */
@@ -236,10 +241,17 @@ const colSpan = computed(() => props.columns.length + (props.selectable ? 1 : 0)
     :data-hover="hover ? '' : undefined"
     :data-sticky-header="stickyHeader ? '' : undefined"
     :data-loading="loading ? '' : undefined"
+    :data-responsive="responsive ? '' : undefined"
     :aria-busy="loading ? 'true' : undefined"
   >
     <div
-      v-if="title || searchable || $slots.toolbar || (selectable && selected.length > 0)"
+      v-if="
+        title ||
+        searchable ||
+        $slots.toolbar ||
+        (selectable && selected.length > 0) ||
+        (responsive && sortableColumns.length > 0)
+      "
       class="ds-table-toolbar"
     >
       <div class="ds-table-toolbar-start">
@@ -265,16 +277,42 @@ const colSpan = computed(() => props.columns.length + (props.selectable ? 1 : 0)
         :placeholder="searchPlaceholder"
         :aria-label="searchLabel"
       />
+      <!-- card mode only (CSS decides): sorting for the hidden header -->
+      <Menu
+        v-if="responsive && sortableColumns.length > 0"
+        class="ds-table-sort-menu"
+        placement="bottom-end"
+        dense
+      >
+        <Button size="sm" variant="text" icon="swap_vert" :label="sortLabel" />
+        <template #items>
+          <MenuItem
+            v-for="column in sortableColumns"
+            :key="column.key"
+            :label="column.label"
+            :icon-end="
+              sort?.key === column.key
+                ? sort.direction === 'asc'
+                  ? 'arrow_upward'
+                  : 'arrow_downward'
+                : undefined
+            "
+            @click="cycleSort(column)"
+          />
+        </template>
+      </Menu>
     </div>
 
     <div class="ds-table-scroller" :style="height ? { maxBlockSize: height } : undefined">
-      <table class="ds-table-table">
+      <!-- explicit roles: card mode restyles display, which would
+           otherwise strip the implicit table semantics -->
+      <table class="ds-table-table" role="table">
         <caption v-if="caption" class="ds-table-caption">
           {{ caption }}
         </caption>
-        <thead>
-          <tr>
-            <th v-if="selectable" class="ds-table-check" scope="col">
+        <thead role="rowgroup">
+          <tr role="row">
+            <th v-if="selectable" class="ds-table-check" scope="col" role="columnheader">
               <Checkbox
                 :model-value="allSelected"
                 :indeterminate="someSelected"
@@ -287,6 +325,7 @@ const colSpan = computed(() => props.columns.length + (props.selectable ? 1 : 0)
               v-for="column in columns"
               :key="column.key"
               scope="col"
+              role="columnheader"
               :aria-sort="ariaSort(column)"
               :data-align="column.align"
               :data-sortable="column.sortable ? '' : undefined"
@@ -315,21 +354,28 @@ const colSpan = computed(() => props.columns.length + (props.selectable ? 1 : 0)
             </th>
           </tr>
         </thead>
-        <tbody>
+        <tbody role="rowgroup">
           <tr
             v-for="(row, i) in visibleRows"
             :key="keyOf(row, rowIndex(i))"
+            role="row"
             :data-selected="selectable && isSelected(row, i) ? '' : undefined"
             @click="emit('row-click', row, $event)"
           >
-            <td v-if="selectable" class="ds-table-check" @click.stop>
+            <td v-if="selectable" class="ds-table-check" role="cell" @click.stop>
               <Checkbox
                 :model-value="isSelected(row, i)"
                 :label="`${selectRowLabel} ${rowIndex(i) + 1}`"
                 @update:model-value="(value: boolean) => toggleRow(keyOf(row, rowIndex(i)), value)"
               />
             </td>
-            <td v-for="column in columns" :key="column.key" :data-align="column.align">
+            <td
+              v-for="column in columns"
+              :key="column.key"
+              role="cell"
+              :data-align="column.align"
+              :data-label="column.label"
+            >
               <slot
                 :name="`cell-${column.key}`"
                 :row="row"
@@ -341,8 +387,8 @@ const colSpan = computed(() => props.columns.length + (props.selectable ? 1 : 0)
               </slot>
             </td>
           </tr>
-          <tr v-if="!loading && visibleRows.length === 0" class="ds-table-empty">
-            <td :colspan="colSpan">
+          <tr v-if="!loading && visibleRows.length === 0" class="ds-table-empty" role="row">
+            <td :colspan="colSpan" role="cell">
               <slot name="empty">{{ emptyText }}</slot>
             </td>
           </tr>
@@ -393,6 +439,9 @@ const colSpan = computed(() => props.columns.length + (props.selectable ? 1 : 0)
   margin: 0;
   display: block;
   overflow: hidden;
+  /* named container: the responsive card mode reacts to the component's
+     own width, and a nested DataTable never matches an outer one */
+  container: ds-table / inline-size;
   border: 1px solid var(--dt-border-color);
   border-radius: var(--dt-radius);
   background-color: var(--dt-bg);
@@ -437,6 +486,11 @@ const colSpan = computed(() => props.columns.length + (props.selectable ? 1 : 0)
 .ds-table-search {
   flex: 0 1 var(--dt-search-max-width);
   min-inline-size: 140px;
+}
+
+/* only exists in card mode, where the header (and its sort buttons) is gone */
+.ds-table .ds-table-sort-menu {
+  display: none;
 }
 
 /* --- table ----------------------------------------------------------- */
@@ -661,5 +715,116 @@ const colSpan = computed(() => props.columns.length + (props.selectable ? 1 : 0)
   gap: var(--spacing-1);
   font-size: var(--text-xs);
   color: var(--dt-muted-color);
+}
+
+/* --- responsive card mode ------------------------------------------------- */
+/* opt-in ([data-responsive]); below 600px of CONTAINER width, rows restack
+   into label / value cards. 600px is hardcoded: custom properties are not
+   allowed in a container query condition. Only descendants are styled — a
+   container can't match its own query. */
+
+@container ds-table (inline-size < 600px) {
+  /* toolbar: search takes a full line, the sort menu appears */
+  .ds-table[data-responsive] .ds-table-toolbar {
+    flex-wrap: wrap;
+  }
+
+  .ds-table[data-responsive] .ds-table-search {
+    flex: 1 1 100%;
+    order: 1;
+  }
+
+  .ds-table[data-responsive] .ds-table-sort-menu {
+    display: inline-block;
+  }
+
+  /* the table restyles as stacked blocks (explicit role attributes in the
+     template preserve the table semantics) */
+  .ds-table[data-responsive] .ds-table-table,
+  .ds-table[data-responsive] .ds-table-table thead,
+  .ds-table[data-responsive] .ds-table-table tbody,
+  .ds-table[data-responsive] .ds-table-table tr {
+    display: block;
+  }
+
+  /* header row: the column labels move into the cards (td::before), the
+     sort buttons into the toolbar menu; only select-all remains, as a bar */
+  .ds-table[data-responsive] .ds-table-table thead th:not(.ds-table-check) {
+    display: none;
+  }
+
+  .ds-table[data-responsive] .ds-table-table thead th.ds-table-check {
+    display: flex;
+    align-items: center;
+    inline-size: auto;
+    block-size: auto;
+    padding: var(--spacing-2) var(--dt-cell-padding-inline);
+  }
+
+  /* the select-all label, sr-only in table mode, becomes the bar's text */
+  .ds-table[data-responsive] .ds-table-table thead .ds-table-check .ds-checkbox-label {
+    position: static;
+    inline-size: auto;
+    block-size: auto;
+    margin: 0;
+    overflow: visible;
+    clip-path: none;
+  }
+
+  /* the loading bar keeps its zero-height overlay behavior
+     (after the th:not(.ds-table-check) hide rule: same specificity) */
+  .ds-table[data-responsive] .ds-table-table thead .ds-table-progress th {
+    display: block;
+  }
+
+  /* each body row becomes a card */
+  .ds-table[data-responsive] .ds-table-table tbody tr {
+    margin: var(--dt-card-gap);
+    border: 1px solid var(--dt-border-color);
+    border-radius: var(--dt-radius);
+    /* td backgrounds (hover / striped / selected) follow the radius */
+    overflow: hidden;
+  }
+
+  /* cells become "label : value" lines, the label drawn from data-label */
+  .ds-table[data-responsive] .ds-table-table tbody td {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-4);
+    block-size: auto;
+    padding: var(--dt-card-padding);
+    text-align: start;
+  }
+
+  .ds-table[data-responsive] .ds-table-table tbody td:last-child {
+    border-block-end: none;
+  }
+
+  .ds-table[data-responsive] .ds-table-table tbody td[data-label]::before {
+    content: attr(data-label);
+    font-weight: var(--dt-header-font-weight);
+    color: var(--dt-card-label-color);
+  }
+
+  .ds-table[data-responsive] .ds-table-table tbody td.ds-table-check {
+    justify-content: flex-start;
+    inline-size: auto;
+    padding-inline-end: var(--dt-cell-padding-inline);
+  }
+
+  .ds-table[data-responsive] .ds-table-table tbody tr.ds-table-empty {
+    border: none;
+  }
+
+  .ds-table[data-responsive] .ds-table-table tbody .ds-table-empty td {
+    justify-content: center;
+  }
+
+  /* footer: page-size menu and pagination wrap around a centered axis */
+  .ds-table[data-responsive] .ds-table-footer {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
 }
 </style>

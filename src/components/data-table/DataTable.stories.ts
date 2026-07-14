@@ -88,6 +88,12 @@ const meta = {
       options: densities,
       description: 'default = 52px rows, compact = 40px rows',
     },
+    responsive: {
+      control: 'boolean',
+      description:
+        'Below a 600px-wide container, rows restack into label / value cards (pure CSS)',
+    },
+    sortLabel: { control: 'text', description: 'Accessible name of the card-mode sort menu' },
     striped: { control: 'boolean' },
     hover: { control: 'boolean' },
     stickyHeader: { control: 'boolean', description: 'Pair with height (or a constrained parent)' },
@@ -374,6 +380,51 @@ export const StickyHeader: Story = {
  */
 export const Loading: Story = {
   args: { loading: true },
+}
+
+/**
+ * With `responsive`, the switch is driven by the width of the component's own
+ * container (CSS container query, threshold 600px) — not the viewport: drag
+ * the handle to resize. Below it, rows restack into label / value cards,
+ * sorting moves to the toolbar menu and select-all becomes a bar above the
+ * cards.
+ */
+export const Responsive: Story = {
+  parameters: { controls: { disable: true } },
+  render: () => ({
+    components: { DataTable },
+    setup: () => ({ desserts, columns }),
+    template: `
+      <div style="resize: horizontal; overflow: hidden; inline-size: 400px; max-inline-size: 100%; padding-block-end: var(--spacing-2);">
+        <DataTable
+          :columns="columns"
+          :rows="desserts"
+          :page-size="5"
+          responsive
+          selectable
+          row-key="id"
+          title="Desserts"
+          caption="Nutritional values of desserts, per serving"
+        />
+      </div>
+    `,
+  }),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    /* 400px container → card mode: cells are stacked label / value lines */
+    const cell = canvasElement.querySelector('.ds-table-table tbody td[data-label]')!
+    await waitFor(() => expect(getComputedStyle(cell).display).toBe('flex'))
+    /* the select-all label, sr-only in table mode, is visible as a bar */
+    await expect(canvas.getByText('Select all rows')).toBeVisible()
+    /* sorting works from the toolbar menu */
+    await userEvent.click(canvas.getByRole('button', { name: 'Sort by' }))
+    await userEvent.click(await canvas.findByRole('menuitem', { name: 'Calories' }))
+    await waitFor(() =>
+      expect(
+        canvasElement.querySelector('.ds-table-table tbody tr td[data-label="Dessert"]'),
+      ).toHaveTextContent('Macaron'),
+    )
+  },
 }
 
 /** Without rows, the table shows `emptyText` — or the `empty` slot for richer content. */
