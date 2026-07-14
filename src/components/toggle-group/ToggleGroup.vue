@@ -16,9 +16,7 @@ function isPressed(value: ToggleGroupValue) {
 function toggle(value: ToggleGroupValue) {
   if (props.multiple) {
     const current = Array.isArray(model.value) ? model.value : []
-    model.value = current.includes(value)
-      ? current.filter((v) => v !== value)
-      : [...current, value]
+    model.value = current.includes(value) ? current.filter((v) => v !== value) : [...current, value]
   } else {
     /* free deselection: pressing the active toggle empties the selection */
     model.value = model.value === value ? null : value

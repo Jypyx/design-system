@@ -104,11 +104,7 @@ onBeforeUnmount(() => clearTimeout(searchTimer))
 /* --- client pipeline: filter → sort → slice ----------------------------- */
 
 /* case- and diacritics-insensitive ("epee" matches "Épée") */
-const fold = (s: string) =>
-  s
-    .normalize('NFD')
-    .replace(/[̀-ͯ]/g, '')
-    .toLowerCase()
+const fold = (s: string) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase()
 
 const filtered = computed<T[]>(() => {
   if (serverMode.value || !search.value) return props.rows
@@ -143,10 +139,7 @@ const sorted = computed<T[]>(() => {
 })
 
 const pageCount = computed(() =>
-  Math.max(
-    1,
-    Math.ceil((serverMode.value ? props.total! : sorted.value.length) / pageSize.value),
-  ),
+  Math.max(1, Math.ceil((serverMode.value ? props.total! : sorted.value.length) / pageSize.value)),
 )
 
 /* an out-of-range v-model renders as the nearest page but is never
@@ -308,7 +301,9 @@ const colSpan = computed(() => props.columns.length + (props.selectable ? 1 : 0)
            otherwise strip the implicit table semantics -->
       <table class="ds-table-table" role="table">
         <caption v-if="caption" class="ds-table-caption">
-          {{ caption }}
+          {{
+            caption
+          }}
         </caption>
         <thead role="rowgroup">
           <tr role="row">
@@ -579,11 +574,7 @@ const colSpan = computed(() => props.columns.length + (props.selectable ? 1 : 0)
   background-color: var(--dt-stripe-bg);
 }
 
-.ds-table[data-hover]
-  .ds-table-table
-  tbody
-  tr:not(.ds-table-empty, [data-selected]):hover
-  td {
+.ds-table[data-hover] .ds-table-table tbody tr:not(.ds-table-empty, [data-selected]):hover td {
   background-color: var(--dt-row-hover-bg);
 }
 

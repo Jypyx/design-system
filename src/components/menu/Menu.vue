@@ -26,9 +26,7 @@ let triggerControl: Element | undefined
 function itemsOf(menu: HTMLElement): HTMLElement[] {
   /* :enabled would skip link items — anchors never match it */
   return Array.from(
-    menu.querySelectorAll<HTMLElement>(
-      '.ds-menu-item:not(:disabled):not([aria-disabled="true"])',
-    ),
+    menu.querySelectorAll<HTMLElement>('.ds-menu-item:not(:disabled):not([aria-disabled="true"])'),
   ).filter((el) => el.closest('.ds-menu-popover') === menu)
 }
 
@@ -276,12 +274,18 @@ onMounted(() => {
 
 .ds-menu-popover[data-placement^='top'],
 .ds-menu-popover[data-placement^='bottom'] {
-  position-try-fallbacks: flip-block, flip-inline, flip-block flip-inline;
+  position-try-fallbacks:
+    flip-block,
+    flip-inline,
+    flip-block flip-inline;
 }
 
 .ds-menu-popover[data-placement='left'],
 .ds-menu-popover[data-placement='right'] {
-  position-try-fallbacks: flip-inline, flip-block, flip-block flip-inline;
+  position-try-fallbacks:
+    flip-inline,
+    flip-block,
+    flip-block flip-inline;
 }
 
 /* --- enter / exit transition -------------------------------------- */

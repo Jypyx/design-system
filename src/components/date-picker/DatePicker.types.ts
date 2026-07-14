@@ -4,12 +4,7 @@ import type { CalendarProps } from '../calendar/Calendar.types'
 export type DatePickerSize = 'xs' | 'sm' | 'md' | 'lg'
 
 export type DatePickerPlacement =
-  | 'bottom-start'
-  | 'bottom'
-  | 'bottom-end'
-  | 'top-start'
-  | 'top'
-  | 'top-end'
+  'bottom-start' | 'bottom' | 'bottom-end' | 'top-start' | 'top' | 'top-end'
 
 /** All Calendar props are forwarded to the popover Calendar */
 export interface DatePickerProps extends CalendarProps {

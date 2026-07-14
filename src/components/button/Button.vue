@@ -26,7 +26,11 @@ const iconProps = (icon: string) => (/[./:]/.test(icon) ? { src: icon } : { name
     :disabled="href ? undefined : disabled || undefined"
     :href="disabled ? undefined : href"
     :target="href && !disabled ? target : undefined"
-    :rel="href && !disabled ? (rel ?? (target === '_blank' ? 'noopener noreferrer' : undefined)) : undefined"
+    :rel="
+      href && !disabled
+        ? (rel ?? (target === '_blank' ? 'noopener noreferrer' : undefined))
+        : undefined
+    "
     :aria-disabled="href && disabled ? 'true' : undefined"
     :aria-busy="isLoading ? 'true' : undefined"
     :aria-label="label"
@@ -36,13 +40,7 @@ const iconProps = (icon: string) => (/[./:]/.test(icon) ? { src: icon } : { name
     :data-variant="variant"
     :data-shape="icon || label ? shape : undefined"
   >
-    <svg
-      v-if="isLoading"
-      class="ds-btn-spinner"
-      viewBox="0 0 24 24"
-      fill="none"
-      aria-hidden="true"
-    >
+    <svg v-if="isLoading" class="ds-btn-spinner" viewBox="0 0 24 24" fill="none" aria-hidden="true">
       <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3" opacity="0.25" />
       <path
         d="M12 2a10 10 0 0 1 10 10"

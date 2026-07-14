@@ -8,13 +8,7 @@ export type AvatarSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl'
  * based on its lightness).
  */
 export type AvatarColor =
-  | 'auto'
-  | 'neutral'
-  | 'primary'
-  | 'success'
-  | 'danger'
-  | 'warning'
-  | (string & {})
+  'auto' | 'neutral' | 'primary' | 'success' | 'danger' | 'warning' | (string & {})
 
 export interface AvatarProps {
   /**

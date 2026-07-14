@@ -27,8 +27,7 @@ const hiddenItems = computed(() => (collapsed.value ? props.items.slice(1, -2) :
 const endItems = computed(() => (collapsed.value ? props.items.slice(-2) : []))
 
 const currentPath = computed(
-  () =>
-    props.currentPath ?? (typeof window !== 'undefined' ? window.location.pathname : undefined),
+  () => props.currentPath ?? (typeof window !== 'undefined' ? window.location.pathname : undefined),
 )
 const isCurrent = (item: BreadcrumbItem) => item.href === currentPath.value
 </script>
@@ -36,11 +35,7 @@ const isCurrent = (item: BreadcrumbItem) => item.href === currentPath.value
 <template>
   <nav class="ds-breadcrumb" :aria-label="label">
     <ol class="ds-breadcrumb-list">
-      <li
-        v-for="(item, i) in startItems"
-        :key="`start-${item.href}`"
-        class="ds-breadcrumb-item"
-      >
+      <li v-for="(item, i) in startItems" :key="`start-${item.href}`" class="ds-breadcrumb-item">
         <a
           class="ds-breadcrumb-link"
           :href="item.href"

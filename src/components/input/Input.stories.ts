@@ -198,7 +198,16 @@ export const Showcase: Story = {
       const passwordVisible = ref(false)
       const username = ref('ada-lovelace')
       const website = ref('https://adalovelace.dev')
-      return { name, displayName, email, emailInvalid, password, passwordVisible, username, website }
+      return {
+        name,
+        displayName,
+        email,
+        emailInvalid,
+        password,
+        passwordVisible,
+        username,
+        website,
+      }
     },
     template: `
       <form style="display: grid; grid-template-columns: repeat(2, 300px); gap: var(--spacing-6);" @submit.prevent>

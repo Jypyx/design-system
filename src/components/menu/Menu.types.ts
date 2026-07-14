@@ -4,14 +4,7 @@
  * viewport. Submenus always open sideways and handle their own flips.
  */
 export type MenuPlacement =
-  | 'bottom-start'
-  | 'bottom'
-  | 'bottom-end'
-  | 'top-start'
-  | 'top'
-  | 'top-end'
-  | 'left'
-  | 'right'
+  'bottom-start' | 'bottom' | 'bottom-end' | 'top-start' | 'top' | 'top-end' | 'left' | 'right'
 
 export interface MenuProps {
   placement?: MenuPlacement

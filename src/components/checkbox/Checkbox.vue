@@ -32,7 +32,9 @@ const checked = defineModel<boolean>({ default: false })
         <path class="ds-checkbox-dash" d="M6 10h8" />
       </svg>
     </span>
-    <span v-if="label || $slots.default" class="ds-checkbox-label"><slot>{{ label }}</slot></span>
+    <span v-if="label || $slots.default" class="ds-checkbox-label"
+      ><slot>{{ label }}</slot></span
+    >
   </label>
 </template>
 

@@ -74,7 +74,11 @@ const onKeydown = (event: KeyboardEvent) => {
       :disabled="tag() === 'button' ? disabled || undefined : undefined"
       :href="disabled ? undefined : href"
       :target="href && !disabled ? target : undefined"
-      :rel="href && !disabled ? (rel ?? (target === '_blank' ? 'noopener noreferrer' : undefined)) : undefined"
+      :rel="
+        href && !disabled
+          ? (rel ?? (target === '_blank' ? 'noopener noreferrer' : undefined))
+          : undefined
+      "
       :aria-disabled="tag() === 'a' && disabled ? 'true' : undefined"
       :aria-pressed="tag() === 'button' && selected !== undefined ? String(selected) : undefined"
     >

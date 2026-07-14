@@ -209,12 +209,18 @@ onBeforeUnmount(() => {
 
 .ds-tooltip[data-placement^='top'],
 .ds-tooltip[data-placement^='bottom'] {
-  position-try-fallbacks: flip-block, flip-inline, flip-block flip-inline;
+  position-try-fallbacks:
+    flip-block,
+    flip-inline,
+    flip-block flip-inline;
 }
 
 .ds-tooltip[data-placement='left'],
 .ds-tooltip[data-placement='right'] {
-  position-try-fallbacks: flip-inline, flip-block, flip-block flip-inline;
+  position-try-fallbacks:
+    flip-inline,
+    flip-block,
+    flip-block flip-inline;
 }
 
 /* --- enter / exit transition -------------------------------------- */

@@ -10,7 +10,8 @@ const meta = {
   argTypes: {
     modelValue: {
       control: false,
-      description: 'v-model — the pressed value (or null) in single mode, an array in multiple mode',
+      description:
+        'v-model — the pressed value (or null) in single mode, an array in multiple mode',
     },
     multiple: { control: 'boolean' },
     attached: { control: 'boolean' },

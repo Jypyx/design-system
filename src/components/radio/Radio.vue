@@ -31,7 +31,9 @@ const model = defineModel<string | number | boolean | null>()
         <circle class="ds-radio-dot" cx="10" cy="10" r="4" />
       </svg>
     </span>
-    <span v-if="label || $slots.default" class="ds-radio-label"><slot>{{ label }}</slot></span>
+    <span v-if="label || $slots.default" class="ds-radio-label"
+      ><slot>{{ label }}</slot></span
+    >
   </label>
 </template>
 

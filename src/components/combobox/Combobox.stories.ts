@@ -41,7 +41,10 @@ const meta = {
   component: Combobox,
   tags: ['autodocs'],
   argTypes: {
-    modelValue: { control: false, description: 'v-model — a value (single) or an array (multiple)' },
+    modelValue: {
+      control: false,
+      description: 'v-model — a value (single) or an array (multiple)',
+    },
     options: { control: 'object' },
     multiple: { control: 'boolean' },
     size: { control: 'select', options: ['xs', 'sm', 'md', 'lg'] },
@@ -56,7 +59,10 @@ const meta = {
     required: { control: 'boolean' },
     invalid: { control: 'boolean' },
     name: { control: 'text' },
-    chips: { control: 'boolean', description: 'Multiple only — Chips (true) or joined text (false)' },
+    chips: {
+      control: 'boolean',
+      description: 'Multiple only — Chips (true) or joined text (false)',
+    },
     maxVisible: { control: 'number', description: 'Multiple only — collapse the rest into "+N"' },
     checkIcon: { control: 'text', description: 'Material Symbols name or image / SVG URL' },
     emptyText: { control: 'text' },

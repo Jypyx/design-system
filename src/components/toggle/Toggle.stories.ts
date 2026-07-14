@@ -11,8 +11,7 @@ const meta = {
     variant: {
       control: 'select',
       options: ['tonal', 'flat', 'outlined-tonal', 'outlined-flat', 'tonal-flat'],
-      description:
-        'Off → on pair: single names rest transparent; compound names spell both states',
+      description: 'Off → on pair: single names rest transparent; compound names spell both states',
     },
     fillIcon: {
       control: 'boolean',

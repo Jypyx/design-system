@@ -97,9 +97,7 @@ export const IndeterminateSelection: Story = {
         get: () => items.every((item) => item.value),
         set: (value: boolean) => items.forEach((item) => (item.value = value)),
       })
-      const someChecked = computed(
-        () => items.some((item) => item.value) && !allChecked.value,
-      )
+      const someChecked = computed(() => items.some((item) => item.value) && !allChecked.value)
       return { items, allChecked, someChecked }
     },
     template: `

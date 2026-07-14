@@ -17,7 +17,7 @@ const props = withDefaults(defineProps<InputProps>(), {
   invalid: false,
 })
 
-const emit = defineEmits<{ 'clear': []; 'icon-end-click': [MouseEvent] }>()
+const emit = defineEmits<{ clear: []; 'icon-end-click': [MouseEvent] }>()
 
 const model = defineModel<string | number>({ default: '' })
 

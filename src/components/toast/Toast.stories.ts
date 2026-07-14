@@ -4,7 +4,9 @@ import { toast } from './toast'
 import type { ToastOptions } from './Toast.types'
 import Button from '../button/Button.vue'
 
-type PlaygroundArgs = Required<Pick<ToastOptions, 'color' | 'position' | 'size' | 'closable' | 'duration'>> & {
+type PlaygroundArgs = Required<
+  Pick<ToastOptions, 'color' | 'position' | 'size' | 'closable' | 'duration'>
+> & {
   message: string
   title: string
 }
@@ -22,7 +24,14 @@ const meta = {
     },
     position: {
       control: 'select',
-      options: ['top-left', 'top-center', 'top-right', 'bottom-left', 'bottom-center', 'bottom-right'],
+      options: [
+        'top-left',
+        'top-center',
+        'top-right',
+        'bottom-left',
+        'bottom-center',
+        'bottom-right',
+      ],
     },
     size: { control: 'select', options: ['sm', 'md', 'lg'] },
     closable: { control: 'boolean' },

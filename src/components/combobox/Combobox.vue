@@ -4,7 +4,12 @@ import './combobox.tokens.css'
 import Chip from '../chip/Chip.vue'
 import Icon from '../icon/Icon.vue'
 import type { ChipSize } from '../chip/Chip.types'
-import type { ComboboxModelValue, ComboboxOption, ComboboxProps, ComboboxValue } from './Combobox.types'
+import type {
+  ComboboxModelValue,
+  ComboboxOption,
+  ComboboxProps,
+  ComboboxValue,
+} from './Combobox.types'
 
 const props = withDefaults(defineProps<ComboboxProps>(), {
   multiple: false,
@@ -22,7 +27,7 @@ const props = withDefaults(defineProps<ComboboxProps>(), {
   selectAllLabel: 'Select all',
 })
 
-const emit = defineEmits<{ 'clear': []; 'open': []; 'close': [] }>()
+const emit = defineEmits<{ clear: []; open: []; close: [] }>()
 
 const model = defineModel<ComboboxModelValue>({ default: null })
 
@@ -85,11 +90,7 @@ const chipSize = computed(() => chipSizes[props.size])
 /* --- filtering ------------------------------------------------------ */
 
 /* case- and diacritics-insensitive ("epee" matches "Épée") */
-const fold = (s: string) =>
-  s
-    .normalize('NFD')
-    .replace(/[̀-ͯ]/g, '')
-    .toLowerCase()
+const fold = (s: string) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase()
 
 const filtered = computed<ComboboxOption[]>(() => {
   if (!hasTyped.value || !query.value) return props.options
@@ -100,7 +101,8 @@ const filtered = computed<ComboboxOption[]>(() => {
 /* filtered options bucketed by their group, in first-appearance order;
    ungrouped options render bare (no role="group" wrapper) */
 const groupedOptions = computed(() => {
-  const groups: { name: string | undefined; entries: { option: ComboboxOption; id: string }[] }[] = []
+  const groups: { name: string | undefined; entries: { option: ComboboxOption; id: string }[] }[] =
+    []
   const byName = new Map<string | undefined, (typeof groups)[number]>()
   filtered.value.forEach((option, index) => {
     let group = byName.get(option.group)
@@ -458,12 +460,7 @@ defineExpose({
         </div>
 
         <template v-for="group in groupedOptions" :key="group.name ?? ''">
-          <div
-            v-if="group.name"
-            class="ds-combobox-group"
-            role="group"
-            :aria-label="group.name"
-          >
+          <div v-if="group.name" class="ds-combobox-group" role="group" :aria-label="group.name">
             <!-- the group is named via aria-label; the visible heading stays decorative -->
             <div class="ds-combobox-group-label" aria-hidden="true">{{ group.name }}</div>
             <div

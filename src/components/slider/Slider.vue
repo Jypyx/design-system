@@ -35,14 +35,17 @@ const lo = computed(() => (props.options ? 0 : props.min))
 const hi = computed(() => (props.options ? props.options.length - 1 : props.max))
 const inc = computed(() => (props.options ? 1 : props.step))
 
-const toPos = (v: SliderValue) => (props.options ? Math.max(0, props.options.indexOf(v)) : Number(v))
+const toPos = (v: SliderValue) =>
+  props.options ? Math.max(0, props.options.indexOf(v)) : Number(v)
 const toValue = (p: number): SliderValue => (props.options ? props.options[p] : p)
 
 const startPos = computed(() =>
   isRange.value ? toPos((model.value as [SliderValue, SliderValue])[0]) : lo.value,
 )
 const endPos = computed(() =>
-  isRange.value ? toPos((model.value as [SliderValue, SliderValue])[1]) : toPos(model.value as SliderValue),
+  isRange.value
+    ? toPos((model.value as [SliderValue, SliderValue])[1])
+    : toPos(model.value as SliderValue),
 )
 const startValue = computed(() => toValue(startPos.value))
 const endValue = computed(() => toValue(endPos.value))

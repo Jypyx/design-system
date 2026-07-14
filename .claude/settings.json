@@ -1,8 +1,5 @@
 {
   "permissions": {
-    "allow": [
-      "PowerShell(npx vitest run *)",
-      "PowerShell(npm run *)"
-    ]
+    "allow": ["PowerShell(npx vitest run *)", "PowerShell(npm run *)"]
   }
 }

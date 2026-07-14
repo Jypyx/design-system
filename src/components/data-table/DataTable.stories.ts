@@ -90,8 +90,7 @@ const meta = {
     },
     responsive: {
       control: 'boolean',
-      description:
-        'Below a 600px-wide container, rows restack into label / value cards (pure CSS)',
+      description: 'Below a 600px-wide container, rows restack into label / value cards (pure CSS)',
     },
     sortLabel: { control: 'text', description: 'Accessible name of the card-mode sort menu' },
     striped: { control: 'boolean' },

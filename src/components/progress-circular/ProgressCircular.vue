@@ -62,11 +62,7 @@ const rootStyle = computed(() => {
     :data-indeterminate="indeterminate ? '' : undefined"
     :style="rootStyle"
   >
-    <svg
-      class="ds-progress-circular-svg"
-      :viewBox="`0 0 ${size} ${size}`"
-      aria-hidden="true"
-    >
+    <svg class="ds-progress-circular-svg" :viewBox="`0 0 ${size} ${size}`" aria-hidden="true">
       <circle
         class="ds-progress-circular-track"
         :cx="size / 2"

@@ -8,12 +8,7 @@ export type {
 
 export { default as Avatar } from './avatar/Avatar.vue'
 export { default as AvatarGroup } from './avatar/AvatarGroup.vue'
-export type {
-  AvatarColor,
-  AvatarGroupProps,
-  AvatarProps,
-  AvatarSize,
-} from './avatar/Avatar.types'
+export type { AvatarColor, AvatarGroupProps, AvatarProps, AvatarSize } from './avatar/Avatar.types'
 
 export { default as Badge } from './badge/Badge.vue'
 export type { BadgeColor, BadgeProps, BadgeSize, BadgeVariant } from './badge/Badge.types'
@@ -50,13 +45,7 @@ export { default as Checkbox } from './checkbox/Checkbox.vue'
 export type { CheckboxLabelPosition, CheckboxProps } from './checkbox/Checkbox.types'
 
 export { default as Chip } from './chip/Chip.vue'
-export type {
-  ChipColor,
-  ChipProps,
-  ChipShape,
-  ChipSize,
-  ChipVariant,
-} from './chip/Chip.types'
+export type { ChipColor, ChipProps, ChipShape, ChipSize, ChipVariant } from './chip/Chip.types'
 
 export { default as Combobox } from './combobox/Combobox.vue'
 export type {
@@ -164,12 +153,7 @@ export type { TextareaProps, TextareaSize } from './textarea/Textarea.types'
 
 export { default as Toaster } from './toast/Toast.vue'
 export { toast } from './toast/toast'
-export type {
-  ToastColor,
-  ToastOptions,
-  ToastPosition,
-  ToastSize,
-} from './toast/Toast.types'
+export type { ToastColor, ToastOptions, ToastPosition, ToastSize } from './toast/Toast.types'
 
 export { default as Toggle } from './toggle/Toggle.vue'
 export type { ToggleProps, ToggleVariant } from './toggle/Toggle.types'

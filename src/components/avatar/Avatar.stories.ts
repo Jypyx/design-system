@@ -22,7 +22,8 @@ const meta = {
     alt: { control: 'text', description: 'Image alt text; defaults to name' },
     icon: {
       control: 'text',
-      description: 'Material Symbols Rounded name (or image / SVG URL) shown when there is no image',
+      description:
+        'Material Symbols Rounded name (or image / SVG URL) shown when there is no image',
     },
     text: { control: 'text', description: 'Explicit short text; overrides the initials' },
     size: {

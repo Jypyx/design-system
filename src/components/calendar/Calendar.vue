@@ -40,7 +40,7 @@ const props = withDefaults(defineProps<CalendarProps>(), {
 
 const emit = defineEmits<{
   /** fires on every successful day activation (start AND end in range mode) */
-  'select': [date: Date]
+  select: [date: Date]
   /** the visible month changed (steppers, grids, keyboard or adjacent-day pick) */
   'month-change': [month: Date]
 }>()
@@ -80,7 +80,9 @@ const resolvedLocale = computed(
 const weekStart = computed(() => props.weekStartsOn ?? getWeekStart(resolvedLocale.value))
 
 const monthFormat = computed(() => new Intl.DateTimeFormat(resolvedLocale.value, { month: 'long' }))
-const yearFormat = computed(() => new Intl.DateTimeFormat(resolvedLocale.value, { year: 'numeric' }))
+const yearFormat = computed(
+  () => new Intl.DateTimeFormat(resolvedLocale.value, { year: 'numeric' }),
+)
 const dayLabelFormat = computed(
   () => new Intl.DateTimeFormat(resolvedLocale.value, { dateStyle: 'full' }),
 )
@@ -541,12 +543,7 @@ defineExpose({
 </script>
 
 <template>
-  <div
-    ref="root"
-    class="ds-calendar"
-    :data-view="view"
-    :data-range="range ? '' : undefined"
-  >
+  <div ref="root" class="ds-calendar" :data-view="view" :data-range="range ? '' : undefined">
     <div class="ds-calendar-header">
       <!-- stepping is meaningless while a picker grid is open: the
            chevrons stay visible but disable (the toggles remain active) -->

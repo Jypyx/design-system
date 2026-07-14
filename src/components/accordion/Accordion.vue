@@ -99,7 +99,9 @@ function onKeydown(event: KeyboardEvent) {
   border-start-end-radius: calc(var(--accordion-radius) - 1px);
 }
 
-.ds-accordion[data-variant='card'] > .ds-accordion-item:last-child:not([open]) > .ds-accordion-summary {
+.ds-accordion[data-variant='card']
+  > .ds-accordion-item:last-child:not([open])
+  > .ds-accordion-summary {
   border-end-start-radius: calc(var(--accordion-radius) - 1px);
   border-end-end-radius: calc(var(--accordion-radius) - 1px);
 }

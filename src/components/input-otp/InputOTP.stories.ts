@@ -8,7 +8,10 @@ const meta = {
   tags: ['autodocs'],
   argTypes: {
     modelValue: { control: 'text', description: 'v-model — the code as a string' },
-    length: { control: { type: 'number', min: 1, max: 12 }, description: 'Number of characters (ignored with pattern)' },
+    length: {
+      control: { type: 'number', min: 1, max: 12 },
+      description: 'Number of characters (ignored with pattern)',
+    },
     format: {
       control: 'select',
       options: ['numeric', 'alpha', 'alphanumeric'],

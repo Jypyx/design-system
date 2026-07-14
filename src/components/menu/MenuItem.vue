@@ -82,7 +82,11 @@ onBeforeUnmount(() => {
     :disabled="!href && disabled ? true : undefined"
     :href="disabled ? undefined : href"
     :target="href && !disabled ? target : undefined"
-    :rel="href && !disabled ? (rel ?? (target === '_blank' ? 'noopener noreferrer' : undefined)) : undefined"
+    :rel="
+      href && !disabled
+        ? (rel ?? (target === '_blank' ? 'noopener noreferrer' : undefined))
+        : undefined
+    "
     :aria-disabled="href && disabled ? 'true' : undefined"
     :data-color="color"
     :aria-haspopup="hasSubmenu ? 'menu' : undefined"
@@ -216,7 +220,10 @@ onBeforeUnmount(() => {
 
 .ds-menu-submenu {
   position-area: right span-bottom;
-  position-try-fallbacks: flip-inline, flip-block, flip-inline flip-block;
+  position-try-fallbacks:
+    flip-inline,
+    flip-block,
+    flip-inline flip-block;
   margin: calc(-1 * var(--menu-padding) - 1px) calc(-1 * var(--spacing-1));
 }
 </style>

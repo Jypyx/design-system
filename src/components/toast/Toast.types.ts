@@ -2,12 +2,7 @@
 export type ToastColor = 'neutral' | 'primary' | 'success' | 'danger' | 'warning'
 
 export type ToastPosition =
-  | 'top-left'
-  | 'top-center'
-  | 'top-right'
-  | 'bottom-left'
-  | 'bottom-center'
-  | 'bottom-right'
+  'top-left' | 'top-center' | 'top-right' | 'bottom-left' | 'bottom-center' | 'bottom-right'
 
 /** sm = 300px, md = 360px (default), lg = 440px wide */
 export type ToastSize = 'sm' | 'md' | 'lg'

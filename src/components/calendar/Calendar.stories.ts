@@ -93,12 +93,12 @@ export const Range: Story = {
     /* the next pick completes it */
     await userEvent.click(canvas.getByRole('gridcell', { name: 'Thursday, June 25, 2026' }))
     await waitFor(() => expect(inRange().length).toBe(6))
-    await expect(
-      canvas.getByRole('gridcell', { name: 'Saturday, June 20, 2026' }),
-    ).toHaveAttribute('data-range-start')
-    await expect(
-      canvas.getByRole('gridcell', { name: 'Thursday, June 25, 2026' }),
-    ).toHaveAttribute('data-range-end')
+    await expect(canvas.getByRole('gridcell', { name: 'Saturday, June 20, 2026' })).toHaveAttribute(
+      'data-range-start',
+    )
+    await expect(canvas.getByRole('gridcell', { name: 'Thursday, June 25, 2026' })).toHaveAttribute(
+      'data-range-end',
+    )
   },
 }
 
@@ -126,9 +126,10 @@ export const KeyboardNavigation: Story = {
     await expect(canvas.getByRole('button', { name: 'Choose month' })).toHaveTextContent('July')
     await userEvent.keyboard('{Enter}')
     await waitFor(() =>
-      expect(
-        canvas.getByRole('gridcell', { name: 'Thursday, July 23, 2026' }),
-      ).toHaveAttribute('aria-selected', 'true'),
+      expect(canvas.getByRole('gridcell', { name: 'Thursday, July 23, 2026' })).toHaveAttribute(
+        'aria-selected',
+        'true',
+      ),
     )
   },
 }
@@ -174,9 +175,10 @@ export const MinMax: Story = {
     await expect(canvas.getByRole('button', { name: 'Previous month' })).toBeDisabled()
     await expect(canvas.getByRole('button', { name: 'Previous year' })).toBeDisabled()
     await expect(canvas.getByRole('button', { name: 'Next month' })).toBeEnabled()
-    await expect(
-      canvas.getByRole('gridcell', { name: 'Thursday, June 4, 2026' }),
-    ).toHaveAttribute('aria-disabled', 'true')
+    await expect(canvas.getByRole('gridcell', { name: 'Thursday, June 4, 2026' })).toHaveAttribute(
+      'aria-disabled',
+      'true',
+    )
   },
 }
 

@@ -73,7 +73,7 @@ defineExpose({
         </slot>
       </div>
       <div v-if="$slots['header-actions']" class="ds-dialog-header__actions">
-          <slot name="header-actions" />
+        <slot name="header-actions" />
       </div>
       <Button
         v-if="closable"

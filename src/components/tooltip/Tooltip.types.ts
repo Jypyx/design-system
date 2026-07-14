@@ -4,14 +4,7 @@
  * viewport.
  */
 export type TooltipPlacement =
-  | 'top'
-  | 'top-start'
-  | 'top-end'
-  | 'bottom'
-  | 'bottom-start'
-  | 'bottom-end'
-  | 'left'
-  | 'right'
+  'top' | 'top-start' | 'top-end' | 'bottom' | 'bottom-start' | 'bottom-end' | 'left' | 'right'
 
 export interface TooltipProps {
   /** Plain-text content; use the #content slot for rich markup instead */

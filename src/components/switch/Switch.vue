@@ -28,7 +28,9 @@ const checked = defineModel<boolean>({ default: false })
       />
       <span class="ds-switch-thumb" aria-hidden="true"></span>
     </span>
-    <span v-if="label || $slots.default" class="ds-switch-label"><slot>{{ label }}</slot></span>
+    <span v-if="label || $slots.default" class="ds-switch-label"
+      ><slot>{{ label }}</slot></span
+    >
   </label>
 </template>
 

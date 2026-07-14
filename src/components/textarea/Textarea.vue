@@ -18,7 +18,7 @@ const props = withDefaults(defineProps<TextareaProps>(), {
   invalid: false,
 })
 
-const emit = defineEmits<{ 'clear': []; 'icon-end-click': [MouseEvent] }>()
+const emit = defineEmits<{ clear: []; 'icon-end-click': [MouseEvent] }>()
 
 const model = defineModel<string>({ default: '' })
 

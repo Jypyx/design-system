@@ -3,12 +3,7 @@
  * used directly as the fill color
  */
 export type ProgressLinearColor =
-  | 'neutral'
-  | 'primary'
-  | 'success'
-  | 'danger'
-  | 'warning'
-  | (string & {})
+  'neutral' | 'primary' | 'success' | 'danger' | 'warning' | (string & {})
 
 export interface ProgressLinearProps {
   /** Current progress, from 0 to max */

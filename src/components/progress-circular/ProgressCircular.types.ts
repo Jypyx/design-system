@@ -3,12 +3,7 @@
  * used directly as the ring color
  */
 export type ProgressCircularColor =
-  | 'neutral'
-  | 'primary'
-  | 'success'
-  | 'danger'
-  | 'warning'
-  | (string & {})
+  'neutral' | 'primary' | 'success' | 'danger' | 'warning' | (string & {})
 
 export interface ProgressCircularProps {
   /** Current progress, from 0 to max */

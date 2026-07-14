@@ -29,7 +29,7 @@ const props = withDefaults(defineProps<DatePickerProps>(), {
   selectAdjacentDays: false,
 })
 
-const emit = defineEmits<{ 'open': []; 'close': []; 'clear': [] }>()
+const emit = defineEmits<{ open: []; close: []; clear: [] }>()
 
 const model = defineModel<CalendarModelValue>({ default: null })
 
@@ -166,7 +166,12 @@ function onFieldClick(event: MouseEvent) {
 
 function onInputKeydown(event: KeyboardEvent) {
   if (props.disabled) return
-  if (event.key === 'Enter' || event.key === ' ' || event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+  if (
+    event.key === 'Enter' ||
+    event.key === ' ' ||
+    event.key === 'ArrowDown' ||
+    event.key === 'ArrowUp'
+  ) {
     event.preventDefault()
     open()
   }
@@ -423,7 +428,10 @@ defineExpose({
 /* when the preferred side would overflow the viewport, flip on the
    main axis first, then the cross axis, then both */
 .ds-datepicker-popover {
-  position-try-fallbacks: flip-block, flip-inline, flip-block flip-inline;
+  position-try-fallbacks:
+    flip-block,
+    flip-inline,
+    flip-block flip-inline;
 }
 
 /* --- enter / exit transition -------------------------------------------- */
