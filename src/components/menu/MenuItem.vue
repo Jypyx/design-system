@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import './menu.tokens.css'
+import '../../styles/shared/option.css'
 import { iconProps } from '../shared/utils'
 import { computed, onBeforeUnmount, useSlots, useTemplateRef } from 'vue'
 import { useAnchor } from '../shared/use-anchor'
@@ -71,7 +72,7 @@ onBeforeUnmount(() => {
   <component
     :is="href ? 'a' : 'button'"
     v-bind="$attrs"
-    class="ds-menu-item"
+    class="ds-menu-item ds-option"
     :type="href ? undefined : 'button'"
     role="menuitem"
     :disabled="!href && disabled ? true : undefined"
@@ -124,51 +125,25 @@ onBeforeUnmount(() => {
 </template>
 
 <style>
+/* row layout + washes come from the shared .ds-option partial (tokens
+   mapped in menu.tokens.css); the rest is the button / anchor reset */
 .ds-menu-item {
-  /* self-contained: never rely on a host-app reset */
-  box-sizing: border-box;
+  /* self-contained: never rely on a host-app reset (the background
+     reset lives in the shared partial so the washes stay on top) */
   appearance: none;
-  display: flex;
-  align-items: center;
-  gap: var(--menu-item-gap);
   width: 100%;
-  min-height: var(--menu-item-min-height);
   margin: 0;
   border: 0;
-  padding: var(--menu-item-padding-block) var(--menu-item-padding-inline);
-  border-radius: var(--menu-item-radius);
-  background-color: transparent;
   color: var(--menu-item-color);
   font-family: var(--font-sans);
-  font-size: var(--menu-item-font-size);
   font-weight: var(--font-weight-normal);
-  line-height: var(--menu-item-line-height);
   text-align: left;
   text-decoration: none;
-  cursor: pointer;
-  user-select: none;
-  -webkit-tap-highlight-color: transparent;
-  transition: background-color var(--duration-150) var(--ease-out);
 }
 
-/* hover wash; an item whose submenu is open stays highlighted */
-.ds-menu-item:hover:not(:disabled, [aria-disabled='true']),
+/* an item whose submenu is open stays highlighted, like a hover */
 .ds-menu-item:has(+ .ds-menu-popover:popover-open) {
   background-color: color-mix(in oklab, var(--menu-item-tint) 8%, transparent);
-}
-
-/* keyboard focus reads as a stronger wash, menu-style (no ring) */
-.ds-menu-item:focus-visible {
-  outline: none;
-  background-color: color-mix(in oklab, var(--menu-item-tint) 14%, transparent);
-}
-
-.ds-menu-item:active:not(:disabled, [aria-disabled='true']) {
-  background-color: color-mix(in oklab, var(--menu-item-tint) 14%, transparent);
-}
-
-.ds-menu-item:is(:disabled, [aria-disabled='true']) {
-  cursor: not-allowed;
 }
 
 /* --- label + sublabel, stacked ----------------------------------- */

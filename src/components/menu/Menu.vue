@@ -2,6 +2,7 @@
 import './menu.tokens.css'
 import '../../styles/shared/popover.css'
 import { onMounted, useTemplateRef } from 'vue'
+import { resolveArrowNav } from '../shared/arrow-nav'
 import { useAnchor } from '../shared/use-anchor'
 import { usePopoverToggle } from '../shared/use-popover-toggle'
 import type { MenuProps } from './Menu.types'
@@ -73,22 +74,14 @@ function onMenuKeydown(event: KeyboardEvent) {
   const index = item ? items.indexOf(item) : -1
 
   switch (event.key) {
-    case 'ArrowDown': {
-      const next = items[index + 1] ?? items[0]
-      next?.focus()
-      break
-    }
-    case 'ArrowUp': {
-      const previous = items[index - 1] ?? items[items.length - 1]
-      previous?.focus()
-      break
-    }
+    case 'ArrowDown':
+    case 'ArrowUp':
     case 'Home':
-      items[0]?.focus()
+    case 'End': {
+      const next = resolveArrowNav(event.key, index, items.length)
+      if (next !== null) items[next].focus()
       break
-    case 'End':
-      items[items.length - 1]?.focus()
-      break
+    }
     case 'ArrowRight':
     case 'Enter':
     case ' ':

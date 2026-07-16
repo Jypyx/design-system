@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import './calendar.tokens.css'
 import '../../styles/shared/sr-only.css'
+import { horizontalArrowKeys } from '../shared/arrow-nav'
 import { computed, nextTick, ref, useTemplateRef, watch } from 'vue'
 import Button from '../button/Button.vue'
 import {
@@ -247,9 +248,7 @@ function pickYear(year: number) {
 
 /* both picker grids are 3 columns wide; `count` bounds the roving index */
 function onPickerKeydown(event: KeyboardEvent, count: number) {
-  let [prevKey, nextKey] = ['ArrowLeft', 'ArrowRight']
-  if (root.value && getComputedStyle(root.value).direction === 'rtl')
-    [prevKey, nextKey] = [nextKey, prevKey]
+  const { prevKey, nextKey } = horizontalArrowKeys(root.value)
 
   let next = pickerActive.value
   switch (event.key) {
@@ -475,9 +474,7 @@ function moveFocus(date: Date) {
 /* Enter / Space are left to the native button activation (click); disabled
    days stay focusable (aria-disabled) so arrows can traverse them */
 function onGridKeydown(event: KeyboardEvent) {
-  let [prevKey, nextKey] = ['ArrowLeft', 'ArrowRight']
-  if (root.value && getComputedStyle(root.value).direction === 'rtl')
-    [prevKey, nextKey] = [nextKey, prevKey]
+  const { prevKey, nextKey } = horizontalArrowKeys(root.value)
 
   let target: Date
   switch (event.key) {

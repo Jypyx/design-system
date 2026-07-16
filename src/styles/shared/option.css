@@ -1,0 +1,53 @@
+/* ============================================================
+ * Shared partial — .ds-option
+ * Row layout + hover / active washes of the list rows shared by
+ * MenuItem (role="menuitem") and the Combobox listbox options
+ * (role="option"). Opt-in: each consuming SFC imports this file
+ * and adds the class next to its own. Every rule is wrapped in
+ * :where() (zero specificity) so component-level rules override
+ * it regardless of bundle order.
+ *
+ *   --option-gap / -min-height / -padding-* / -radius / -font-size
+ *   --option-line-height  (default 1.25)
+ *   --option-tint         wash base color (default --text)
+ * ============================================================ */
+
+:where(.ds-option) {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: var(--option-gap);
+  min-height: var(--option-min-height);
+  padding: var(--option-padding-block) var(--option-padding-inline);
+  border-radius: var(--option-radius);
+  /* the resting background lives HERE, not in the consuming component:
+     a component-level (0,1,0) background would override every wash below */
+  background-color: transparent;
+  font-size: var(--option-font-size);
+  line-height: var(--option-line-height, 1.25);
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color var(--duration-150) var(--ease-out);
+}
+
+:where(.ds-option:hover:not(:disabled, [aria-disabled='true'])) {
+  background-color: color-mix(in oklab, var(--option-tint, var(--text)) 8%, transparent);
+}
+
+/* the active / focused option reads as a stronger wash; declared after
+   :hover so it wins when both apply. Keyboard focus is menu-style —
+   a wash, not a ring */
+:where(.ds-option:focus-visible) {
+  outline: none;
+  background-color: color-mix(in oklab, var(--option-tint, var(--text)) 14%, transparent);
+}
+
+:where(.ds-option:active:not(:disabled, [aria-disabled='true'])),
+:where(.ds-option[data-active]:not([aria-disabled='true'])) {
+  background-color: color-mix(in oklab, var(--option-tint, var(--text)) 14%, transparent);
+}
+
+:where(.ds-option:is(:disabled, [aria-disabled='true'])) {
+  cursor: not-allowed;
+}

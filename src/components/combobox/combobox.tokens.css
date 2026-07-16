@@ -66,6 +66,15 @@
   --combobox-option-font-size: var(--text-sm);
   --combobox-group-label-color: var(--text-muted);
   --combobox-group-label-font-size: var(--text-xs);
+
+  /* wire the shared .ds-option row onto the Combobox tokens
+     (the wash tint keeps its --text default) */
+  --option-gap: var(--combobox-option-gap);
+  --option-min-height: var(--combobox-option-min-height);
+  --option-padding-block: var(--combobox-option-padding-block);
+  --option-padding-inline: var(--combobox-option-padding-inline);
+  --option-radius: var(--combobox-option-radius);
+  --option-font-size: var(--combobox-option-font-size);
 }
 
 /* wire the shared .ds-field shell onto the Combobox tokens; the aliases

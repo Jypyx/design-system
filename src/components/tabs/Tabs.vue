@@ -14,6 +14,7 @@ import {
   watch,
 } from 'vue'
 import Button from '../button/Button.vue'
+import { horizontalArrowKeys, resolveArrowNav } from '../shared/arrow-nav'
 import { tabsKey } from './Tabs.types'
 import type { TabRegistration, TabsModelValue, TabsProps, TabsValue } from './Tabs.types'
 
@@ -83,40 +84,23 @@ function tabsOf(): HTMLElement[] {
   return Array.from(list.value?.querySelectorAll<HTMLElement>('.ds-tab:not(:disabled)') ?? [])
 }
 
-/* arrows follow the orientation (with wrap), Home / End jump to the
-   extremities; moving focus also selects (automatic activation) */
+/* arrows follow the orientation (with wrap, RTL-aware), Home / End jump
+   to the extremities; moving focus also selects (automatic activation) */
 function onKeydown(event: KeyboardEvent) {
   const target = event.target as HTMLElement
   if (!target.matches?.('.ds-tab')) return
 
-  let [prevKey, nextKey] =
-    props.orientation === 'vertical' ? ['ArrowUp', 'ArrowDown'] : ['ArrowLeft', 'ArrowRight']
-  if (props.orientation === 'horizontal' && list.value) {
-    if (getComputedStyle(list.value).direction === 'rtl') [prevKey, nextKey] = [nextKey, prevKey]
-  }
+  const keys =
+    props.orientation === 'vertical'
+      ? { prevKey: 'ArrowUp', nextKey: 'ArrowDown' }
+      : horizontalArrowKeys(list.value)
 
   const items = tabsOf()
-  const index = items.indexOf(target)
-  let next: HTMLElement | undefined
-  switch (event.key) {
-    case nextKey:
-      next = items[index + 1] ?? items[0]
-      break
-    case prevKey:
-      next = items[index - 1] ?? items[items.length - 1]
-      break
-    case 'Home':
-      next = items[0]
-      break
-    case 'End':
-      next = items[items.length - 1]
-      break
-    default:
-      return
-  }
+  const next = resolveArrowNav(event.key, items.indexOf(target), items.length, keys)
+  if (next === null) return
   event.preventDefault()
-  next?.focus()
-  next?.click()
+  items[next].focus()
+  items[next].click()
 }
 
 /* --- overflow / scroll buttons --------------------------------------- */

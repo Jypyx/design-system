@@ -58,6 +58,16 @@
   --menu-item-sublabel-color: var(--text-muted);
   --menu-item-icon-color: var(--text-muted);
   --menu-item-tint: var(--text);
+
+  /* wire the shared .ds-option row onto the Menu tokens */
+  --option-gap: var(--menu-item-gap);
+  --option-min-height: var(--menu-item-min-height);
+  --option-padding-block: var(--menu-item-padding-block);
+  --option-padding-inline: var(--menu-item-padding-inline);
+  --option-radius: var(--menu-item-radius);
+  --option-font-size: var(--menu-item-font-size);
+  --option-line-height: var(--menu-item-line-height);
+  --option-tint: var(--menu-item-tint);
 }
 
 .ds-menu-item[data-color='primary'] {

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import './accordion.tokens.css'
 import { computed, provide, useId, useTemplateRef } from 'vue'
+import { resolveArrowNav } from '../shared/arrow-nav'
 import { accordionGroupKey, type AccordionProps } from './Accordion.types'
 
 const props = withDefaults(defineProps<AccordionProps>(), {
@@ -38,24 +39,9 @@ function onKeydown(event: KeyboardEvent) {
   if (!group || target.closest('.ds-accordion') !== group) return
 
   const items = itemsOf(group)
-  const index = items.indexOf(target)
-
-  switch (event.key) {
-    case 'ArrowDown':
-      ;(items[index + 1] ?? items[0])?.focus()
-      break
-    case 'ArrowUp':
-      ;(items[index - 1] ?? items[items.length - 1])?.focus()
-      break
-    case 'Home':
-      items[0]?.focus()
-      break
-    case 'End':
-      items[items.length - 1]?.focus()
-      break
-    default:
-      return
-  }
+  const next = resolveArrowNav(event.key, items.indexOf(target), items.length)
+  if (next === null) return
+  items[next].focus()
   event.preventDefault()
 }
 </script>

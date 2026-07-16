@@ -4,7 +4,9 @@ import './combobox.tokens.css'
 import '../../styles/shared/field.css'
 import '../../styles/shared/icon-button.css'
 import '../../styles/shared/popover.css'
+import '../../styles/shared/option.css'
 import { fold, iconProps } from '../shared/utils'
+import { resolveArrowNav } from '../shared/arrow-nav'
 import { useAnchor } from '../shared/use-anchor'
 import Spinner from '../spinner/Spinner.vue'
 import Chip from '../chip/Chip.vue'
@@ -276,23 +278,18 @@ function onKeydown(event: KeyboardEvent) {
         openList(event.key === 'ArrowUp')
         return
       }
-      const count = navigable.value.length
-      if (!count) return
-      const delta = event.key === 'ArrowDown' ? 1 : -1
-      activeIndex.value =
-        activeIndex.value === -1
-          ? delta === 1
-            ? 0
-            : count - 1
-          : (activeIndex.value + delta + count) % count
+      const next = resolveArrowNav(event.key, activeIndex.value, navigable.value.length)
+      if (next !== null) activeIndex.value = next
       return
     }
     case 'Home':
-    case 'End':
+    case 'End': {
       if (!isOpen.value) return
       event.preventDefault()
-      activeIndex.value = event.key === 'Home' ? 0 : navigable.value.length - 1
+      const next = resolveArrowNav(event.key, activeIndex.value, navigable.value.length)
+      if (next !== null) activeIndex.value = next
       return
+    }
     case 'Enter': {
       if (!isOpen.value) return
       event.preventDefault()
@@ -439,7 +436,7 @@ defineExpose({
         <div
           v-if="showSelectAll"
           :id="selectAllId"
-          class="ds-combobox-option"
+          class="ds-combobox-option ds-option"
           data-select-all
           role="option"
           :aria-selected="allSelected ? 'true' : 'false'"
@@ -459,7 +456,7 @@ defineExpose({
               v-for="entry in group.entries"
               :id="entry.id"
               :key="entry.option.value"
-              class="ds-combobox-option"
+              class="ds-combobox-option ds-option"
               role="option"
               :aria-selected="isSelected(entry.option.value) ? 'true' : 'false'"
               :aria-disabled="entry.option.disabled ? 'true' : undefined"
@@ -476,7 +473,7 @@ defineExpose({
               v-for="entry in group.entries"
               :id="entry.id"
               :key="entry.option.value"
-              class="ds-combobox-option"
+              class="ds-combobox-option ds-option"
               role="option"
               :aria-selected="isSelected(entry.option.value) ? 'true' : 'false'"
               :aria-disabled="entry.option.disabled ? 'true' : undefined"
@@ -643,31 +640,8 @@ defineExpose({
 
 /* --- options (mirror .ds-menu-item) ----------------------------------- */
 
-.ds-combobox-option {
-  box-sizing: border-box;
-  display: flex;
-  align-items: center;
-  gap: var(--combobox-option-gap);
-  min-height: var(--combobox-option-min-height);
-  padding: var(--combobox-option-padding-block) var(--combobox-option-padding-inline);
-  border-radius: var(--combobox-option-radius);
-  font-size: var(--combobox-option-font-size);
-  line-height: 1.25;
-  cursor: pointer;
-  user-select: none;
-  -webkit-tap-highlight-color: transparent;
-  transition: background-color var(--duration-150) var(--ease-out);
-}
-
-.ds-combobox-option:hover:not([aria-disabled='true']) {
-  background-color: color-mix(in oklab, var(--text) 8%, transparent);
-}
-
-/* the active (aria-activedescendant) option reads as a stronger wash;
-   declared after :hover so it wins when both apply */
-.ds-combobox-option[data-active]:not([aria-disabled='true']) {
-  background-color: color-mix(in oklab, var(--text) 14%, transparent);
-}
+/* row layout + hover / active washes come from the shared .ds-option
+   partial (tokens mapped in combobox.tokens.css) */
 
 /* selected options read in the accent color, matching their check icon */
 .ds-combobox-option[aria-selected='true'] {
