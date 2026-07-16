@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import './tabs.tokens.css'
+import { iconProps } from '../shared/utils'
 import { computed, inject, onUnmounted } from 'vue'
 import Icon from '../icon/Icon.vue'
 import { tabsKey } from './Tabs.types'
@@ -20,10 +21,6 @@ onUnmounted(
     disabled: computed(() => props.disabled),
   }),
 )
-
-/* Material Symbols names never contain '.', '/' or ':' — anything that
-   does is an image / SVG URL and renders through Icon's src prop */
-const iconProps = (icon: string) => (/[./:]/.test(icon) ? { src: icon } : { name: icon })
 </script>
 
 <template>

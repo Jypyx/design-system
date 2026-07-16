@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import './menu.tokens.css'
+import { iconProps } from '../shared/utils'
 import { computed, onBeforeUnmount, useId, useSlots, useTemplateRef } from 'vue'
 import Icon from '../icon/Icon.vue'
 import Typography from '../typography/Typography.vue'
@@ -24,10 +25,6 @@ const submenuId = `ds-menu-sub-${uid}`
 const anchorName = `--ds-menu-sub-${uid}`
 
 const submenu = useTemplateRef<HTMLElement>('submenu')
-
-/* Material Symbols names never contain '.', '/' or ':' — anything that
-   does is an image / SVG URL and renders through Icon's src prop */
-const iconProps = (icon: string) => (/[./:]/.test(icon) ? { src: icon } : { name: icon })
 
 /* --- submenu on hover --------------------------------------------- */
 /* the close delay keeps the panel open while the pointer crosses the

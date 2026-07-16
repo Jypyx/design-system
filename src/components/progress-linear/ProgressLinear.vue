@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import './progress-linear.tokens.css'
+import { isSemanticColor } from '../shared/colors'
 import type { ProgressLinearProps } from './ProgressLinear.types'
 
 const props = withDefaults(defineProps<ProgressLinearProps>(), {
@@ -12,8 +13,7 @@ const props = withDefaults(defineProps<ProgressLinearProps>(), {
   indeterminate: false,
 })
 
-const SEMANTIC_COLORS = ['neutral', 'primary', 'success', 'danger', 'warning']
-const isSemantic = computed(() => SEMANTIC_COLORS.includes(props.color))
+const isSemantic = computed(() => isSemanticColor(props.color))
 
 const fraction = computed(() =>
   Math.min(1, Math.max(0, props.max > 0 ? props.value / props.max : 0)),

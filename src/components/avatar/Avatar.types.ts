@@ -1,5 +1,7 @@
+import type { SemanticColor, Size } from '../shared/types'
+
 /** xs = 28px, sm = 36px (default), md = 44px, lg = 52px, xl = 64px */
-export type AvatarSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl'
+export type AvatarSize = Size | 'xl'
 
 /**
  * 'auto' (default) derives a stable hue from the avatar content (name / text /
@@ -7,8 +9,7 @@ export type AvatarSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl'
  * verbatim as a CSS background color (the foreground flips to black or white
  * based on its lightness).
  */
-export type AvatarColor =
-  'auto' | 'neutral' | 'primary' | 'success' | 'danger' | 'warning' | (string & {})
+export type AvatarColor = 'auto' | SemanticColor | (string & {})
 
 export interface AvatarProps {
   /**

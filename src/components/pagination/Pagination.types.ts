@@ -1,5 +1,7 @@
-export type PaginationSize = 'xs' | 'sm' | 'md' | 'lg'
-export type PaginationColor = 'neutral' | 'primary' | 'success' | 'danger' | 'warning'
+import type { SemanticColor, Size } from '../shared/types'
+
+export type PaginationSize = Size
+export type PaginationColor = SemanticColor
 export type PaginationVariant = 'elevated' | 'flat' | 'tonal' | 'outlined' | 'text'
 /** prev / next rendering: hidden, icon-only, or icon + visible text */
 export type PaginationNavButtons = 'hidden' | 'icon' | 'icon-text'

@@ -68,7 +68,7 @@ export interface DataTableProps<T = Record<string, unknown>> {
   /** Debounce of v-model:search updates, in ms (default 250) */
   searchDebounce?: number
   /** Indeterminate progress bar under the header + dimmed body */
-  loading?: boolean
+  isLoading?: boolean
   density?: DataTableDensity
   /**
    * Below a 600px-wide container, rows restack into label / value cards,

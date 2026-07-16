@@ -1,4 +1,6 @@
-export type RadioLabelPosition = 'left' | 'right'
+import type { LabelPosition } from '../shared/types'
+
+export type RadioLabelPosition = LabelPosition
 
 export interface RadioProps {
   /** Value assigned to the v-model when this radio is selected */

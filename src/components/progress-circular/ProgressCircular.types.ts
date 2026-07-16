@@ -1,9 +1,10 @@
+import type { SemanticColor } from '../shared/types'
+
 /**
  * The 5 semantic colors, or any CSS color (hex, oklch(), named…)
  * used directly as the ring color
  */
-export type ProgressCircularColor =
-  'neutral' | 'primary' | 'success' | 'danger' | 'warning' | (string & {})
+export type ProgressCircularColor = SemanticColor | (string & {})
 
 export interface ProgressCircularProps {
   /** Current progress, from 0 to max */

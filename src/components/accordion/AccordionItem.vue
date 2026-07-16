@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import './accordion.tokens.css'
+import { iconProps } from '../shared/utils'
 import { inject } from 'vue'
 import Icon from '../icon/Icon.vue'
 import Typography from '../typography/Typography.vue'
@@ -13,10 +14,6 @@ const props = withDefaults(defineProps<AccordionItemProps>(), {
 /* same-name <details> are natively exclusive; a standalone item
    (no parent Accordion) injects undefined and omits the attribute */
 const groupName = inject(accordionGroupKey, undefined)
-
-/* Material Symbols names never contain '.', '/' or ':' — anything that
-   does is an image / SVG URL and renders through Icon's src prop */
-const iconProps = (icon: string) => (/[./:]/.test(icon) ? { src: icon } : { name: icon })
 
 /* <summary> has no disabled attribute: cancel its activation behavior
    instead (Enter / Space dispatch a synthetic click, so this covers the

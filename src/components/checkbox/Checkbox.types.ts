@@ -1,4 +1,6 @@
-export type CheckboxLabelPosition = 'left' | 'right'
+import type { LabelPosition } from '../shared/types'
+
+export type CheckboxLabelPosition = LabelPosition
 
 export interface CheckboxProps {
   /** Text label; the default slot overrides it */

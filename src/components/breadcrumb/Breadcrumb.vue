@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import './breadcrumb.tokens.css'
+import { iconProps } from '../shared/utils'
 import { computed } from 'vue'
 import Button from '../button/Button.vue'
 import Icon from '../icon/Icon.vue'
@@ -12,10 +13,6 @@ const props = withDefaults(defineProps<BreadcrumbProps>(), {
   label: 'Breadcrumb',
   moreLabel: 'Show hidden items',
 })
-
-/* Material Symbols names never contain '.', '/' or ':' — anything that
-   does is an image / SVG URL and renders through Icon's src prop */
-const iconProps = (icon: string) => (/[./:]/.test(icon) ? { src: icon } : { name: icon })
 
 /* collapsed trail: first crumb, "…" menu with the middle crumbs, then the
    last two; a short-enough trail leaves hiddenItems empty and the menu out */

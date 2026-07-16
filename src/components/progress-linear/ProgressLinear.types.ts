@@ -1,9 +1,10 @@
+import type { SemanticColor } from '../shared/types'
+
 /**
  * The 5 semantic colors, or any CSS color (hex, oklch(), named…)
  * used directly as the fill color
  */
-export type ProgressLinearColor =
-  'neutral' | 'primary' | 'success' | 'danger' | 'warning' | (string & {})
+export type ProgressLinearColor = SemanticColor | (string & {})
 
 export interface ProgressLinearProps {
   /** Current progress, from 0 to max */

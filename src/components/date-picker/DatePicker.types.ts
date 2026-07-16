@@ -1,10 +1,11 @@
 import type { CalendarProps } from '../calendar/Calendar.types'
+import type { Placement, Size } from '../shared/types'
 
 /** Same scale as Input / Button: xs = 28px, sm = 36px (default), md = 44px, lg = 52px */
-export type DatePickerSize = 'xs' | 'sm' | 'md' | 'lg'
+export type DatePickerSize = Size
 
-export type DatePickerPlacement =
-  'bottom-start' | 'bottom' | 'bottom-end' | 'top-start' | 'top' | 'top-end'
+/** The picker opens above or below its field — never sideways */
+export type DatePickerPlacement = Exclude<Placement, 'left' | 'right'>
 
 /** All Calendar props are forwarded to the popover Calendar */
 export interface DatePickerProps extends CalendarProps {

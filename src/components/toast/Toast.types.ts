@@ -1,5 +1,7 @@
+import type { SemanticColor } from '../shared/types'
+
 /** 'neutral' (default) renders the emphasis bubble (dark in both themes) */
-export type ToastColor = 'neutral' | 'primary' | 'success' | 'danger' | 'warning'
+export type ToastColor = SemanticColor
 
 export type ToastPosition =
   'top-left' | 'top-center' | 'top-right' | 'bottom-left' | 'bottom-center' | 'bottom-right'

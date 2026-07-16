@@ -1,8 +1,10 @@
+import type { SemanticColor, Size } from '../shared/types'
+
 /** xs = 28px, sm = 36px (default), md = 44px, lg = 52px */
-export type ButtonSize = 'xs' | 'sm' | 'md' | 'lg'
+export type ButtonSize = Size
 
 /** 'neutral' (default) renders a white button (dark grey in dark theme) */
-export type ButtonColor = 'neutral' | 'primary' | 'success' | 'danger' | 'warning'
+export type ButtonColor = SemanticColor
 
 export type ButtonVariant = 'elevated' | 'flat' | 'tonal' | 'outlined' | 'text'
 

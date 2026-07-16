@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, getCurrentInstance, ref, useId } from 'vue'
 import './input.tokens.css'
+import { iconProps } from '../shared/utils'
 import Icon from '../icon/Icon.vue'
 import Typography from '../typography/Typography.vue'
 import type { InputProps } from './Input.types'
@@ -34,10 +35,6 @@ const showClear = computed(
 /* the end icon only becomes a button when someone listens to icon-end-click */
 const instance = getCurrentInstance()
 const iconEndClickable = computed(() => !!instance?.vnode.props?.onIconEndClick)
-
-/* Material Symbols names never contain '.', '/' or ':' — anything that
-   does is an image / SVG URL and renders through Icon's src prop */
-const iconProps = (icon: string) => (/[./:]/.test(icon) ? { src: icon } : { name: icon })
 
 function clear() {
   model.value = ''

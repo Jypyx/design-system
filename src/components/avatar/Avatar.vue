@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import './avatar.tokens.css'
+import { iconProps } from '../shared/utils'
+import { isSemanticColor } from '../shared/colors'
 import { computed, ref, useAttrs, watch } from 'vue'
 import type { FunctionalComponent } from 'vue'
 import Icon from '../icon/Icon.vue'
@@ -22,10 +24,6 @@ const attrs = useAttrs()
 /* attrs is not reactive — a plain function keeps the check per-render */
 const tag = () => (props.href ? 'a' : 'onClick' in attrs ? 'button' : 'span')
 
-/* Material Symbols names never contain '.', '/' or ':' — anything that
-   does is an image / SVG URL and renders through Icon's src prop */
-const iconProps = (icon: string) => (/[./:]/.test(icon) ? { src: icon } : { name: icon })
-
 const imgFailed = ref(false)
 watch(
   () => props.src,
@@ -42,8 +40,6 @@ const initials = computed(() => {
     : (first + [...words[words.length - 1]][0]).toUpperCase()
 })
 
-const semanticColors = ['neutral', 'primary', 'success', 'danger', 'warning']
-
 /* 'auto' hashes the content into a hue (djb2) — only this number is
    computed in TS, the color itself is built in CSS from --avatar-hue */
 const hue = computed(() => {
@@ -54,7 +50,7 @@ const hue = computed(() => {
 })
 
 const dataColor = computed(() =>
-  props.color === 'auto' || semanticColors.includes(props.color) ? props.color : 'custom',
+  props.color === 'auto' || isSemanticColor(props.color) ? props.color : 'custom',
 )
 
 const colorStyle = computed(() =>

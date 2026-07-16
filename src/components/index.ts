@@ -1,3 +1,5 @@
+export type { LabelPosition, Placement, SemanticColor, Size } from './shared/types'
+
 export { default as Accordion } from './accordion/Accordion.vue'
 export { default as AccordionItem } from './accordion/AccordionItem.vue'
 export type {

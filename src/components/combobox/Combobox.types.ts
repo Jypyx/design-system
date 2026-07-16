@@ -1,5 +1,7 @@
+import type { Size } from '../shared/types'
+
 /** Same scale as Input / Button: xs = 28px, sm = 36px (default), md = 44px, lg = 52px */
-export type ComboboxSize = 'xs' | 'sm' | 'md' | 'lg'
+export type ComboboxSize = Size
 
 export type ComboboxValue = string | number
 

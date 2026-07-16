@@ -1,5 +1,7 @@
+import type { Size } from '../shared/types'
+
 /** Same scale as Input / Button; drives font size, padding, radius and icon size */
-export type TextareaSize = 'xs' | 'sm' | 'md' | 'lg'
+export type TextareaSize = Size
 
 export interface TextareaProps {
   size?: TextareaSize

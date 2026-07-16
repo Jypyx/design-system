@@ -1,10 +1,11 @@
+import type { Placement } from '../shared/types'
+
 /**
  * Preferred side of the trigger. The menu automatically flips to the
  * opposite side (CSS position-try fallbacks) when it would overflow the
  * viewport. Submenus always open sideways and handle their own flips.
  */
-export type MenuPlacement =
-  'bottom-start' | 'bottom' | 'bottom-end' | 'top-start' | 'top' | 'top-end' | 'left' | 'right'
+export type MenuPlacement = Placement
 
 export interface MenuProps {
   placement?: MenuPlacement

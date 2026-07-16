@@ -1,5 +1,6 @@
 <script setup lang="ts" generic="T extends Record<string, unknown>">
 import './data-table.tokens.css'
+import { fold } from '../shared/utils'
 import { computed, onBeforeUnmount, ref, watch } from 'vue'
 import Button from '../button/Button.vue'
 import Checkbox from '../checkbox/Checkbox.vue'
@@ -25,7 +26,7 @@ const props = withDefaults(defineProps<DataTableProps<T>>(), {
   searchPlaceholder: 'Search…',
   searchLabel: 'Search',
   searchDebounce: 250,
-  loading: false,
+  isLoading: false,
   density: 'default',
   responsive: false,
   sortLabel: 'Sort by',
@@ -103,9 +104,6 @@ watch(search, (value) => {
 onBeforeUnmount(() => clearTimeout(searchTimer))
 
 /* --- client pipeline: filter → sort → slice ----------------------------- */
-
-/* case- and diacritics-insensitive ("epee" matches "Épée") */
-const fold = (s: string) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase()
 
 const filtered = computed<T[]>(() => {
   if (serverMode.value || !search.value) return props.rows
@@ -234,9 +232,9 @@ const colSpan = computed(() => props.columns.length + (props.selectable ? 1 : 0)
     :data-striped="striped ? '' : undefined"
     :data-hover="hover ? '' : undefined"
     :data-sticky-header="stickyHeader ? '' : undefined"
-    :data-loading="loading ? '' : undefined"
+    :data-loading="isLoading ? '' : undefined"
     :data-responsive="responsive ? '' : undefined"
-    :aria-busy="loading ? 'true' : undefined"
+    :aria-busy="isLoading ? 'true' : undefined"
   >
     <div
       v-if="
@@ -346,7 +344,7 @@ const colSpan = computed(() => props.columns.length + (props.selectable ? 1 : 0)
           </tr>
           <!-- zero-height row: the bar overlays the body without displacing it;
                decorative — the region-level aria-busy already conveys loading -->
-          <tr v-if="loading" class="ds-table-progress" aria-hidden="true">
+          <tr v-if="isLoading" class="ds-table-progress" aria-hidden="true">
             <th :colspan="colSpan">
               <ProgressLinear indeterminate square :height="3" :label="loadingLabel" />
             </th>
@@ -385,7 +383,7 @@ const colSpan = computed(() => props.columns.length + (props.selectable ? 1 : 0)
               </slot>
             </td>
           </tr>
-          <tr v-if="!loading && visibleRows.length === 0" class="ds-table-empty" role="row">
+          <tr v-if="!isLoading && visibleRows.length === 0" class="ds-table-empty" role="row">
             <td :colspan="colSpan" role="cell">
               <slot name="empty">{{ emptyText }}</slot>
             </td>
@@ -402,7 +400,7 @@ const colSpan = computed(() => props.columns.length + (props.selectable ? 1 : 0)
             size="xs"
             variant="text"
             icon-end="arrow_drop_down"
-            :disabled="loading"
+            :disabled="isLoading"
             :aria-label="`${pageSizeLabel}: ${pageSize}`"
           >
             {{ pageSize }}
@@ -424,7 +422,7 @@ const colSpan = computed(() => props.columns.length + (props.selectable ? 1 : 0)
         :length="pageCount"
         size="xs"
         variant="text"
-        :disabled="loading"
+        :disabled="isLoading"
       />
     </div>
   </div>

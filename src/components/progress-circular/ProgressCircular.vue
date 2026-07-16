@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import './progress-circular.tokens.css'
+import { isSemanticColor } from '../shared/colors'
 import type { ProgressCircularProps } from './ProgressCircular.types'
 
 const props = withDefaults(defineProps<ProgressCircularProps>(), {
@@ -14,8 +15,7 @@ const props = withDefaults(defineProps<ProgressCircularProps>(), {
   indeterminate: false,
 })
 
-const SEMANTIC_COLORS = ['neutral', 'primary', 'success', 'danger', 'warning']
-const isSemantic = computed(() => SEMANTIC_COLORS.includes(props.color))
+const isSemantic = computed(() => isSemanticColor(props.color))
 
 const fraction = computed(() =>
   Math.min(1, Math.max(0, props.max > 0 ? props.value / props.max : 0)),

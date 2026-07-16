@@ -1,10 +1,11 @@
+import type { Placement } from '../shared/types'
+
 /**
  * Preferred side of the anchor. The tooltip automatically flips to the
  * opposite side (CSS position-try fallbacks) when it would overflow the
  * viewport.
  */
-export type TooltipPlacement =
-  'top' | 'top-start' | 'top-end' | 'bottom' | 'bottom-start' | 'bottom-end' | 'left' | 'right'
+export type TooltipPlacement = Placement
 
 export interface TooltipProps {
   /** Plain-text content; use the #content slot for rich markup instead */

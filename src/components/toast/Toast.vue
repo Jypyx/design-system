@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import './toast.tokens.css'
+import { iconProps } from '../shared/utils'
 import { computed, onBeforeUnmount } from 'vue'
 import Icon from '../icon/Icon.vue'
 import Typography from '../typography/Typography.vue'
@@ -16,10 +17,6 @@ const stacks = computed(() => {
   }
   return groups
 })
-
-/* Material Symbols names never contain '.', '/' or ':' — anything that
-   does is an image / SVG URL and renders through Icon's src prop */
-const iconProps = (icon: string) => (/[./:]/.test(icon) ? { src: icon } : { name: icon })
 
 /* popover="manual" puts each stack in the top layer (above dialogs and
    other popovers) without light dismiss; it must be shown from script,

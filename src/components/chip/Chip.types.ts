@@ -1,3 +1,5 @@
+import type { SemanticColor } from '../shared/types'
+
 /** xs = 20px, sm = 26px (default), md = 32px, lg = 38px, xl = 42px — same scale as Badge */
 export type ChipSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl'
 
@@ -5,7 +7,7 @@ export type ChipSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl'
  * The semantic names map to the theme colors; any other string is used as a
  * CSS accent color — background and text are derived from it with color-mix.
  */
-export type ChipColor = 'neutral' | 'primary' | 'success' | 'danger' | 'warning' | (string & {})
+export type ChipColor = SemanticColor | (string & {})
 
 export type ChipVariant = 'filled' | 'tonal' | 'outlined'
 

@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import './chip.tokens.css'
+import { iconProps } from '../shared/utils'
+import { isSemanticColor } from '../shared/colors'
 import { computed, useAttrs } from 'vue'
 import Icon from '../icon/Icon.vue'
 import type { ChipProps } from './Chip.types'
@@ -26,13 +28,7 @@ const attrs = useAttrs()
    button must stay a sibling (a button cannot nest another button). */
 const tag = () => (props.href ? 'a' : 'onClick' in attrs ? 'button' : 'span')
 
-/* Material Symbols names never contain '.', '/' or ':' — anything that
-   does is an image / SVG URL and renders through Icon's src prop */
-const iconProps = (icon: string) => (/[./:]/.test(icon) ? { src: icon } : { name: icon })
-
-const semanticColors = ['neutral', 'primary', 'success', 'danger', 'warning']
-
-const dataColor = computed(() => (semanticColors.includes(props.color) ? props.color : 'custom'))
+const dataColor = computed(() => (isSemanticColor(props.color) ? props.color : 'custom'))
 
 const style = computed(() => ({
   ...(dataColor.value === 'custom' ? { '--chip-accent': props.color } : undefined),

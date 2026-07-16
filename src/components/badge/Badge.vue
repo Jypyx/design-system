@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import './badge.tokens.css'
+import { isSemanticColor } from '../shared/colors'
 import { computed, useSlots } from 'vue'
 import type { BadgeProps } from './Badge.types'
 
@@ -14,9 +15,7 @@ const slots = useSlots()
 /* an element in the default slot switches the badge to overlay mode */
 const hasHost = computed(() => Boolean(slots.default))
 
-const semanticColors = ['neutral', 'primary', 'success', 'danger', 'warning']
-
-const dataColor = computed(() => (semanticColors.includes(props.color) ? props.color : 'custom'))
+const dataColor = computed(() => (isSemanticColor(props.color) ? props.color : 'custom'))
 
 const colorStyle = computed(() =>
   dataColor.value === 'custom' ? { '--badge-accent': props.color } : undefined,

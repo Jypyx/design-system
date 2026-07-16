@@ -83,7 +83,7 @@ const meta = {
     selectable: { control: 'boolean' },
     searchable: { control: 'boolean' },
     searchDebounce: { control: 'number', description: 'v-model:search debounce, in ms' },
-    loading: { control: 'boolean' },
+    isLoading: { control: 'boolean' },
     density: {
       control: 'select',
       options: densities,
@@ -111,7 +111,7 @@ const meta = {
     pageSize: 10,
     selectable: false,
     searchable: true,
-    loading: false,
+    isLoading: false,
     density: 'default',
     striped: false,
     hover: true,
@@ -207,7 +207,7 @@ export const PageSize: Story = {
  * Passing `total` switches to server mode: the table renders `rows` as-is and
  * only drives `v-model:page` / `v-model:sort` / `v-model:search` — the parent
  * watches them, calls its API (simulated here with a 400ms timeout) and feeds
- * back `rows`, `total` and `loading`.
+ * back `rows`, `total` and `isLoading`.
  */
 export const ServerMode: Story = {
   parameters: { controls: { disable: true } },
@@ -224,7 +224,7 @@ export const ServerMode: Story = {
 
       const rows = ref<Dessert[]>([])
       const total = ref(0)
-      const loading = ref(false)
+      const isLoading = ref(false)
       const page = ref(1)
       const pageSize = ref(10)
       const sort = ref<DataTableSort | null>(null)
@@ -232,7 +232,7 @@ export const ServerMode: Story = {
 
       let timer: ReturnType<typeof setTimeout> | undefined
       const load = () => {
-        loading.value = true
+        isLoading.value = true
         clearTimeout(timer)
         timer = setTimeout(() => {
           let data = all
@@ -253,14 +253,14 @@ export const ServerMode: Story = {
           }
           total.value = data.length
           rows.value = data.slice((page.value - 1) * pageSize.value, page.value * pageSize.value)
-          loading.value = false
+          isLoading.value = false
         }, 400)
       }
 
       watch([page, pageSize, sort, search], load)
       load()
 
-      return { columns, rows, total, loading, page, pageSize, sort, search }
+      return { columns, rows, total, isLoading, page, pageSize, sort, search }
     },
     template: `
       <DataTable
@@ -271,7 +271,7 @@ export const ServerMode: Story = {
         :columns="columns"
         :rows="rows"
         :total="total"
-        :loading="loading"
+        :is-loading="isLoading"
         row-key="id"
         title="Server data"
         caption="Server-driven dessert list"
@@ -375,11 +375,11 @@ export const StickyHeader: Story = {
 }
 
 /**
- * While `loading`, an indeterminate bar shows under the header, the body dims
+ * While `isLoading`, an indeterminate bar shows under the header, the body dims
  * and stops reacting, and the container exposes `aria-busy`.
  */
 export const Loading: Story = {
-  args: { loading: true },
+  args: { isLoading: true },
 }
 
 /**

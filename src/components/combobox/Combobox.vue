@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref, useId, watch } from 'vue'
 import './combobox.tokens.css'
+import { fold, iconProps } from '../shared/utils'
 import Chip from '../chip/Chip.vue'
 import Icon from '../icon/Icon.vue'
 import Typography from '../typography/Typography.vue'
@@ -51,10 +52,6 @@ const query = ref('')
 const hasTyped = ref(false)
 const activeIndex = ref(-1)
 
-/* Material Symbols names never contain '.', '/' or ':' — anything that
-   does is an image / SVG URL and renders through Icon's src prop */
-const iconProps = (icon: string) => (/[./:]/.test(icon) ? { src: icon } : { name: icon })
-
 /* --- selection ------------------------------------------------------ */
 
 /* normalized view of the model: always an array of values */
@@ -89,9 +86,6 @@ const chipSizes: Record<string, ChipSize> = { xs: 'xs', sm: 'xs', md: 'sm', lg: 
 const chipSize = computed(() => chipSizes[props.size])
 
 /* --- filtering ------------------------------------------------------ */
-
-/* case- and diacritics-insensitive ("epee" matches "Épée") */
-const fold = (s: string) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase()
 
 const filtered = computed<ComboboxOption[]>(() => {
   if (!hasTyped.value || !query.value) return props.options

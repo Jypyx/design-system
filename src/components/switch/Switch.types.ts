@@ -1,4 +1,6 @@
-export type SwitchLabelPosition = 'left' | 'right'
+import type { LabelPosition } from '../shared/types'
+
+export type SwitchLabelPosition = LabelPosition
 
 export interface SwitchProps {
   /** Text label; the default slot overrides it */

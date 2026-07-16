@@ -1,3 +1,5 @@
+import type { SemanticColor } from '../shared/types'
+
 export type CalendarView = 'days' | 'months' | 'years'
 
 /** JS day index: 0 = Sunday … 6 = Saturday */
@@ -18,8 +20,8 @@ export type CalendarModelValue = Date | CalendarDateRange | null
 /** A list of blocked days, or a predicate returning true for blocked days */
 export type CalendarDisabledDates = Date[] | ((date: Date) => boolean)
 
-/** A semantic color name, or any CSS color */
-export type CalendarEventColor = 'primary' | 'success' | 'danger' | 'warning' | (string & {})
+/** A semantic color name (except neutral), or any CSS color */
+export type CalendarEventColor = Exclude<SemanticColor, 'neutral'> | (string & {})
 
 export interface CalendarEvent {
   date: Date

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import './button.tokens.css'
+import { iconProps } from '../shared/utils'
 import Icon from '../icon/Icon.vue'
 import type { ButtonProps } from './Button.types'
 
@@ -12,10 +13,6 @@ withDefaults(defineProps<ButtonProps>(), {
   isLoading: false,
   type: 'button',
 })
-
-/* Material Symbols names never contain '.', '/' or ':' — anything that
-   does is an image / SVG URL and renders through Icon's src prop */
-const iconProps = (icon: string) => (/[./:]/.test(icon) ? { src: icon } : { name: icon })
 </script>
 
 <template>

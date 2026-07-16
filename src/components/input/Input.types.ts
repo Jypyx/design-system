@@ -1,5 +1,7 @@
+import type { Size } from '../shared/types'
+
 /** xs = 28px, sm = 36px (default), md = 44px, lg = 52px — same scale as Button */
-export type InputSize = 'xs' | 'sm' | 'md' | 'lg'
+export type InputSize = Size
 
 /** Textual input types only — checkbox / radio / range have their own components */
 export type InputType = 'text' | 'email' | 'password' | 'search' | 'tel' | 'url' | 'number'
