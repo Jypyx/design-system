@@ -167,3 +167,11 @@ export type {
 
 export { default as Tooltip } from './tooltip/Tooltip.vue'
 export type { TooltipPlacement, TooltipProps } from './tooltip/Tooltip.types'
+
+export { default as Typography } from './typography/Typography.vue'
+export type {
+  TypographyColor,
+  TypographyProps,
+  TypographyTag,
+  TypographyVariant,
+} from './typography/Typography.types'

@@ -1,0 +1,112 @@
+/* ============================================================
+ * LAYER 3 — Component tokens: Typography
+ * Sizes / weights / tracking come from the Layer 1 scale; colors
+ * go through Layer 2 only, so light + dark come for free.
+ *
+ *   --typo-size         font size of the variant
+ *   --typo-line-height  paired line height
+ *   --typo-weight       font weight
+ *   --typo-tracking     letter spacing
+ *   --typo-transform    text transform (only 'overline' sets it)
+ *   --typo-color        text color
+ *
+ * Specificity contract: every variant / color selector below is
+ * wrapped in :where() so it stays at (0,1,0). Components that
+ * re-skin a Typography part override its tokens with a chained
+ * selector — `.ds-typography.ds-dialog-title { … }` — at (0,2,0),
+ * which wins deterministically regardless of CSS import order.
+ * ============================================================ */
+
+.ds-typography {
+  /* variant — default 'body' */
+  --typo-size: var(--text-base);
+  --typo-line-height: var(--text-base--line-height);
+  --typo-weight: var(--font-weight-normal);
+  --typo-tracking: var(--tracking-normal);
+  --typo-color: var(--text);
+}
+
+/* --- headings -------------------------------------------------- */
+
+.ds-typography:where([data-variant='h1']) {
+  --typo-size: var(--text-4xl);
+  --typo-line-height: var(--text-4xl--line-height);
+  --typo-weight: var(--font-weight-bold);
+  --typo-tracking: var(--tracking-tight);
+}
+
+.ds-typography:where([data-variant='h2']) {
+  --typo-size: var(--text-3xl);
+  --typo-line-height: var(--text-3xl--line-height);
+  --typo-weight: var(--font-weight-bold);
+  --typo-tracking: var(--tracking-tight);
+}
+
+.ds-typography:where([data-variant='h3']) {
+  --typo-size: var(--text-2xl);
+  --typo-line-height: var(--text-2xl--line-height);
+  --typo-weight: var(--font-weight-semibold);
+  --typo-tracking: var(--tracking-tight);
+}
+
+.ds-typography:where([data-variant='h4']) {
+  --typo-size: var(--text-xl);
+  --typo-line-height: var(--text-xl--line-height);
+  --typo-weight: var(--font-weight-semibold);
+}
+
+.ds-typography:where([data-variant='h5']) {
+  --typo-size: var(--text-lg);
+  --typo-line-height: var(--text-lg--line-height);
+  --typo-weight: var(--font-weight-semibold);
+}
+
+.ds-typography:where([data-variant='h6']) {
+  --typo-weight: var(--font-weight-semibold);
+}
+
+/* --- text ------------------------------------------------------ */
+
+.ds-typography:where([data-variant='subtitle']) {
+  --typo-size: var(--text-sm);
+  --typo-line-height: var(--text-sm--line-height);
+  --typo-color: var(--text-muted);
+}
+
+.ds-typography:where([data-variant='label']) {
+  --typo-size: var(--text-sm);
+  --typo-line-height: var(--text-sm--line-height);
+  --typo-weight: var(--font-weight-medium);
+}
+
+.ds-typography:where([data-variant='caption']) {
+  --typo-size: var(--text-xs);
+  --typo-line-height: var(--text-xs--line-height);
+  --typo-color: var(--text-muted);
+}
+
+.ds-typography:where([data-variant='overline']) {
+  --typo-size: var(--text-xs);
+  --typo-line-height: var(--text-xs--line-height);
+  --typo-weight: var(--font-weight-medium);
+  --typo-tracking: var(--tracking-wide);
+  --typo-transform: uppercase;
+  --typo-color: var(--text-muted);
+}
+
+/* --- colors ----------------------------------------------------- */
+/* data-color is omitted at 'default' so the variant's own color
+   applies; must stay after the variants so an explicit color prop
+   beats the variant's default (e.g. subtitle + color="default") */
+
+.ds-typography:where([data-color='muted']) {
+  --typo-color: var(--text-muted);
+}
+
+.ds-typography:where([data-color='disabled']) {
+  --typo-color: var(--text-disabled);
+}
+
+.ds-typography:where([data-color='inverse']) {
+  --typo-color: var(--text-inverse);
+}
