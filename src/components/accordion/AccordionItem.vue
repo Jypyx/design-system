@@ -184,6 +184,13 @@ function onSummaryClick(event: MouseEvent) {
   font-size: var(--accordion-summary-font-size);
 }
 
+/* panel copy matches the summary size by design; raw slotted text gets
+   it by inheritance (above), body-variant Typography by token override
+   (its explicit font-size would otherwise ignore the inherited one) */
+.ds-accordion-content .ds-typography:where([data-variant='body']) {
+  --typo-size: var(--accordion-summary-font-size);
+}
+
 /* the UA wrapper around the panel: 0 → auto only interpolates thanks to
    interpolate-size above; content-visibility transitions discretely so
    the content stays rendered until the close animation ends */
