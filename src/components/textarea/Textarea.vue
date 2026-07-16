@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, getCurrentInstance, ref, useId } from 'vue'
 import './textarea.tokens.css'
+import '../../styles/shared/field.css'
 import '../../styles/shared/icon-button.css'
 import { iconProps } from '../shared/utils'
 import Spinner from '../spinner/Spinner.vue'
@@ -48,7 +49,7 @@ function clear() {
 
 <template>
   <div
-    class="ds-textarea"
+    class="ds-textarea ds-field"
     :data-size="size"
     :data-auto-resize="autoResize ? '' : undefined"
     :data-disabled="disabled ? '' : undefined"
@@ -56,10 +57,19 @@ function clear() {
     :data-invalid="invalid ? '' : undefined"
     :data-loading="isLoading ? '' : undefined"
   >
-    <Typography v-if="label" as="label" variant="label" class="ds-textarea-label" :for="id">
-      {{ label }}<span v-if="required" class="ds-textarea-required" aria-hidden="true"> *</span>
+    <Typography
+      v-if="label"
+      as="label"
+      variant="label"
+      class="ds-textarea-label ds-field-label"
+      :for="id"
+    >
+      {{ label
+      }}<span v-if="required" class="ds-textarea-required ds-field-required" aria-hidden="true">
+        *</span
+      >
     </Typography>
-    <div class="ds-textarea-field">
+    <div class="ds-textarea-field ds-field-frame">
       <slot name="icon-start">
         <Icon v-if="iconStart" v-bind="iconProps(iconStart)" />
       </slot>
@@ -67,7 +77,7 @@ function clear() {
         :id="id"
         ref="control"
         v-model="model"
-        class="ds-textarea-control"
+        class="ds-textarea-control ds-field-control"
         :rows="rows"
         :placeholder="placeholder"
         :maxlength="maxlength"
@@ -106,11 +116,11 @@ function clear() {
         <Icon v-if="iconEnd" v-bind="iconProps(iconEnd)" />
       </slot>
     </div>
-    <div v-if="hint || showCount" class="ds-textarea-meta">
-      <Typography v-if="hint" :id="hintId" variant="caption" class="ds-textarea-hint">
+    <div v-if="hint || showCount" class="ds-textarea-meta ds-field-meta">
+      <Typography v-if="hint" :id="hintId" variant="caption" class="ds-textarea-hint ds-field-hint">
         {{ hint }}
       </Typography>
-      <Typography v-if="showCount" variant="caption" class="ds-textarea-count">
+      <Typography v-if="showCount" variant="caption" class="ds-textarea-count ds-field-count">
         {{ count }}<template v-if="maxlength"> / {{ maxlength }}</template>
       </Typography>
     </div>
@@ -118,85 +128,20 @@ function clear() {
 </template>
 
 <style>
-.ds-textarea {
-  /* self-contained: never rely on a host-app reset */
-  box-sizing: border-box;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: var(--textarea-stack-gap);
-  min-width: 0;
-  font-family: var(--font-sans);
-}
+/* stack, label, frame, control reset and meta row come from the shared
+   .ds-field partial (tokens mapped in textarea.tokens.css) */
 
-/* --- label --------------------------------------------------------- */
-
-.ds-typography.ds-textarea-label {
-  --typo-size: var(--textarea-label-font-size);
-  --typo-line-height: 1.25;
-  --typo-color: var(--textarea-label-color);
-
-  user-select: none;
-}
-
-.ds-textarea-required {
-  color: var(--color-danger);
-}
-
-/* --- field --------------------------------------------------------- */
-
+/* multi-line field: content hugs the top, height follows the rows */
 .ds-textarea-field {
-  box-sizing: border-box;
-  display: flex;
   align-items: flex-start;
-  gap: var(--textarea-gap);
   padding: var(--textarea-padding-block) var(--textarea-padding-inline);
-  min-width: 0;
-  background-color: var(--textarea-surface);
-  border: 1px solid var(--textarea-border-color);
-  border-radius: var(--textarea-radius);
-  color: var(--textarea-text-color);
-  transition:
-    background-color var(--duration-150) var(--ease-out),
-    border-color var(--duration-150) var(--ease-out),
-    box-shadow var(--duration-150) var(--ease-out);
 }
-
-.ds-textarea:not([data-disabled], [data-readonly]) .ds-textarea-field:hover {
-  border-color: color-mix(in oklab, var(--textarea-border-color) 50%, var(--text));
-}
-
-/* textareas always match :focus-visible, so keyboard and mouse focus
-   both show the focus style; a focused clear / end-icon button does not.
-   The box-shadow visually thickens the 1px border to 2px without any
-   layout shift */
-.ds-textarea:not([data-disabled]) .ds-textarea-field:has(> .ds-textarea-control:focus-visible) {
-  border-color: var(--textarea-accent);
-  box-shadow: 0 0 0 1px var(--textarea-accent);
-}
-
-.ds-textarea[data-disabled] .ds-textarea-field {
-  cursor: not-allowed;
-}
-
-/* --- native textarea ------------------------------------------------ */
 
 .ds-textarea-control {
-  box-sizing: border-box;
   display: block;
-  flex: 1;
-  min-width: 0;
   width: 100%;
-  margin: 0;
-  padding: 0;
-  border: none;
-  background: none;
-  outline: none;
   resize: none;
-  font-family: inherit;
-  font-size: var(--textarea-font-size);
   line-height: var(--textarea-line-height);
-  color: inherit;
 }
 
 /* grows and shrinks with the content, rows being the minimum height;
@@ -204,15 +149,6 @@ function clear() {
    rows height */
 .ds-textarea[data-auto-resize] .ds-textarea-control {
   field-sizing: content;
-}
-
-.ds-textarea-control::placeholder {
-  color: var(--textarea-placeholder-color);
-  opacity: 1;
-}
-
-.ds-textarea-control:disabled {
-  cursor: not-allowed;
 }
 
 /* --- icons + affix buttons (clear, clickable end icon) -------------- */
@@ -247,26 +183,5 @@ function clear() {
 .ds-textarea .ds-textarea-spinner {
   --spinner-size: var(--textarea-icon-size);
   color: var(--textarea-icon-color);
-}
-
-/* --- hint + counter -------------------------------------------------- */
-
-.ds-textarea-meta {
-  display: flex;
-  justify-content: space-between;
-  gap: var(--spacing-3);
-}
-
-.ds-typography.ds-textarea-hint,
-.ds-typography.ds-textarea-count {
-  --typo-size: var(--textarea-meta-font-size);
-  --typo-line-height: 1.25;
-  --typo-color: var(--textarea-hint-color);
-}
-
-.ds-textarea-count {
-  margin-inline-start: auto;
-  white-space: nowrap;
-  font-variant-numeric: tabular-nums;
 }
 </style>

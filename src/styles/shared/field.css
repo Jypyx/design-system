@@ -1,0 +1,122 @@
+/* ============================================================
+ * Shared partial — .ds-field*
+ * Form-field shell shared by Input, Textarea and Combobox:
+ * root stack, label, framed field, native control reset and the
+ * meta (hint + counter) row. Opt-in: each consuming SFC imports
+ * this file and adds the role classes next to its own
+ * (e.g. class="ds-input-field ds-field-frame").
+ * Structural rules are wrapped in :where() (zero specificity) so
+ * component-level rules override them regardless of bundle order;
+ * the Typography overrides are written at (0,3,0) to beat the
+ * (0,2,0) [data-variant] rules of typography.tokens.css.
+ * Each component maps its own tokens onto the --field-* slots in
+ * its *.tokens.css (e.g. --field-surface: var(--input-surface)).
+ * ============================================================ */
+
+/* --- root: label / field / meta stack ------------------------------- */
+
+:where(.ds-field) {
+  /* self-contained: never rely on a host-app reset */
+  box-sizing: border-box;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--field-stack-gap);
+  min-width: 0;
+  font-family: var(--font-sans);
+}
+
+/* --- label ----------------------------------------------------------- */
+
+.ds-field .ds-typography.ds-field-label {
+  --typo-size: var(--field-label-font-size);
+  --typo-line-height: 1.25;
+  --typo-color: var(--field-label-color);
+
+  user-select: none;
+}
+
+:where(.ds-field-required) {
+  color: var(--color-danger);
+}
+
+/* --- framed field ----------------------------------------------------- */
+
+:where(.ds-field-frame) {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: var(--field-gap);
+  padding-inline: var(--field-padding-inline);
+  min-width: 0;
+  background-color: var(--field-surface);
+  border: 1px solid var(--field-border-color);
+  border-radius: var(--field-radius);
+  color: var(--field-text-color);
+  transition:
+    background-color var(--duration-150) var(--ease-out),
+    border-color var(--duration-150) var(--ease-out),
+    box-shadow var(--duration-150) var(--ease-out);
+}
+
+:where(.ds-field:not([data-disabled], [data-readonly]) .ds-field-frame:hover) {
+  border-color: color-mix(in oklab, var(--field-border-color) 50%, var(--text));
+}
+
+/* text controls always match :focus-visible, so keyboard and mouse focus
+   both show the focus style; a focused affix button does not (the control
+   class only sits on the native control). The box-shadow visually
+   thickens the 1px border to 2px without any layout shift */
+:where(.ds-field:not([data-disabled]) .ds-field-frame:has(.ds-field-control:focus-visible)) {
+  border-color: var(--field-accent);
+  box-shadow: 0 0 0 1px var(--field-accent);
+}
+
+:where(.ds-field[data-disabled] .ds-field-frame) {
+  cursor: not-allowed;
+}
+
+/* --- native control reset --------------------------------------------- */
+
+:where(.ds-field-control) {
+  box-sizing: border-box;
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: none;
+  outline: none;
+  font-family: inherit;
+  font-size: var(--field-font-size);
+  color: inherit;
+}
+
+:where(.ds-field-control)::placeholder {
+  color: var(--field-placeholder-color);
+  opacity: 1;
+}
+
+:where(.ds-field-control:disabled) {
+  cursor: not-allowed;
+}
+
+/* --- meta: hint + counter row ------------------------------------------ */
+
+:where(.ds-field-meta) {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--spacing-3);
+}
+
+.ds-field .ds-typography:is(.ds-field-hint, .ds-field-count) {
+  --typo-size: var(--field-meta-font-size);
+  --typo-line-height: 1.25;
+  --typo-color: var(--field-hint-color);
+}
+
+:where(.ds-field-count) {
+  margin-inline-start: auto;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}

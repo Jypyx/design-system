@@ -68,6 +68,25 @@
   --combobox-group-label-font-size: var(--text-xs);
 }
 
+/* wire the shared .ds-field shell onto the Combobox tokens; the aliases
+   re-resolve per element, so size / state overrides above flow through */
+.ds-combobox {
+  --field-stack-gap: var(--combobox-stack-gap);
+  --field-gap: var(--combobox-gap);
+  --field-padding-inline: var(--combobox-padding-inline);
+  --field-font-size: var(--combobox-font-size);
+  --field-radius: var(--combobox-radius);
+  --field-surface: var(--combobox-surface);
+  --field-border-color: var(--combobox-border-color);
+  --field-accent: var(--combobox-accent);
+  --field-text-color: var(--combobox-text-color);
+  --field-placeholder-color: var(--combobox-placeholder-color);
+  --field-label-font-size: var(--combobox-label-font-size);
+  --field-label-color: var(--combobox-label-color);
+  --field-meta-font-size: var(--combobox-meta-font-size);
+  --field-hint-color: var(--combobox-hint-color);
+}
+
 /* --- sizes (field mirrors Input, rows follow the field density) --- */
 
 .ds-combobox[data-size='xs'] {

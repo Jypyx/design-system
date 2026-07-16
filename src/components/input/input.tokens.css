@@ -39,6 +39,25 @@
   --input-hint-color: var(--text-muted);
 }
 
+/* wire the shared .ds-field shell onto the Input tokens; the aliases
+   re-resolve per element, so size / state overrides above flow through */
+.ds-input {
+  --field-stack-gap: var(--input-stack-gap);
+  --field-gap: var(--input-gap);
+  --field-padding-inline: var(--input-padding-inline);
+  --field-font-size: var(--input-font-size);
+  --field-radius: var(--input-radius);
+  --field-surface: var(--input-surface);
+  --field-border-color: var(--input-border-color);
+  --field-accent: var(--input-accent);
+  --field-text-color: var(--input-text-color);
+  --field-placeholder-color: var(--input-placeholder-color);
+  --field-label-font-size: var(--input-label-font-size);
+  --field-label-color: var(--input-label-color);
+  --field-meta-font-size: var(--input-meta-font-size);
+  --field-hint-color: var(--input-hint-color);
+}
+
 /* --- sizes ---------------------------------------------------- */
 
 .ds-input[data-size='xs'] {

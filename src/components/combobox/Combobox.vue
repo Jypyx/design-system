@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import './combobox.tokens.css'
+import '../../styles/shared/field.css'
 import '../../styles/shared/icon-button.css'
 import '../../styles/shared/popover.css'
 import { fold, iconProps } from '../shared/utils'
@@ -329,7 +330,7 @@ defineExpose({
 
 <template>
   <div
-    class="ds-combobox"
+    class="ds-combobox ds-field"
     :data-size="size"
     :data-multiple="multiple ? '' : undefined"
     :data-open="isOpen ? '' : undefined"
@@ -337,12 +338,21 @@ defineExpose({
     :data-invalid="invalid ? '' : undefined"
     :data-loading="isLoading ? '' : undefined"
   >
-    <Typography v-if="label" as="label" variant="label" class="ds-combobox-label" :for="inputId">
-      {{ label }}<span v-if="required" class="ds-combobox-required" aria-hidden="true"> *</span>
+    <Typography
+      v-if="label"
+      as="label"
+      variant="label"
+      class="ds-combobox-label ds-field-label"
+      :for="inputId"
+    >
+      {{ label
+      }}<span v-if="required" class="ds-combobox-required ds-field-required" aria-hidden="true">
+        *</span
+      >
     </Typography>
 
     <div
-      class="ds-combobox-field"
+      class="ds-combobox-field ds-field-frame"
       :style="`anchor-name: ${anchorName}`"
       @mousedown="onFieldMousedown"
       @click="onFieldClick"
@@ -375,7 +385,7 @@ defineExpose({
         <input
           :id="inputId"
           ref="input"
-          class="ds-combobox-control"
+          class="ds-combobox-control ds-field-control"
           type="text"
           role="combobox"
           autocomplete="off"
@@ -487,8 +497,10 @@ defineExpose({
       </div>
     </div>
 
-    <div v-if="hint" class="ds-combobox-meta">
-      <Typography :id="hintId" variant="caption" class="ds-combobox-hint">{{ hint }}</Typography>
+    <div v-if="hint" class="ds-combobox-meta ds-field-meta">
+      <Typography :id="hintId" variant="caption" class="ds-combobox-hint ds-field-hint">
+        {{ hint }}
+      </Typography>
     </div>
 
     <!-- native form submission: the visible input holds label text, never a name -->
@@ -499,56 +511,14 @@ defineExpose({
 </template>
 
 <style>
-.ds-combobox {
-  /* self-contained: never rely on a host-app reset */
-  box-sizing: border-box;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: var(--combobox-stack-gap);
-  min-width: 0;
-  font-family: var(--font-sans);
-}
-
-/* --- label --------------------------------------------------------- */
-
-.ds-typography.ds-combobox-label {
-  --typo-size: var(--combobox-label-font-size);
-  --typo-line-height: 1.25;
-  --typo-color: var(--combobox-label-color);
-
-  user-select: none;
-}
-
-.ds-combobox-required {
-  color: var(--color-danger);
-}
-
-/* --- field --------------------------------------------------------- */
+/* stack, label, frame, control reset and meta row come from the shared
+   .ds-field partial (tokens mapped in combobox.tokens.css) */
 
 .ds-combobox-field {
-  box-sizing: border-box;
-  display: flex;
-  align-items: center;
-  gap: var(--combobox-gap);
   /* min-height, not height: in multiple mode the field grows when the
      chips wrap onto extra lines */
   min-height: var(--combobox-height);
-  padding-inline: var(--combobox-padding-inline);
-  min-width: 0;
-  background-color: var(--combobox-surface);
-  border: 1px solid var(--combobox-border-color);
-  border-radius: var(--combobox-radius);
-  color: var(--combobox-text-color);
   cursor: pointer;
-  transition:
-    background-color var(--duration-150) var(--ease-out),
-    border-color var(--duration-150) var(--ease-out),
-    box-shadow var(--duration-150) var(--ease-out);
-}
-
-.ds-combobox:not([data-disabled]) .ds-combobox-field:hover {
-  border-color: color-mix(in oklab, var(--combobox-border-color) 50%, var(--text));
 }
 
 /* the padding centers a single row (chip-height tall, see the control's
@@ -557,18 +527,6 @@ defineExpose({
    and the field only grows downward */
 .ds-combobox[data-multiple] .ds-combobox-field {
   padding-block: calc((var(--combobox-height) - var(--combobox-chip-height) - 2px) / 2);
-}
-
-/* text inputs always match :focus-visible, so keyboard and mouse focus
-   both show the focus style. The box-shadow visually thickens the 1px
-   border to 2px without any layout shift */
-.ds-combobox:not([data-disabled]) .ds-combobox-field:has(.ds-combobox-control:focus-visible) {
-  border-color: var(--combobox-accent);
-  box-shadow: 0 0 0 1px var(--combobox-accent);
-}
-
-.ds-combobox[data-disabled] .ds-combobox-field {
-  cursor: not-allowed;
 }
 
 /* --- native input --------------------------------------------------- */
@@ -585,19 +543,9 @@ defineExpose({
 }
 
 .ds-combobox-control {
-  box-sizing: border-box;
-  flex: 1;
   min-width: 60px;
   /* as tall as a chip so the row height is identical with and without chips */
   min-height: var(--combobox-chip-height);
-  margin: 0;
-  padding: 0;
-  border: none;
-  background: none;
-  outline: none;
-  font-family: inherit;
-  font-size: var(--combobox-font-size);
-  color: inherit;
 }
 
 /* with chips in the field, the input only takes space while focused:
@@ -607,15 +555,6 @@ defineExpose({
 .ds-combobox-chips + .ds-combobox-control:not(:focus) {
   flex: 0 0 0px;
   min-width: 0;
-}
-
-.ds-combobox-control::placeholder {
-  color: var(--combobox-placeholder-color);
-  opacity: 1;
-}
-
-.ds-combobox-control:disabled {
-  cursor: not-allowed;
 }
 
 /* --- chips / text selection inside the field ------------------------- */
@@ -791,17 +730,5 @@ defineExpose({
   font-size: var(--combobox-option-font-size);
   color: var(--text-muted);
   text-align: center;
-}
-
-/* --- hint ---------------------------------------------------------------- */
-
-.ds-combobox-meta {
-  display: flex;
-}
-
-.ds-typography.ds-combobox-hint {
-  --typo-size: var(--combobox-meta-font-size);
-  --typo-line-height: 1.25;
-  --typo-color: var(--combobox-hint-color);
 }
 </style>

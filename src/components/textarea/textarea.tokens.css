@@ -26,7 +26,7 @@
   --textarea-gap: var(--spacing-2);
   --textarea-stack-gap: var(--spacing-1\.5);
   --textarea-radius: var(--radius-md);
-  --textarea-icon-size: 20px;
+  --textarea-icon-size: var(--control-icon-sm);
   --textarea-label-font-size: var(--text-sm);
   --textarea-meta-font-size: var(--text-xs);
 
@@ -41,6 +41,25 @@
   --textarea-hint-color: var(--text-muted);
 }
 
+/* wire the shared .ds-field shell onto the Textarea tokens; the aliases
+   re-resolve per element, so size / state overrides above flow through */
+.ds-textarea {
+  --field-stack-gap: var(--textarea-stack-gap);
+  --field-gap: var(--textarea-gap);
+  --field-padding-inline: var(--textarea-padding-inline);
+  --field-font-size: var(--textarea-font-size);
+  --field-radius: var(--textarea-radius);
+  --field-surface: var(--textarea-surface);
+  --field-border-color: var(--textarea-border-color);
+  --field-accent: var(--textarea-accent);
+  --field-text-color: var(--textarea-text-color);
+  --field-placeholder-color: var(--textarea-placeholder-color);
+  --field-label-font-size: var(--textarea-label-font-size);
+  --field-label-color: var(--textarea-label-color);
+  --field-meta-font-size: var(--textarea-meta-font-size);
+  --field-hint-color: var(--textarea-hint-color);
+}
+
 /* --- sizes ---------------------------------------------------- */
 
 .ds-textarea[data-size='xs'] {
@@ -49,7 +68,7 @@
   --textarea-font-size: var(--text-xs);
   --textarea-gap: var(--spacing-1\.5);
   --textarea-radius: var(--radius-sm);
-  --textarea-icon-size: 16px;
+  --textarea-icon-size: var(--control-icon-xs);
   --textarea-label-font-size: var(--text-xs);
 }
 
@@ -69,7 +88,7 @@
   --textarea-font-size: var(--text-lg);
   --textarea-gap: var(--spacing-3);
   --textarea-radius: var(--radius-lg);
-  --textarea-icon-size: 24px;
+  --textarea-icon-size: var(--control-icon-lg);
   --textarea-label-font-size: var(--text-lg);
   --textarea-meta-font-size: var(--text-sm);
 }
