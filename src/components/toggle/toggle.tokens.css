@@ -15,12 +15,12 @@
 
 .ds-toggle {
   /* size — default 'sm' (36px) */
-  --toggle-height: 36px;
+  --toggle-height: var(--control-height-sm);
   --toggle-padding-inline: var(--spacing-4);
   --toggle-font-size: var(--text-sm);
   --toggle-gap: var(--spacing-2);
   --toggle-radius: var(--radius-md);
-  --toggle-icon-size: 20px;
+  --toggle-icon-size: var(--control-icon-sm);
 
   /* color — default 'neutral': the flat pressed state inverts (text-colored
      fill) so it stays unmistakable on any surface, in both themes */
@@ -34,16 +34,16 @@
 /* --- sizes ---------------------------------------------------- */
 
 .ds-toggle[data-size='xs'] {
-  --toggle-height: 28px;
+  --toggle-height: var(--control-height-xs);
   --toggle-padding-inline: var(--spacing-3);
   --toggle-font-size: var(--text-xs);
   --toggle-gap: var(--spacing-1\.5);
   --toggle-radius: var(--radius-sm);
-  --toggle-icon-size: 16px;
+  --toggle-icon-size: var(--control-icon-xs);
 }
 
 .ds-toggle[data-size='md'] {
-  --toggle-height: 44px;
+  --toggle-height: var(--control-height-md);
   --toggle-padding-inline: var(--spacing-5);
   --toggle-font-size: var(--text-base);
   --toggle-gap: var(--spacing-2\.5);
@@ -51,12 +51,12 @@
 }
 
 .ds-toggle[data-size='lg'] {
-  --toggle-height: 52px;
+  --toggle-height: var(--control-height-lg);
   --toggle-padding-inline: var(--spacing-6);
   --toggle-font-size: var(--text-lg);
   --toggle-gap: var(--spacing-3);
   --toggle-radius: var(--radius-lg);
-  --toggle-icon-size: 24px;
+  --toggle-icon-size: var(--control-icon-lg);
 }
 
 /* --- colors --------------------------------------------------- */
@@ -86,9 +86,7 @@
 .ds-toggle[data-color='warning'] {
   --toggle-accent: var(--color-warning);
   --toggle-on-accent: var(--color-on-warning);
-  /* amber is too light to be readable as text — pull it toward the
-     text color so the rest / tonal states keep contrast */
-  --toggle-tint: color-mix(in oklab, var(--color-warning) 70%, var(--text));
+  --toggle-tint: var(--color-warning-text);
 }
 
 /* --- disabled -------------------------------------------------- */

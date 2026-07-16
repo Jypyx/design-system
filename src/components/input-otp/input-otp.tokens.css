@@ -13,34 +13,34 @@
  * ============================================================ */
 
 .ds-otp {
-  /* size — default 'sm' (36px, square) */
-  --otp-field-width: 36px;
+  /* size — default 'sm' (36px, square: the width mirrors the control height) */
+  --otp-field-width: var(--control-height-sm);
   --otp-gap: var(--spacing-2);
   --otp-separator-font-size: var(--text-sm);
-  --otp-separator-icon-size: 20px;
+  --otp-separator-icon-size: var(--control-icon-sm);
   --otp-separator-color: var(--text-muted);
 }
 
 /* --- sizes ---------------------------------------------------- */
 
 .ds-otp[data-size='xs'] {
-  --otp-field-width: 28px;
+  --otp-field-width: var(--control-height-xs);
   --otp-gap: var(--spacing-1\.5);
   --otp-separator-font-size: var(--text-xs);
-  --otp-separator-icon-size: 16px;
+  --otp-separator-icon-size: var(--control-icon-xs);
 }
 
 .ds-otp[data-size='md'] {
-  --otp-field-width: 44px;
+  --otp-field-width: var(--control-height-md);
   --otp-gap: var(--spacing-2\.5);
   --otp-separator-font-size: var(--text-base);
 }
 
 .ds-otp[data-size='lg'] {
-  --otp-field-width: 52px;
+  --otp-field-width: var(--control-height-lg);
   --otp-gap: var(--spacing-3);
   --otp-separator-font-size: var(--text-lg);
-  --otp-separator-icon-size: 24px;
+  --otp-separator-icon-size: var(--control-icon-lg);
 }
 
 /* --- states ---------------------------------------------------- */

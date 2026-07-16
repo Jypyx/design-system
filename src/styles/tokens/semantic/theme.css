@@ -52,6 +52,9 @@
 
   --color-warning: light-dark(var(--color-amber-500), var(--color-amber-400));
   --color-on-warning: light-dark(var(--color-amber-950), var(--color-amber-950));
+  /* amber is too light to be readable as text — pulled toward the text
+     color so tonal / outlined / text usages keep contrast */
+  --color-warning-text: color-mix(in oklab, var(--color-warning) 70%, var(--text));
 
   /* --- interaction -------------------------------------------- */
   --focus-ring: 2px solid var(--color-primary);

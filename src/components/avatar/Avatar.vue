@@ -57,7 +57,7 @@ const colorStyle = computed(() =>
   props.color === 'auto'
     ? { '--avatar-hue': String(hue.value) }
     : dataColor.value === 'custom'
-      ? { '--avatar-bg': props.color }
+      ? { '--avatar-accent': props.color }
       : undefined,
 )
 
@@ -120,8 +120,8 @@ const ariaLabel = computed(() => (showImg.value ? undefined : props.name || unde
   border: 1px solid var(--avatar-border);
   border-radius: var(--radius-full);
   overflow: hidden; /* crops the image to the circle */
-  background-color: var(--avatar-bg);
-  color: var(--avatar-fg);
+  background-color: var(--avatar-accent);
+  color: var(--avatar-on-accent);
   font-family: var(--font-sans);
   font-size: var(--avatar-font-size);
   font-weight: var(--font-weight-medium);

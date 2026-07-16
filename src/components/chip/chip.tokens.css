@@ -21,7 +21,7 @@
 
 .ds-chip {
   /* size — default 'sm' (26px) */
-  --chip-size: 26px;
+  --chip-size: var(--control-square-sm);
   --chip-padding-inline: var(--spacing-2\.5);
   --chip-font-size: var(--text-xs);
   --chip-gap: var(--spacing-1\.5);
@@ -40,7 +40,7 @@
 /* --- sizes ---------------------------------------------------- */
 
 .ds-chip[data-size='xs'] {
-  --chip-size: 20px;
+  --chip-size: var(--control-square-xs);
   --chip-padding-inline: var(--spacing-2);
   --chip-font-size: var(--text-2xs);
   --chip-gap: var(--spacing-1);
@@ -50,7 +50,7 @@
 }
 
 .ds-chip[data-size='md'] {
-  --chip-size: 32px;
+  --chip-size: var(--control-square-md);
   --chip-padding-inline: var(--spacing-3);
   --chip-font-size: var(--text-sm);
   --chip-gap: var(--spacing-2);
@@ -59,7 +59,7 @@
 }
 
 .ds-chip[data-size='lg'] {
-  --chip-size: 38px;
+  --chip-size: var(--control-square-lg);
   --chip-padding-inline: var(--spacing-3\.5);
   --chip-font-size: var(--text-base);
   --chip-gap: var(--spacing-2);
@@ -69,7 +69,7 @@
 }
 
 .ds-chip[data-size='xl'] {
-  --chip-size: 42px;
+  --chip-size: var(--control-square-xl);
   --chip-padding-inline: var(--spacing-4);
   --chip-font-size: var(--text-lg);
   --chip-gap: var(--spacing-2\.5);
@@ -112,9 +112,7 @@
 .ds-chip[data-color='warning'] {
   --chip-accent: var(--color-warning);
   --chip-on-accent: var(--color-on-warning);
-  /* amber is too light to be readable as text — pull it toward the
-     text color so tonal / outlined variants keep contrast */
-  --chip-tint: color-mix(in oklab, var(--color-warning) 70%, var(--text));
+  --chip-tint: var(--color-warning-text);
 }
 
 .ds-chip[data-color='custom'] {

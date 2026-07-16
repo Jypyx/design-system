@@ -23,20 +23,20 @@
 
 .ds-combobox {
   /* field size — default 'sm' (36px), mirrors Input */
-  --combobox-height: 36px;
+  --combobox-height: var(--control-height-sm);
   --combobox-padding-inline: var(--spacing-3);
   --combobox-font-size: var(--text-sm);
   --combobox-gap: var(--spacing-2);
   --combobox-stack-gap: var(--spacing-1\.5);
   --combobox-radius: var(--radius-md);
-  --combobox-icon-size: 20px;
+  --combobox-icon-size: var(--control-icon-sm);
   --combobox-label-font-size: var(--text-sm);
   --combobox-meta-font-size: var(--text-xs);
   --combobox-chips-gap: var(--spacing-1);
   /* height of the chips rendered inside the field (mirrors the Chip sizes:
      xs = 20px, sm = 26px, md = 32px); the input and the field padding are
      derived from it so rows keep the same height with or without chips */
-  --combobox-chip-height: 20px;
+  --combobox-chip-height: var(--control-square-xs);
 
   /* field colors — mirrors Input */
   --combobox-surface: var(--surface-raised);
@@ -71,14 +71,14 @@
 /* --- sizes (field mirrors Input, rows follow the field density) --- */
 
 .ds-combobox[data-size='xs'] {
-  --combobox-height: 28px;
+  --combobox-height: var(--control-height-xs);
   --combobox-padding-inline: var(--spacing-2\.5);
   --combobox-font-size: var(--text-xs);
   --combobox-gap: var(--spacing-1\.5);
   --combobox-radius: var(--radius-sm);
-  --combobox-icon-size: 16px;
+  --combobox-icon-size: var(--control-icon-xs);
   --combobox-label-font-size: var(--text-xs);
-  --combobox-chip-height: 20px;
+  --combobox-chip-height: var(--control-square-xs);
 
   --combobox-option-min-height: 28px;
   --combobox-option-padding-block: var(--spacing-1);
@@ -86,29 +86,29 @@
 }
 
 .ds-combobox[data-size='md'] {
-  --combobox-height: 44px;
+  --combobox-height: var(--control-height-md);
   --combobox-padding-inline: var(--spacing-3\.5);
   --combobox-font-size: var(--text-base);
   --combobox-gap: var(--spacing-2\.5);
   --combobox-radius: var(--radius-lg);
   --combobox-label-font-size: var(--text-base);
   --combobox-meta-font-size: var(--text-sm);
-  --combobox-chip-height: 26px;
+  --combobox-chip-height: var(--control-square-sm);
 
   --combobox-option-min-height: 40px;
   --combobox-option-font-size: var(--text-base);
 }
 
 .ds-combobox[data-size='lg'] {
-  --combobox-height: 52px;
+  --combobox-height: var(--control-height-lg);
   --combobox-padding-inline: var(--spacing-4);
   --combobox-font-size: var(--text-lg);
   --combobox-gap: var(--spacing-3);
   --combobox-radius: var(--radius-lg);
-  --combobox-icon-size: 24px;
+  --combobox-icon-size: var(--control-icon-lg);
   --combobox-label-font-size: var(--text-lg);
   --combobox-meta-font-size: var(--text-sm);
-  --combobox-chip-height: 32px;
+  --combobox-chip-height: var(--control-square-md);
 
   --combobox-option-min-height: 44px;
   --combobox-option-font-size: var(--text-base);

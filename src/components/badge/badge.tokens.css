@@ -16,7 +16,7 @@
 
 .ds-badge {
   /* size — default 'sm' (26px) */
-  --badge-size: 26px;
+  --badge-size: var(--control-square-sm);
   --badge-padding-inline: var(--spacing-2);
   --badge-font-size: var(--text-xs);
 
@@ -36,25 +36,25 @@
 }
 
 .ds-badge[data-size='xs'] {
-  --badge-size: 20px;
+  --badge-size: var(--control-square-xs);
   --badge-padding-inline: var(--spacing-1\.5);
   --badge-font-size: var(--text-2xs);
 }
 
 .ds-badge[data-size='md'] {
-  --badge-size: 32px;
+  --badge-size: var(--control-square-md);
   --badge-padding-inline: var(--spacing-2\.5);
   --badge-font-size: var(--text-sm);
 }
 
 .ds-badge[data-size='lg'] {
-  --badge-size: 38px;
+  --badge-size: var(--control-square-lg);
   --badge-padding-inline: var(--spacing-3);
   --badge-font-size: var(--text-base);
 }
 
 .ds-badge[data-size='xl'] {
-  --badge-size: 42px;
+  --badge-size: var(--control-square-xl);
   --badge-padding-inline: var(--spacing-3\.5);
   --badge-font-size: var(--text-lg);
 }
@@ -84,9 +84,7 @@
 .ds-badge[data-color='warning'] {
   --badge-accent: var(--color-warning);
   --badge-on-accent: var(--color-on-warning);
-  /* amber is too light to be readable as text — pull it toward the
-     text color so tonal / outlined variants keep contrast */
-  --badge-tint: color-mix(in oklab, var(--color-warning) 70%, var(--text));
+  --badge-tint: var(--color-warning-text);
 }
 
 .ds-badge[data-color='custom'] {

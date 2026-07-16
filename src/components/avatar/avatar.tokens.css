@@ -11,8 +11,9 @@
  * themes, and are exposed as overridable tokens.
  *
  *   --avatar-size          circle diameter (drives font + icon size)
- *   --avatar-bg            background of the circle
- *   --avatar-fg            content color (initials / icon / text)
+ *   --avatar-accent        background of the circle (matches the
+ *                          --*-accent vocabulary of Button / Badge / Chip)
+ *   --avatar-on-accent     content color (initials / icon / text)
  *   --avatar-border        hairline border (neutral color only)
  *   --avatar-hue           hashed hue consumed by the 'auto' color
  *   --avatar-auto-lightness / --avatar-auto-chroma
@@ -24,7 +25,7 @@
 
 .ds-avatar {
   /* size — default 'sm' (36px, matches the Button sm height) */
-  --avatar-size: 36px;
+  --avatar-size: var(--control-height-sm);
   --avatar-font-size: calc(var(--avatar-size) * 0.4);
   --avatar-icon-size: calc(var(--avatar-size) * 0.55);
 
@@ -32,23 +33,23 @@
   --avatar-hue: 0;
   --avatar-auto-lightness: 0.55;
   --avatar-auto-chroma: 0.12;
-  --avatar-bg: oklch(var(--avatar-auto-lightness) var(--avatar-auto-chroma) var(--avatar-hue));
-  --avatar-fg: var(--text-on-emphasis);
+  --avatar-accent: oklch(var(--avatar-auto-lightness) var(--avatar-auto-chroma) var(--avatar-hue));
+  --avatar-on-accent: var(--text-on-emphasis);
   --avatar-border: transparent;
 }
 
 /* --- sizes ---------------------------------------------------- */
 
 .ds-avatar[data-size='xs'] {
-  --avatar-size: 28px;
+  --avatar-size: var(--control-height-xs);
 }
 
 .ds-avatar[data-size='md'] {
-  --avatar-size: 44px;
+  --avatar-size: var(--control-height-md);
 }
 
 .ds-avatar[data-size='lg'] {
-  --avatar-size: 52px;
+  --avatar-size: var(--control-height-lg);
 }
 
 .ds-avatar[data-size='xl'] {
@@ -59,57 +60,57 @@
 
 .ds-avatar[data-color='neutral'] {
   /* also the AvatarGroup "+X" overflow chip */
-  --avatar-bg: var(--surface-muted);
-  --avatar-fg: var(--text-muted);
+  --avatar-accent: var(--surface-muted);
+  --avatar-on-accent: var(--text-muted);
   --avatar-border: var(--border);
 }
 
 .ds-avatar[data-color='primary'] {
-  --avatar-bg: var(--color-primary);
-  --avatar-fg: var(--color-on-primary);
+  --avatar-accent: var(--color-primary);
+  --avatar-on-accent: var(--color-on-primary);
 }
 
 .ds-avatar[data-color='success'] {
-  --avatar-bg: var(--color-success);
-  --avatar-fg: var(--color-on-success);
+  --avatar-accent: var(--color-success);
+  --avatar-on-accent: var(--color-on-success);
 }
 
 .ds-avatar[data-color='danger'] {
-  --avatar-bg: var(--color-danger);
-  --avatar-fg: var(--color-on-danger);
+  --avatar-accent: var(--color-danger);
+  --avatar-on-accent: var(--color-on-danger);
 }
 
 .ds-avatar[data-color='warning'] {
-  --avatar-bg: var(--color-warning);
-  --avatar-fg: var(--color-on-warning);
+  --avatar-accent: var(--color-warning);
+  --avatar-on-accent: var(--color-on-warning);
 }
 
 .ds-avatar[data-color='custom'] {
   /* arbitrary user background: derive a black-or-white foreground from
      its lightness (l < 0.62 → white, else black) via relative color */
-  --avatar-fg: oklch(from var(--avatar-bg) clamp(0, (0.62 - l) * infinity, 1) 0 h);
+  --avatar-on-accent: oklch(from var(--avatar-accent) clamp(0, (0.62 - l) * infinity, 1) 0 h);
 }
 
 /* --- group ---------------------------------------------------- */
 
 .ds-avatar-group {
   /* size — default 'sm', mirrors the avatar scale */
-  --avatar-group-size: 36px;
+  --avatar-group-size: var(--control-height-sm);
   --avatar-group-overlap: calc(var(--avatar-group-size) * 0.3);
   --avatar-ring: var(--surface);
   --avatar-ring-width: 2px;
 }
 
 .ds-avatar-group[data-size='xs'] {
-  --avatar-group-size: 28px;
+  --avatar-group-size: var(--control-height-xs);
 }
 
 .ds-avatar-group[data-size='md'] {
-  --avatar-group-size: 44px;
+  --avatar-group-size: var(--control-height-md);
 }
 
 .ds-avatar-group[data-size='lg'] {
-  --avatar-group-size: 52px;
+  --avatar-group-size: var(--control-height-lg);
 }
 
 .ds-avatar-group[data-size='xl'] {

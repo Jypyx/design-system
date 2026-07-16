@@ -1,0 +1,33 @@
+/* ============================================================
+ * LAYER 2 — Semantic sizing tokens
+ * Shared control scales consumed by the component layer so the
+ * ramps stay in sync across components. No colors here — light /
+ * dark resolution stays in theme.css.
+ *
+ *   --control-height-*  rectangular control heights, shared by
+ *                       Button / Input / Combobox / Tabs / Toggle /
+ *                       Menu items / Avatar (xs–lg)
+ *   --control-icon-*    icon size inside those controls (md keeps
+ *                       the sm icon on purpose: 44px-tall controls
+ *                       still read best with a 20px glyph)
+ *   --control-square-*  compact square scale shared by Badge, Chip
+ *                       and the chips rendered inside a Combobox
+ * ============================================================ */
+
+:root {
+  --control-height-xs: 28px;
+  --control-height-sm: 36px;
+  --control-height-md: 44px;
+  --control-height-lg: 52px;
+
+  --control-icon-xs: 16px;
+  --control-icon-sm: 20px;
+  --control-icon-md: 20px;
+  --control-icon-lg: 24px;
+
+  --control-square-xs: 20px;
+  --control-square-sm: 26px;
+  --control-square-md: 32px;
+  --control-square-lg: 38px;
+  --control-square-xl: 42px;
+}

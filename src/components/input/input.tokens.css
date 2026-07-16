@@ -18,13 +18,13 @@
 
 .ds-input {
   /* size — default 'sm' (36px) */
-  --input-height: 36px;
+  --input-height: var(--control-height-sm);
   --input-padding-inline: var(--spacing-3);
   --input-font-size: var(--text-sm);
   --input-gap: var(--spacing-2);
   --input-stack-gap: var(--spacing-1\.5);
   --input-radius: var(--radius-md);
-  --input-icon-size: 20px;
+  --input-icon-size: var(--control-icon-sm);
   --input-label-font-size: var(--text-sm);
   --input-meta-font-size: var(--text-xs);
 
@@ -42,17 +42,17 @@
 /* --- sizes ---------------------------------------------------- */
 
 .ds-input[data-size='xs'] {
-  --input-height: 28px;
+  --input-height: var(--control-height-xs);
   --input-padding-inline: var(--spacing-2\.5);
   --input-font-size: var(--text-xs);
   --input-gap: var(--spacing-1\.5);
   --input-radius: var(--radius-sm);
-  --input-icon-size: 16px;
+  --input-icon-size: var(--control-icon-xs);
   --input-label-font-size: var(--text-xs);
 }
 
 .ds-input[data-size='md'] {
-  --input-height: 44px;
+  --input-height: var(--control-height-md);
   --input-padding-inline: var(--spacing-3\.5);
   --input-font-size: var(--text-base);
   --input-gap: var(--spacing-2\.5);
@@ -62,12 +62,12 @@
 }
 
 .ds-input[data-size='lg'] {
-  --input-height: 52px;
+  --input-height: var(--control-height-lg);
   --input-padding-inline: var(--spacing-4);
   --input-font-size: var(--text-lg);
   --input-gap: var(--spacing-3);
   --input-radius: var(--radius-lg);
-  --input-icon-size: 24px;
+  --input-icon-size: var(--control-icon-lg);
   --input-label-font-size: var(--text-lg);
   --input-meta-font-size: var(--text-sm);
 }
