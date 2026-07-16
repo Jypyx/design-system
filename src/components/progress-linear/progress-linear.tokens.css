@@ -29,7 +29,7 @@
 }
 
 .ds-progress-linear[data-square] {
-  --progress-radius: 0px;
+  --progress-radius: var(--radius-none);
 }
 
 /* --- colors ---------------------------------------------------- */

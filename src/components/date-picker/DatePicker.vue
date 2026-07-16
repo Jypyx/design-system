@@ -242,10 +242,8 @@ defineExpose({
     ref="root"
     class="ds-datepicker"
     :style="`--_dp-anchor: ${anchorName}`"
-    :data-size="size"
     :data-open="isOpen ? '' : undefined"
     :data-disabled="disabled ? '' : undefined"
-    :data-invalid="invalid ? '' : undefined"
   >
     <Input
       ref="inputComponent"
@@ -319,7 +317,7 @@ defineExpose({
    (label and hint included); the dashed-ident travels through the
    inherited --_dp-anchor custom property because Input owns that element */
 .ds-datepicker .ds-input-field {
-  anchor-name: var(--_dp-anchor);
+  anchor-name: var(--_dp-anchor, none);
 }
 
 /* the readonly field acts as one big button */
@@ -377,7 +375,7 @@ defineExpose({
   position: fixed;
   inset: auto;
   margin: 0;
-  position-anchor: var(--_dp-anchor);
+  position-anchor: var(--_dp-anchor, auto);
   width: max-content;
   padding: var(--datepicker-popover-padding);
   border: 1px solid var(--datepicker-popover-border);

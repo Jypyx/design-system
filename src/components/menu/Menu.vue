@@ -123,12 +123,6 @@ function onMenuKeydown(event: KeyboardEvent) {
       menu.hidePopover()
       ;(menu.previousElementSibling as HTMLElement | null)?.focus()
       break
-    // case 'Escape':
-    //   /* close one level ourselves (preventDefault below stops the native
-    //      close request from also hiding the next level) */
-    //   menu.hidePopover()
-    //   if (menu !== popover.value) (menu.previousElementSibling as HTMLElement | null)?.focus()
-    //   break
     case 'Tab':
       /* the menu is a single tab stop: closing restores focus to the
          trigger, then the default Tab action moves on from there */

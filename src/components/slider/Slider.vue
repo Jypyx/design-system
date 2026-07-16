@@ -336,8 +336,8 @@ const tickList = computed(() => {
 .ds-slider-fill {
   position: absolute;
   inset-block: 0;
-  inset-inline-start: calc(var(--_start) * (100% - var(--slider-thumb-size)));
-  inset-inline-end: calc((1 - var(--_end)) * (100% - var(--slider-thumb-size)));
+  inset-inline-start: calc(var(--_start, 0) * (100% - var(--slider-thumb-size)));
+  inset-inline-end: calc((1 - var(--_end, 1)) * (100% - var(--slider-thumb-size)));
   background-color: var(--slider-accent);
 }
 
@@ -475,11 +475,11 @@ const tickList = computed(() => {
 }
 
 .ds-slider-control > .ds-tooltip-trigger[data-thumb='start'] {
-  --_pos: var(--_start);
+  --_pos: var(--_start, 0);
 }
 
 .ds-slider-control > .ds-tooltip-trigger[data-thumb='end'] {
-  --_pos: var(--_end);
+  --_pos: var(--_end, 1);
 }
 
 /* the control's vertical writing mode must not rotate the bubble text */

@@ -38,7 +38,4 @@
 
 .ds-dialog-alert {
   --dialog-width: 400px;
-  /* --dialog-padding-inline: var(--spacing-5);
-  --dialog-padding-block: var(--spacing-4);
-  --dialog-title-font-size: var(--text-base); */
 }
