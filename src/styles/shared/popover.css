@@ -1,0 +1,126 @@
+/* ============================================================
+ * Shared partial — .ds-popover
+ * Base geometry, placement map and enter / exit transition of the
+ * anchor-positioned overlays (Menu, Tooltip, Combobox, DatePicker).
+ * Opt-in: each consuming SFC imports this file and adds the class
+ * next to its own (e.g. class="ds-menu-popover ds-popover").
+ * Every rule is wrapped in :where() (zero specificity) so any
+ * component-level rule overrides it regardless of bundle order —
+ * Combobox hardcodes its own position-area + fallbacks, submenus
+ * their own position-area + negative margins.
+ *
+ *   --popover-gap    anchor ↔ panel distance (default --spacing-1)
+ *   --popover-scale  enter / exit scale (default 0.98)
+ * ============================================================ */
+
+:where(.ds-popover) {
+  /* self-contained: never rely on a host-app reset */
+  box-sizing: border-box;
+  /* undo the UA popover styles (inset: 0 + margin: auto + border) so
+     the position-area grid cell does the placement instead; the gap is
+     re-added per placement below, on the anchor side only, so the
+     panel stays flush with the anchor on the aligned edges */
+  position: fixed;
+  inset: auto;
+  margin: 0;
+  border: 0;
+  width: max-content;
+
+  /* hide the panel when its anchor scrolls out of view */
+  position-visibility: anchors-visible;
+}
+
+/* --- placement (CSS anchor positioning) --------------------------- */
+/* the panel is laid out in the 3×3 position-area grid around its
+   anchor; a one-sided margin creates the anchor ↔ panel gap (the
+   flip fallbacks below also flip margins, keeping the gap correct) */
+
+:where(.ds-popover[data-placement^='bottom']) {
+  margin-block-start: var(--popover-gap, var(--spacing-1));
+}
+
+:where(.ds-popover[data-placement^='top']) {
+  margin-block-end: var(--popover-gap, var(--spacing-1));
+}
+
+:where(.ds-popover[data-placement='left']) {
+  margin-inline-end: var(--popover-gap, var(--spacing-1));
+}
+
+:where(.ds-popover[data-placement='right']) {
+  margin-inline-start: var(--popover-gap, var(--spacing-1));
+}
+
+:where(.ds-popover[data-placement='bottom-start']) {
+  position-area: bottom span-right;
+}
+
+:where(.ds-popover[data-placement='bottom']) {
+  position-area: bottom;
+}
+
+:where(.ds-popover[data-placement='bottom-end']) {
+  position-area: bottom span-left;
+}
+
+:where(.ds-popover[data-placement='top-start']) {
+  position-area: top span-right;
+}
+
+:where(.ds-popover[data-placement='top']) {
+  position-area: top;
+}
+
+:where(.ds-popover[data-placement='top-end']) {
+  position-area: top span-left;
+}
+
+:where(.ds-popover[data-placement='left']) {
+  position-area: left;
+}
+
+:where(.ds-popover[data-placement='right']) {
+  position-area: right;
+}
+
+/* --- position-try fallbacks -------------------------------------- */
+/* when the preferred side would overflow the viewport, flip on the
+   main axis first, then the cross axis, then both */
+
+:where(.ds-popover[data-placement^='top'], .ds-popover[data-placement^='bottom']) {
+  position-try-fallbacks:
+    flip-block,
+    flip-inline,
+    flip-block flip-inline;
+}
+
+:where(.ds-popover[data-placement='left'], .ds-popover[data-placement='right']) {
+  position-try-fallbacks:
+    flip-inline,
+    flip-block,
+    flip-block flip-inline;
+}
+
+/* --- enter / exit transition -------------------------------------- */
+
+:where(.ds-popover) {
+  opacity: 0;
+  transform: scale(var(--popover-scale, 0.98));
+  transition:
+    opacity var(--duration-150) var(--ease-out),
+    transform var(--duration-150) var(--ease-out),
+    overlay var(--duration-150) allow-discrete,
+    display var(--duration-150) allow-discrete;
+}
+
+:where(.ds-popover:popover-open) {
+  opacity: 1;
+  transform: none;
+}
+
+@starting-style {
+  :where(.ds-popover:popover-open) {
+    opacity: 0;
+    transform: scale(var(--popover-scale, 0.98));
+  }
+}

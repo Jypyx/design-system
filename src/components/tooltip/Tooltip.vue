@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import './tooltip.tokens.css'
-import { onBeforeUnmount, onMounted, useId, useTemplateRef, watch } from 'vue'
+import '../../styles/shared/popover.css'
+import { onBeforeUnmount, onMounted, useTemplateRef, watch } from 'vue'
+import { useAnchor } from '../shared/use-anchor'
 import type { TooltipProps } from './Tooltip.types'
 
 const props = withDefaults(defineProps<TooltipProps>(), {
@@ -14,11 +16,7 @@ const props = withDefaults(defineProps<TooltipProps>(), {
 /* controlled mode: the open prop drives visibility, built-in triggers are off */
 const isControlled = () => props.open !== undefined
 
-/* one dashed-ident per instance ties the trigger (anchor-name) to its
-   popover (position-anchor); all placement logic then lives in CSS */
-const uid = useId()
-const tooltipId = `ds-tooltip-${uid}`
-const anchorName = `--ds-tooltip-${uid}`
+const { id: tooltipId, anchorName } = useAnchor('tooltip')
 
 const trigger = useTemplateRef<HTMLElement>('trigger')
 const tooltip = useTemplateRef<HTMLElement>('tooltip')
@@ -105,7 +103,7 @@ onBeforeUnmount(() => {
     <div
       :id="tooltipId"
       ref="tooltip"
-      class="ds-tooltip"
+      class="ds-tooltip ds-popover"
       role="tooltip"
       popover="hint"
       :data-placement="placement"
@@ -123,16 +121,11 @@ onBeforeUnmount(() => {
   max-width: 100%;
 }
 
+/* geometry, placement map and transition come from the shared
+   .ds-popover partial */
 .ds-tooltip {
-  /* self-contained: never rely on a host-app reset */
-  box-sizing: border-box;
-  /* undo the UA popover styles (inset: 0 + margin: auto) so the
-     position-area grid cell does the placement instead */
-  position: fixed;
-  inset: auto;
-  margin: 0;
-  border: 0;
-  width: max-content;
+  --popover-gap: var(--tooltip-gap);
+  --popover-scale: 0.96;
   max-width: var(--tooltip-max-width);
   padding: var(--tooltip-padding-block) var(--tooltip-padding-inline);
   border-radius: var(--tooltip-radius);
@@ -144,106 +137,5 @@ onBeforeUnmount(() => {
   font-weight: var(--tooltip-font-weight);
   line-height: var(--tooltip-line-height);
   overflow-wrap: break-word;
-
-  /* hide the bubble when its anchor scrolls out of view */
-  position-visibility: anchors-visible;
-}
-
-/* --- placement (CSS anchor positioning) ------------------------- */
-/* the popover is laid out in the 3×3 position-area grid around its
-   anchor; the anchor↔bubble gap is a margin on the anchor-facing
-   side only — a margin on the other sides would push the bubble off
-   the anchor edge it is aligned to (top-start, top-end, …) */
-
-.ds-tooltip[data-placement^='top'] {
-  margin-bottom: var(--tooltip-gap);
-}
-
-.ds-tooltip[data-placement^='bottom'] {
-  margin-top: var(--tooltip-gap);
-}
-
-.ds-tooltip[data-placement='left'] {
-  margin-right: var(--tooltip-gap);
-}
-
-.ds-tooltip[data-placement='right'] {
-  margin-left: var(--tooltip-gap);
-}
-
-.ds-tooltip[data-placement='top'] {
-  position-area: top;
-}
-
-.ds-tooltip[data-placement='top-start'] {
-  position-area: top span-right;
-}
-
-.ds-tooltip[data-placement='top-end'] {
-  position-area: top span-left;
-}
-
-.ds-tooltip[data-placement='bottom'] {
-  position-area: bottom;
-}
-
-.ds-tooltip[data-placement='bottom-start'] {
-  position-area: bottom span-right;
-}
-
-.ds-tooltip[data-placement='bottom-end'] {
-  position-area: bottom span-left;
-}
-
-.ds-tooltip[data-placement='left'] {
-  position-area: left;
-}
-
-.ds-tooltip[data-placement='right'] {
-  position-area: right;
-}
-
-/* --- position-try fallbacks -------------------------------------- */
-/* when the preferred side would overflow the viewport, flip on the
-   main axis first, then the cross axis, then both */
-
-.ds-tooltip[data-placement^='top'],
-.ds-tooltip[data-placement^='bottom'] {
-  position-try-fallbacks:
-    flip-block,
-    flip-inline,
-    flip-block flip-inline;
-}
-
-.ds-tooltip[data-placement='left'],
-.ds-tooltip[data-placement='right'] {
-  position-try-fallbacks:
-    flip-inline,
-    flip-block,
-    flip-block flip-inline;
-}
-
-/* --- enter / exit transition -------------------------------------- */
-
-.ds-tooltip {
-  opacity: 0;
-  transform: scale(0.96);
-  transition:
-    opacity var(--duration-150) var(--ease-out),
-    transform var(--duration-150) var(--ease-out),
-    overlay var(--duration-150) allow-discrete,
-    display var(--duration-150) allow-discrete;
-}
-
-.ds-tooltip:popover-open {
-  opacity: 1;
-  transform: none;
-}
-
-@starting-style {
-  .ds-tooltip:popover-open {
-    opacity: 0;
-    transform: scale(0.96);
-  }
 }
 </style>

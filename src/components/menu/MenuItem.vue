@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import './menu.tokens.css'
 import { iconProps } from '../shared/utils'
-import { computed, onBeforeUnmount, useId, useSlots, useTemplateRef } from 'vue'
+import { computed, onBeforeUnmount, useSlots, useTemplateRef } from 'vue'
+import { useAnchor } from '../shared/use-anchor'
 import Icon from '../icon/Icon.vue'
 import Typography from '../typography/Typography.vue'
 import type { MenuItemProps } from './Menu.types'
@@ -18,11 +19,7 @@ const props = withDefaults(defineProps<MenuItemProps>(), {
 const slots = useSlots()
 const hasSubmenu = computed(() => !!slots.submenu)
 
-/* one dashed-ident per instance ties the item (anchor-name) to its
-   submenu panel (position-anchor) */
-const uid = useId()
-const submenuId = `ds-menu-sub-${uid}`
-const anchorName = `--ds-menu-sub-${uid}`
+const { id: submenuId, anchorName } = useAnchor('menu-sub')
 
 const submenu = useTemplateRef<HTMLElement>('submenu')
 
@@ -115,7 +112,7 @@ onBeforeUnmount(() => {
     v-if="hasSubmenu"
     :id="submenuId"
     ref="submenu"
-    class="ds-menu-popover ds-menu-submenu"
+    class="ds-menu-popover ds-menu-submenu ds-popover"
     role="menu"
     popover="auto"
     :style="`position-anchor: ${anchorName}`"

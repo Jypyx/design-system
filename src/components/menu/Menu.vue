@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import './menu.tokens.css'
-import { onMounted, useId, useTemplateRef } from 'vue'
+import '../../styles/shared/popover.css'
+import { onMounted, useTemplateRef } from 'vue'
+import { useAnchor } from '../shared/use-anchor'
+import { usePopoverToggle } from '../shared/use-popover-toggle'
 import type { MenuProps } from './Menu.types'
 
 const props = withDefaults(defineProps<MenuProps>(), {
@@ -9,11 +12,7 @@ const props = withDefaults(defineProps<MenuProps>(), {
   dense: false,
 })
 
-/* one dashed-ident per instance ties the trigger (anchor-name) to its
-   popover (position-anchor); all placement logic then lives in CSS */
-const uid = useId()
-const menuId = `ds-menu-${uid}`
-const anchorName = `--ds-menu-${uid}`
+const { id: menuId, anchorName } = useAnchor('menu')
 
 const trigger = useTemplateRef<HTMLElement>('trigger')
 const popover = useTemplateRef<HTMLElement>('popover')
@@ -38,29 +37,17 @@ function open(focusLast = false) {
   ;(focusLast ? items[items.length - 1] : items[0])?.focus()
 }
 
-/* light dismiss already hides the popover on pointerup when clicking the
-   trigger; remember the state at pointerdown so the click that follows
-   does not immediately reopen it */
-let wasOpenOnPointerdown = false
-
-function onTriggerPointerdown(event: PointerEvent) {
-  if (popover.value?.contains(event.target as Node)) return
-  wasOpenOnPointerdown = popover.value?.matches(':popover-open') ?? false
-}
-
-function onTriggerClick(event: MouseEvent) {
-  const wasOpen = wasOpenOnPointerdown
-  wasOpenOnPointerdown = false
+function close() {
   const el = popover.value
-  /* clicks inside the panel (a DOM child) are not trigger clicks */
-  if (props.disabled || !el || el.contains(event.target as Node)) return
-  if (wasOpen || el.matches(':popover-open')) {
-    /* light dismiss usually closed it already on pointerup */
-    if (el.matches(':popover-open')) el.hidePopover()
-    return
-  }
-  open()
+  if (el?.matches(':popover-open')) el.hidePopover()
 }
+
+const { onTriggerPointerdown, onTriggerClick } = usePopoverToggle({
+  popover: () => popover.value,
+  disabled: () => props.disabled,
+  open: () => open(),
+  close,
+})
 
 function onTriggerKeydown(event: KeyboardEvent) {
   if (props.disabled || popover.value?.contains(event.target as Node)) return
@@ -161,7 +148,7 @@ onMounted(() => {
     <div
       :id="menuId"
       ref="popover"
-      class="ds-menu-popover"
+      class="ds-menu-popover ds-popover"
       role="menu"
       popover="auto"
       :data-placement="placement"
@@ -182,19 +169,12 @@ onMounted(() => {
   max-width: 100%;
 }
 
+/* geometry, placement map and transition come from the shared
+   .ds-popover partial; submenus override the placement (see MenuItem) */
 .ds-menu-popover {
-  /* self-contained: never rely on a host-app reset */
-  box-sizing: border-box;
-  /* undo the UA popover styles (inset: 0 + margin: auto) so the
-     position-area grid cell does the placement instead; the gap is
-     re-added per placement below, on the trigger side only, so the
-     panel stays flush with the anchor on the aligned edges */
-  position: fixed;
-  inset: auto;
-  margin: 0;
+  --popover-gap: var(--menu-gap);
   min-width: var(--menu-min-width);
   max-width: var(--menu-max-width);
-  width: max-content;
   /* items are inset from the panel edges */
   padding: var(--menu-padding);
   border: 1px solid var(--menu-border);
@@ -203,106 +183,5 @@ onMounted(() => {
   color: var(--text);
   box-shadow: var(--menu-shadow);
   font-family: var(--font-sans);
-
-  /* hide the panel when its anchor scrolls out of view */
-  position-visibility: anchors-visible;
-}
-
-/* --- placement (CSS anchor positioning) ------------------------- */
-/* the panel is laid out in the 3×3 position-area grid around its
-   anchor; a one-sided margin creates the trigger↔panel gap (the
-   flip fallbacks below also flip margins, keeping the gap correct).
-   Submenus override this with their own rules (see MenuItem). */
-
-.ds-menu-popover[data-placement^='bottom'] {
-  margin-block-start: var(--menu-gap);
-}
-
-.ds-menu-popover[data-placement^='top'] {
-  margin-block-end: var(--menu-gap);
-}
-
-.ds-menu-popover[data-placement='left'] {
-  margin-inline-end: var(--menu-gap);
-}
-
-.ds-menu-popover[data-placement='right'] {
-  margin-inline-start: var(--menu-gap);
-}
-
-.ds-menu-popover[data-placement='bottom-start'] {
-  position-area: bottom span-right;
-}
-
-.ds-menu-popover[data-placement='bottom'] {
-  position-area: bottom;
-}
-
-.ds-menu-popover[data-placement='bottom-end'] {
-  position-area: bottom span-left;
-}
-
-.ds-menu-popover[data-placement='top-start'] {
-  position-area: top span-right;
-}
-
-.ds-menu-popover[data-placement='top'] {
-  position-area: top;
-}
-
-.ds-menu-popover[data-placement='top-end'] {
-  position-area: top span-left;
-}
-
-.ds-menu-popover[data-placement='left'] {
-  position-area: left;
-}
-
-.ds-menu-popover[data-placement='right'] {
-  position-area: right;
-}
-
-/* --- position-try fallbacks -------------------------------------- */
-/* when the preferred side would overflow the viewport, flip on the
-   main axis first, then the cross axis, then both */
-
-.ds-menu-popover[data-placement^='top'],
-.ds-menu-popover[data-placement^='bottom'] {
-  position-try-fallbacks:
-    flip-block,
-    flip-inline,
-    flip-block flip-inline;
-}
-
-.ds-menu-popover[data-placement='left'],
-.ds-menu-popover[data-placement='right'] {
-  position-try-fallbacks:
-    flip-inline,
-    flip-block,
-    flip-block flip-inline;
-}
-
-/* --- enter / exit transition -------------------------------------- */
-
-.ds-menu-popover {
-  opacity: 0;
-  transform: scale(0.98);
-  transition:
-    opacity var(--duration-150) var(--ease-out),
-    transform var(--duration-150) var(--ease-out),
-    overlay var(--duration-150) allow-discrete,
-    display var(--duration-150) allow-discrete;
-}
-
-.ds-menu-popover:popover-open {
-  opacity: 1;
-  transform: none;
-}
-
-@starting-style {
-  .ds-menu-popover:popover-open {
-    opacity: 0;
-    transform: scale(0.98);
-  }
 }
 </style>

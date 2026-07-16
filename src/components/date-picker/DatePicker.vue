@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import './date-picker.tokens.css'
 import '../../styles/shared/icon-button.css'
-import { computed, nextTick, onMounted, ref, useId, useTemplateRef, watch } from 'vue'
+import '../../styles/shared/popover.css'
+import { computed, nextTick, onMounted, ref, useTemplateRef, watch } from 'vue'
+import { useAnchor } from '../shared/use-anchor'
+import { usePopoverToggle } from '../shared/use-popover-toggle'
 import Calendar from '../calendar/Calendar.vue'
 import Icon from '../icon/Icon.vue'
 import Input from '../input/Input.vue'
@@ -44,9 +47,7 @@ defineSlots<{
 /* one dashed-ident per instance ties the Input's field (anchor-name, set
    in CSS through the inherited --_dp-anchor custom property) to the
    popover (position-anchor); all placement logic then lives in CSS */
-const uid = useId()
-const anchorName = `--ds-datepicker-${uid}`
-const panelId = `ds-datepicker-panel-${uid}`
+const { id: panelId, anchorName } = useAnchor('datepicker')
 
 const root = useTemplateRef<HTMLElement>('root')
 const inputComponent = useTemplateRef<InstanceType<typeof Input>>('inputComponent')
@@ -143,27 +144,18 @@ function onToggle(event: Event) {
   else emit('close')
 }
 
-/* light dismiss already hides the popover when pressing the field;
-   remember the state at pointerdown so the click that follows does not
-   immediately reopen it (same dance as Menu) */
-let wasOpenOnPointerdown = false
-
-function onFieldPointerdown() {
-  wasOpenOnPointerdown = panel.value?.matches(':popover-open') ?? false
-}
-
-function onFieldClick(event: MouseEvent) {
-  const wasOpen = wasOpenOnPointerdown
-  wasOpenOnPointerdown = false
-  if (props.disabled) return
-  /* the listener sits on the Input root: hint clicks are not field clicks */
-  if (!(event.target as Element).closest('.ds-input-field, .ds-input-label')) return
-  if (wasOpen || panel.value?.matches(':popover-open')) {
-    close()
-    return
-  }
-  open()
-}
+/* the shared toggle dance; the listener sits on the Input root, so hint
+   clicks are filtered out — they are not field clicks */
+const { onTriggerPointerdown: onFieldPointerdown, onTriggerClick: onFieldClick } = usePopoverToggle(
+  {
+    popover: () => panel.value,
+    disabled: () => props.disabled,
+    isTriggerClick: (event) =>
+      !!(event.target as Element).closest('.ds-input-field, .ds-input-label'),
+    open,
+    close,
+  },
+)
 
 function onInputKeydown(event: KeyboardEvent) {
   if (props.disabled) return
@@ -281,7 +273,7 @@ defineExpose({
     <div
       :id="panelId"
       ref="panel"
-      class="ds-datepicker-popover"
+      class="ds-datepicker-popover ds-popover"
       popover="auto"
       role="dialog"
       :aria-label="label || ariaLabel"
@@ -347,16 +339,11 @@ defineExpose({
 
 /* --- popover (CSS anchor positioning, mirrors Menu) -------------------- */
 
+/* geometry, placement map and transition come from the shared
+   .ds-popover partial */
 .ds-datepicker-popover {
-  box-sizing: border-box;
-  /* undo the UA popover styles (inset: 0 + margin: auto) so the
-     position-area grid cell does the placement instead; the gap is
-     re-added per placement below, on the field side only */
-  position: fixed;
-  inset: auto;
-  margin: 0;
+  --popover-gap: var(--datepicker-popover-gap);
   position-anchor: var(--_dp-anchor, auto);
-  width: max-content;
   padding: var(--datepicker-popover-padding);
   border: 1px solid var(--datepicker-popover-border);
   border-radius: var(--datepicker-popover-radius);
@@ -364,75 +351,5 @@ defineExpose({
   color: var(--text);
   box-shadow: var(--datepicker-popover-shadow);
   font-family: var(--font-sans);
-
-  /* hide the panel when its anchor scrolls out of view */
-  position-visibility: anchors-visible;
-}
-
-/* --- placement (CSS anchor positioning) ------------------------------- */
-
-.ds-datepicker-popover[data-placement^='bottom'] {
-  margin-block-start: var(--datepicker-popover-gap);
-}
-
-.ds-datepicker-popover[data-placement^='top'] {
-  margin-block-end: var(--datepicker-popover-gap);
-}
-
-.ds-datepicker-popover[data-placement='bottom-start'] {
-  position-area: bottom span-right;
-}
-
-.ds-datepicker-popover[data-placement='bottom'] {
-  position-area: bottom;
-}
-
-.ds-datepicker-popover[data-placement='bottom-end'] {
-  position-area: bottom span-left;
-}
-
-.ds-datepicker-popover[data-placement='top-start'] {
-  position-area: top span-right;
-}
-
-.ds-datepicker-popover[data-placement='top'] {
-  position-area: top;
-}
-
-.ds-datepicker-popover[data-placement='top-end'] {
-  position-area: top span-left;
-}
-
-/* when the preferred side would overflow the viewport, flip on the
-   main axis first, then the cross axis, then both */
-.ds-datepicker-popover {
-  position-try-fallbacks:
-    flip-block,
-    flip-inline,
-    flip-block flip-inline;
-}
-
-/* --- enter / exit transition -------------------------------------------- */
-
-.ds-datepicker-popover {
-  opacity: 0;
-  transform: scale(0.98);
-  transition:
-    opacity var(--duration-150) var(--ease-out),
-    transform var(--duration-150) var(--ease-out),
-    overlay var(--duration-150) allow-discrete,
-    display var(--duration-150) allow-discrete;
-}
-
-.ds-datepicker-popover:popover-open {
-  opacity: 1;
-  transform: none;
-}
-
-@starting-style {
-  .ds-datepicker-popover:popover-open {
-    opacity: 0;
-    transform: scale(0.98);
-  }
 }
 </style>

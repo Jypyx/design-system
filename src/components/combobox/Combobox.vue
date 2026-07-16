@@ -1,8 +1,10 @@
 <script setup lang="ts">
-import { computed, ref, useId, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import './combobox.tokens.css'
 import '../../styles/shared/icon-button.css'
+import '../../styles/shared/popover.css'
 import { fold, iconProps } from '../shared/utils'
+import { useAnchor } from '../shared/use-anchor'
 import Spinner from '../spinner/Spinner.vue'
 import Chip from '../chip/Chip.vue'
 import Icon from '../icon/Icon.vue'
@@ -35,10 +37,7 @@ const emit = defineEmits<{ clear: []; open: []; close: [] }>()
 
 const model = defineModel<ComboboxModelValue>({ default: null })
 
-/* one dashed-ident per instance ties the field (anchor-name) to its
-   popover (position-anchor); all placement logic then lives in CSS */
-const uid = useId()
-const anchorName = `--ds-combobox-${uid}`
+const { uid, anchorName } = useAnchor('combobox')
 const inputId = `ds-combobox-input-${uid}`
 const listboxId = `ds-combobox-list-${uid}`
 const hintId = `ds-combobox-hint-${uid}`
@@ -414,7 +413,7 @@ defineExpose({
 
     <div
       ref="popover"
-      class="ds-combobox-popover"
+      class="ds-combobox-popover ds-popover"
       popover="manual"
       :style="`position-anchor: ${anchorName}`"
       @toggle="onToggle"
@@ -680,21 +679,16 @@ defineExpose({
   color: var(--combobox-icon-color);
 }
 
-/* --- popover (CSS anchor positioning, mirrors Menu) ------------------- */
+/* --- popover ----------------------------------------------------------- */
+/* base geometry and transition come from the shared .ds-popover partial;
+   the placement is NOT the shared [data-placement] map — the list always
+   drops below the field, matches its width, and only flips above */
 
 .ds-combobox-popover {
-  box-sizing: border-box;
-  /* undo the UA popover styles (inset: 0 + margin: auto) so the
-     position-area grid cell does the placement instead */
-  position: fixed;
-  inset: auto;
-  margin: 0;
   margin-block-start: var(--combobox-popover-gap);
   position-area: bottom span-right;
   /* flip above the field when there is no room below */
   position-try-fallbacks: flip-block;
-  /* hide the panel when its anchor scrolls out of view */
-  position-visibility: anchors-visible;
   width: max-content; /* fallback if anchor-size() is unsupported */
   width: anchor-size(width); /* match the field width exactly */
   max-height: var(--combobox-popover-max-height);
@@ -706,29 +700,6 @@ defineExpose({
   color: var(--text);
   box-shadow: var(--combobox-popover-shadow);
   font-family: var(--font-sans);
-}
-
-/* enter / exit transition */
-.ds-combobox-popover {
-  opacity: 0;
-  transform: scale(0.98);
-  transition:
-    opacity var(--duration-150) var(--ease-out),
-    transform var(--duration-150) var(--ease-out),
-    overlay var(--duration-150) allow-discrete,
-    display var(--duration-150) allow-discrete;
-}
-
-.ds-combobox-popover:popover-open {
-  opacity: 1;
-  transform: none;
-}
-
-@starting-style {
-  .ds-combobox-popover:popover-open {
-    opacity: 0;
-    transform: scale(0.98);
-  }
 }
 
 /* --- options (mirror .ds-menu-item) ----------------------------------- */
