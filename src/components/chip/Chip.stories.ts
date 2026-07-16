@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import { ref } from 'vue'
 import Chip from './Chip.vue'
+import Typography from '../typography/Typography.vue'
 
 const sizes = ['xs', 'sm', 'md', 'lg', 'xl'] as const
 const semanticColors = ['neutral', 'primary', 'success', 'danger', 'warning'] as const
@@ -63,7 +64,7 @@ const meta = {
     shape: 'rounded',
   },
   render: (args) => ({
-    components: { Chip },
+    components: { Chip, Typography },
     setup: () => ({ args }),
     template: '<Chip v-bind="args" />',
   }),
@@ -78,7 +79,7 @@ export const Default: Story = {}
 export const Sizes: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    components: { Chip },
+    components: { Chip, Typography },
     setup: () => ({ sizes }),
     template: `
       <div style="display: flex; gap: var(--spacing-4); align-items: center;">
@@ -92,7 +93,7 @@ export const Sizes: Story = {
 export const Variants: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    components: { Chip },
+    components: { Chip, Typography },
     setup: () => ({ variants, semanticColors }),
     template: `
       <div style="display: flex; flex-direction: column; gap: var(--spacing-4);">
@@ -108,7 +109,7 @@ export const Variants: Story = {
 export const CustomColor: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    components: { Chip },
+    components: { Chip, Typography },
     setup: () => ({ variants, colors: ['hotpink', '#7c3aed', 'oklch(0.55 0.15 200)'] }),
     template: `
       <div style="display: flex; flex-direction: column; gap: var(--spacing-4);">
@@ -124,7 +125,7 @@ export const CustomColor: Story = {
 export const Shapes: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    components: { Chip },
+    components: { Chip, Typography },
     template: `
       <div style="display: flex; gap: var(--spacing-4); align-items: center;">
         <Chip label="Rounded" color="primary" />
@@ -138,7 +139,7 @@ export const Shapes: Story = {
 export const Icons: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    components: { Chip },
+    components: { Chip, Typography },
     template: `
       <div style="display: flex; gap: var(--spacing-4); align-items: center;">
         <Chip label="Assignee" icon-start="person" />
@@ -158,7 +159,7 @@ export const Icons: Story = {
 export const Closable: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    components: { Chip },
+    components: { Chip, Typography },
     setup() {
       const tags = ref(['Design', 'Vue', 'TypeScript', 'CSS'])
       const remove = (tag: string) => (tags.value = tags.value.filter((t) => t !== tag))
@@ -168,9 +169,9 @@ export const Closable: Story = {
       <div style="display: flex; gap: var(--spacing-2); align-items: center; min-height: 26px;">
         <Chip v-for="tag in tags" :key="tag" :label="tag" color="primary" variant="tonal" closable
               :close-label="'Remove ' + tag" @close="remove(tag)" />
-        <span v-if="tags.length === 0" style="font: var(--text-sm) var(--font-sans); color: var(--text-muted);">
+        <Typography v-if="tags.length === 0" as="span" variant="subtitle">
           All chips removed — reload the story
-        </span>
+        </Typography>
       </div>
     `,
   }),
@@ -180,7 +181,7 @@ export const Closable: Story = {
 export const CustomCloseIcon: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    components: { Chip },
+    components: { Chip, Typography },
     template: `
       <div style="display: flex; gap: var(--spacing-4); align-items: center;">
         <Chip label="Archive me" closable close-icon="archive" close-label="Archive" />
@@ -198,7 +199,7 @@ export const CustomCloseIcon: Story = {
 export const Clickable: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    components: { Chip },
+    components: { Chip, Typography },
     setup() {
       const clicks = ref(0)
       return { clicks }
@@ -218,7 +219,7 @@ export const Clickable: Story = {
 export const FilterChips: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    components: { Chip },
+    components: { Chip, Typography },
     setup() {
       const filters = ref([
         { name: 'Vue', on: true },
@@ -241,7 +242,7 @@ export const FilterChips: Story = {
 export const AsLink: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    components: { Chip },
+    components: { Chip, Typography },
     template: `
       <div style="display: flex; gap: var(--spacing-4); align-items: center;">
         <Chip label="Documentation" icon-start="link" color="primary" variant="tonal" href="https://example.com" target="_blank" />
@@ -255,7 +256,7 @@ export const AsLink: Story = {
 export const Truncation: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    components: { Chip },
+    components: { Chip, Typography },
     template: `
       <div style="display: flex; gap: var(--spacing-4); align-items: center;">
         <Chip label="A very long tag name that would stretch the layout" max-width="120px" closable />

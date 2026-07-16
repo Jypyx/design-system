@@ -1,28 +1,23 @@
 <script setup lang="ts">
 import './menu.tokens.css'
+import Typography from '../typography/Typography.vue'
 import type { MenuLabelProps } from './Menu.types'
 
 defineProps<MenuLabelProps>()
 </script>
 
 <template>
-  <div class="ds-menu-label" role="presentation">
+  <Typography as="div" variant="overline" class="ds-menu-label" role="presentation">
     <slot>{{ label }}</slot>
-  </div>
+  </Typography>
 </template>
 
 <style>
-.ds-menu-label {
-  /* self-contained: never rely on a host-app reset */
-  box-sizing: border-box;
-  margin: 0;
+.ds-typography.ds-menu-label {
+  --typo-size: var(--menu-label-font-size);
+  --typo-color: var(--menu-label-color);
+
   padding: var(--spacing-2) var(--menu-item-padding-inline) var(--spacing-1);
-  font-family: var(--font-sans);
-  font-size: var(--menu-label-font-size);
-  line-height: var(--text-xs--line-height);
-  font-weight: var(--font-weight-medium);
-  color: var(--menu-label-color);
   user-select: none;
-  text-transform: uppercase;
 }
 </style>

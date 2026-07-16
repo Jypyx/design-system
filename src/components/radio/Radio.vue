@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import './radio.tokens.css'
+import Typography from '../typography/Typography.vue'
 import type { RadioProps } from './Radio.types'
 
 withDefaults(defineProps<RadioProps>(), {
@@ -31,8 +32,8 @@ const model = defineModel<string | number | boolean | null>()
         <circle class="ds-radio-dot" cx="10" cy="10" r="4" />
       </svg>
     </span>
-    <span v-if="label || $slots.default" class="ds-radio-label"
-      ><slot>{{ label }}</slot></span
+    <Typography v-if="label || $slots.default" as="span" variant="body" class="ds-radio-label"
+      ><slot>{{ label }}</slot></Typography
     >
   </label>
 </template>
@@ -45,13 +46,17 @@ const model = defineModel<string | number | boolean | null>()
   display: inline-flex;
   align-items: center;
   gap: var(--radio-gap);
-  font-family: var(--font-sans);
-  font-size: var(--radio-font-size);
-  line-height: 1.25;
   color: var(--radio-label-color);
   cursor: pointer;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
+}
+
+/* text follows the root color (label color + disabled state) */
+.ds-typography.ds-radio-label {
+  --typo-size: var(--radio-font-size);
+  --typo-line-height: 1.25;
+  --typo-color: currentcolor;
 }
 
 /* the input stays first in the DOM (the mark is its CSS sibling);

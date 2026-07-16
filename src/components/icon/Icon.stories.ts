@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import Icon from './Icon.vue'
+import Typography from '../typography/Typography.vue'
 
 const meta = {
   title: 'Components/Icon',
@@ -32,13 +33,13 @@ export const Default: Story = {}
 export const ScalesWithParent: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    components: { Icon },
+    components: { Icon, Typography },
     template: `
       <div style="display: flex; flex-direction: column; gap: var(--spacing-3);">
-        <p v-for="size in ['0.75rem', '1rem', '1.5rem', '2.25rem']" :key="size"
-           :style="{ fontSize: size, margin: 0, display: 'flex', alignItems: 'center', gap: '0.5em' }">
+        <Typography v-for="size in ['0.75rem', '1rem', '1.5rem', '2.25rem']" :key="size"
+           :style="{ fontSize: size, display: 'flex', alignItems: 'center', gap: '0.5em' }">
           <Icon name="rocket_launch" /> Text at {{ size }}
-        </p>
+        </Typography>
       </div>
     `,
   }),
@@ -48,7 +49,7 @@ export const ScalesWithParent: Story = {
 export const InheritsColor: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    components: { Icon },
+    components: { Icon, Typography },
     template: `
       <div style="display: flex; gap: var(--spacing-4); font-size: 2rem;">
         <span style="color: var(--color-primary)"><Icon name="info" /></span>
@@ -64,7 +65,7 @@ export const InheritsColor: Story = {
 export const Filled: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    components: { Icon },
+    components: { Icon, Typography },
     template: `
       <div style="display: flex; gap: var(--spacing-4); font-size: 2rem;">
         <Icon name="favorite" />
@@ -84,7 +85,7 @@ export const AsImage: Story = {
     label: 'Smiley',
   },
   render: (args) => ({
-    components: { Icon },
+    components: { Icon, Typography },
     setup: () => ({ args }),
     template: '<div style="font-size: 3rem;"><Icon v-bind="args" /></div>',
   }),
@@ -94,7 +95,7 @@ export const AsImage: Story = {
 export const CustomSvg: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    components: { Icon },
+    components: { Icon, Typography },
     template: `
       <div style="font-size: 3rem; color: var(--color-primary);">
         <Icon>

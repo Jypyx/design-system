@@ -9,6 +9,7 @@ import Menu from '../menu/Menu.vue'
 import MenuItem from '../menu/MenuItem.vue'
 import Pagination from '../pagination/Pagination.vue'
 import ProgressLinear from '../progress-linear/ProgressLinear.vue'
+import Typography from '../typography/Typography.vue'
 import type {
   DataTableColumn,
   DataTableProps,
@@ -249,7 +250,9 @@ const colSpan = computed(() => props.columns.length + (props.selectable ? 1 : 0)
     >
       <div class="ds-table-toolbar-start">
         <slot name="toolbar">
-          <span v-if="title" class="ds-table-title">{{ title }}</span>
+          <Typography v-if="title" as="span" variant="h6" class="ds-table-title">
+            {{ title }}
+          </Typography>
         </slot>
         <span
           v-if="selectable && selected.length > 0"
@@ -465,9 +468,10 @@ const colSpan = computed(() => props.columns.length + (props.selectable ? 1 : 0)
   min-inline-size: 0;
 }
 
-.ds-table-title {
-  font-size: var(--dt-title-font-size);
-  font-weight: var(--dt-title-font-weight);
+.ds-typography.ds-table-title {
+  --typo-size: var(--dt-title-font-size);
+  --typo-weight: var(--dt-title-font-weight);
+
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

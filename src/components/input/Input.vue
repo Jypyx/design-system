@@ -2,6 +2,7 @@
 import { computed, getCurrentInstance, ref, useId } from 'vue'
 import './input.tokens.css'
 import Icon from '../icon/Icon.vue'
+import Typography from '../typography/Typography.vue'
 import type { InputProps } from './Input.types'
 
 const props = withDefaults(defineProps<InputProps>(), {
@@ -61,9 +62,9 @@ defineExpose({
     :data-invalid="invalid ? '' : undefined"
     :data-loading="isLoading ? '' : undefined"
   >
-    <label v-if="label" class="ds-input-label" :for="id">
+    <Typography v-if="label" as="label" variant="label" class="ds-input-label" :for="id">
       {{ label }}<span v-if="required" class="ds-input-required" aria-hidden="true"> *</span>
-    </label>
+    </Typography>
     <div class="ds-input-field">
       <slot name="icon-start">
         <Icon v-if="iconStart" v-bind="iconProps(iconStart)" />
@@ -130,10 +131,12 @@ defineExpose({
       </slot>
     </div>
     <div v-if="hint || showCount" class="ds-input-meta">
-      <span v-if="hint" :id="hintId" class="ds-input-hint">{{ hint }}</span>
-      <span v-if="showCount" class="ds-input-count">
+      <Typography v-if="hint" :id="hintId" variant="caption" class="ds-input-hint">
+        {{ hint }}
+      </Typography>
+      <Typography v-if="showCount" variant="caption" class="ds-input-count">
         {{ count }}<template v-if="maxlength"> / {{ maxlength }}</template>
-      </span>
+      </Typography>
     </div>
   </div>
 </template>
@@ -152,11 +155,11 @@ defineExpose({
 
 /* --- label --------------------------------------------------------- */
 
-.ds-input-label {
-  font-size: var(--input-label-font-size);
-  font-weight: var(--font-weight-medium);
-  line-height: 1.25;
-  color: var(--input-label-color);
+.ds-typography.ds-input-label {
+  --typo-size: var(--input-label-font-size);
+  --typo-line-height: 1.25;
+  --typo-color: var(--input-label-color);
+
   user-select: none;
 }
 
@@ -309,9 +312,13 @@ defineExpose({
   display: flex;
   justify-content: space-between;
   gap: var(--spacing-3);
-  font-size: var(--input-meta-font-size);
-  line-height: 1.25;
-  color: var(--input-hint-color);
+}
+
+.ds-typography.ds-input-hint,
+.ds-typography.ds-input-count {
+  --typo-size: var(--input-meta-font-size);
+  --typo-line-height: 1.25;
+  --typo-color: var(--input-hint-color);
 }
 
 .ds-input-count {

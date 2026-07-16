@@ -19,7 +19,7 @@ const defaultTag: Record<TypographyVariant, TypographyTag> = {
   h6: 'h6',
   subtitle: 'p',
   body: 'p',
-  label: 'span',
+  label: 'label',
   caption: 'span',
   overline: 'span',
 }

@@ -3,6 +3,7 @@ import { userEvent, within } from 'storybook/test'
 import { ref } from 'vue'
 import DialogAlert from './DialogAlert.vue'
 import Button from '../button/Button.vue'
+import Typography from '../typography/Typography.vue'
 
 /* opens the alert in the automated (webdriver-driven) vitest run only,
    so the a11y scan covers the open dialog; in the Storybook UI stories
@@ -29,15 +30,15 @@ const meta = {
     subtitle: 'This action cannot be undone',
   },
   render: (args) => ({
-    components: { DialogAlert, Button },
+    components: { DialogAlert, Button, Typography },
     setup: () => ({ args, open: ref(false) }),
     template: `
       <Button color="danger" variant="tonal" @click="open = true">Open alert</Button>
       <DialogAlert v-bind="args" v-model:open="open">
-        <p style="margin: 0;">
+        <Typography>
           The project, its documents and its share links will be permanently
           removed for every member.
-        </p>
+        </Typography>
         <template #footer>
           <Button variant="text" @click="open = false">Cancel</Button>
           <Button color="danger" @click="open = false">Delete project</Button>
@@ -65,12 +66,12 @@ export const Default: Story = {}
 export const WithAutofocus: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    components: { DialogAlert, Button },
+    components: { DialogAlert, Button, Typography },
     setup: () => ({ open: ref(false) }),
     template: `
       <Button color="danger" variant="tonal" @click="open = true">Open alert</Button>
       <DialogAlert v-model:open="open" title="Discard draft?" subtitle="Your changes will be lost">
-        <p style="margin: 0;">You edited this reply 2 minutes ago.</p>
+        <Typography>You edited this reply 2 minutes ago.</Typography>
         <template #footer>
           <Button variant="text" autofocus @click="open = false">Keep editing</Button>
           <Button color="danger" @click="open = false">Discard</Button>

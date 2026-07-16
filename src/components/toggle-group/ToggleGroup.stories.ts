@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import { ref } from 'vue'
 import ToggleGroup from './ToggleGroup.vue'
 import Toggle from '../toggle/Toggle.vue'
+import Typography from '../typography/Typography.vue'
 
 const meta = {
   title: 'Components/ToggleGroup',
@@ -32,7 +33,7 @@ const meta = {
     attached: false,
   },
   render: (args) => ({
-    components: { ToggleGroup, Toggle },
+    components: { ToggleGroup, Toggle, Typography },
     setup: () => ({ args, alignment: ref('left') }),
     template: `
       <ToggleGroup v-bind="args" v-model="alignment" label="Text alignment">
@@ -57,7 +58,7 @@ export const Single: Story = {}
 export const Multiple: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    components: { ToggleGroup, Toggle },
+    components: { ToggleGroup, Toggle, Typography },
     setup: () => ({ styles: ref(['bold']) }),
     template: `
       <div style="display: flex; flex-direction: column; gap: var(--spacing-3); align-items: flex-start;">
@@ -66,9 +67,7 @@ export const Multiple: Story = {
           <Toggle value="italic" icon="format_italic" label="Italic" />
           <Toggle value="underline" icon="format_underlined" label="Underline" />
         </ToggleGroup>
-        <p style="margin: 0; font-family: var(--font-sans); font-size: var(--text-sm); color: var(--text-muted);">
-          value: {{ styles }}
-        </p>
+        <Typography variant="subtitle">value: {{ styles }}</Typography>
       </div>
     `,
   }),
@@ -84,7 +83,7 @@ const variants = ['tonal', 'flat', 'outlined-tonal', 'outlined-flat', 'tonal-fla
 export const Variants: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    components: { ToggleGroup, Toggle },
+    components: { ToggleGroup, Toggle, Typography },
     setup: () => ({
       variants,
       selection: ref(Object.fromEntries(variants.map((v) => [v, 'center']))),
@@ -92,7 +91,7 @@ export const Variants: Story = {
     template: `
       <div style="display: grid; grid-template-columns: repeat(2, max-content); gap: var(--spacing-3); align-items: center;">
         <template v-for="v in variants" :key="v">
-          <span style="font-family: var(--font-sans); font-size: var(--text-sm); color: var(--text-muted);">{{ v }}</span>
+          <Typography as="span" variant="subtitle">{{ v }}</Typography>
           <ToggleGroup v-model="selection[v]" :variant="v" label="Text alignment">
             <Toggle value="left" icon="format_align_left" label="Align left" />
             <Toggle value="center" icon="format_align_center" label="Align center" />
@@ -111,7 +110,7 @@ export const Variants: Story = {
 export const FilledIcons: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    components: { ToggleGroup, Toggle },
+    components: { ToggleGroup, Toggle, Typography },
     setup: () => ({ reactions: ref(['favorite', 'star']) }),
     template: `
       <ToggleGroup v-model="reactions" multiple color="primary" label="Reactions">
@@ -131,7 +130,7 @@ export const FilledIcons: Story = {
 export const Attached: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    components: { ToggleGroup, Toggle },
+    components: { ToggleGroup, Toggle, Typography },
     setup: () => ({ period: ref('month'), variant: ref('flat') }),
     template: `
       <div style="display: flex; flex-direction: column; gap: var(--spacing-3); align-items: flex-start;">
@@ -159,7 +158,7 @@ export const Attached: Story = {
 export const InheritedProps: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    components: { ToggleGroup, Toggle },
+    components: { ToggleGroup, Toggle, Typography },
     setup: () => ({ filters: ref(['assigned']) }),
     template: `
       <ToggleGroup v-model="filters" multiple size="xs" color="primary" variant="flat" label="Filters">
@@ -175,7 +174,7 @@ export const InheritedProps: Story = {
 export const Disabled: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    components: { ToggleGroup, Toggle },
+    components: { ToggleGroup, Toggle, Typography },
     setup: () => ({ alignment: ref('left') }),
     template: `
       <ToggleGroup v-model="alignment" disabled label="Text alignment">

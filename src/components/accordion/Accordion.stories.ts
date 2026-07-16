@@ -3,6 +3,7 @@ import Accordion from './Accordion.vue'
 import AccordionItem from './AccordionItem.vue'
 import Avatar from '../avatar/Avatar.vue'
 import Button from '../button/Button.vue'
+import Typography from '../typography/Typography.vue'
 
 const meta = {
   title: 'Components/Accordion',
@@ -29,18 +30,18 @@ const meta = {
     variant: 'card',
   },
   render: (args) => ({
-    components: { Accordion, AccordionItem },
+    components: { Accordion, AccordionItem, Typography },
     setup: () => ({ args }),
     template: `
       <Accordion v-bind="args" style="width: 360px;">
         <AccordionItem icon="lock" label="Security" sublabel="Password, 2FA, sessions">
-          <p style="margin: 0;">Manage how you sign in and keep your account safe.</p>
+          <Typography>Manage how you sign in and keep your account safe.</Typography>
         </AccordionItem>
         <AccordionItem icon="notifications" label="Notifications">
-          <p style="margin: 0;">Choose what you get notified about and where.</p>
+          <Typography>Choose what you get notified about and where.</Typography>
         </AccordionItem>
         <AccordionItem icon="credit_card" label="Billing">
-          <p style="margin: 0;">Payment methods, invoices and plan details.</p>
+          <Typography>Payment methods, invoices and plan details.</Typography>
         </AccordionItem>
       </Accordion>
     `,
@@ -68,23 +69,23 @@ export const Flat: Story = {
 export const Dense: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    components: { Accordion, AccordionItem },
+    components: { Accordion, AccordionItem, Typography },
     template: `
       <div style="display: flex; gap: var(--spacing-6); align-items: flex-start;">
         <Accordion style="width: 300px;">
           <AccordionItem icon="lock" label="Default" sublabel="48px headers">
-            <p style="margin: 0;">Regular rhythm.</p>
+            <Typography>Regular rhythm.</Typography>
           </AccordionItem>
           <AccordionItem icon="notifications" label="Notifications">
-            <p style="margin: 0;">Regular rhythm.</p>
+            <Typography>Regular rhythm.</Typography>
           </AccordionItem>
         </Accordion>
         <Accordion dense style="width: 300px;">
           <AccordionItem icon="lock" label="Dense" sublabel="36px headers">
-            <p style="margin: 0;">Compact rhythm.</p>
+            <Typography>Compact rhythm.</Typography>
           </AccordionItem>
           <AccordionItem icon="notifications" label="Notifications">
-            <p style="margin: 0;">Compact rhythm.</p>
+            <Typography>Compact rhythm.</Typography>
           </AccordionItem>
         </Accordion>
       </div>
@@ -101,17 +102,17 @@ export const Dense: Story = {
 export const Multiple: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    components: { Accordion, AccordionItem },
+    components: { Accordion, AccordionItem, Typography },
     template: `
       <Accordion multiple style="width: 360px;">
         <AccordionItem icon="lock" label="Security" open>
-          <p style="margin: 0;">Open by default…</p>
+          <Typography>Open by default…</Typography>
         </AccordionItem>
         <AccordionItem icon="notifications" label="Notifications" open>
-          <p style="margin: 0;">…together with this one.</p>
+          <Typography>…together with this one.</Typography>
         </AccordionItem>
         <AccordionItem icon="credit_card" label="Billing">
-          <p style="margin: 0;">Payment methods, invoices and plan details.</p>
+          <Typography>Payment methods, invoices and plan details.</Typography>
         </AccordionItem>
       </Accordion>
     `,
@@ -126,14 +127,14 @@ export const Multiple: Story = {
 export const DefaultOpen: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    components: { Accordion, AccordionItem },
+    components: { Accordion, AccordionItem, Typography },
     template: `
       <Accordion style="width: 360px;">
         <AccordionItem icon="lock" label="Security">
-          <p style="margin: 0;">Manage how you sign in and keep your account safe.</p>
+          <Typography>Manage how you sign in and keep your account safe.</Typography>
         </AccordionItem>
         <AccordionItem icon="notifications" label="Notifications" open>
-          <p style="margin: 0;">Open on first render.</p>
+          <Typography>Open on first render.</Typography>
         </AccordionItem>
       </Accordion>
     `,
@@ -147,28 +148,28 @@ export const DefaultOpen: Story = {
 export const CustomHeader: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    components: { Accordion, AccordionItem, Avatar },
+    components: { Accordion, AccordionItem, Avatar, Typography },
     template: `
       <Accordion style="width: 360px;">
         <AccordionItem label="Ada Lovelace">
           <template #header>
             <Avatar name="Ada Lovelace" size="sm" />
             <span style="display: flex; flex-direction: column; min-width: 0;">
-              <span>Ada Lovelace</span>
-              <span style="font-size: var(--text-xs); color: var(--text-muted);">Mathematician</span>
+              <Typography as="span" variant="label">Ada Lovelace</Typography>
+              <Typography variant="caption">Mathematician</Typography>
             </span>
           </template>
-          <p style="margin: 0;">Wrote the first published algorithm.</p>
+          <Typography>Wrote the first published algorithm.</Typography>
         </AccordionItem>
         <AccordionItem label="Grace Hopper">
           <template #header>
             <Avatar name="Grace Hopper" size="sm" />
             <span style="display: flex; flex-direction: column; min-width: 0;">
-              <span>Grace Hopper</span>
-              <span style="font-size: var(--text-xs); color: var(--text-muted);">Rear admiral</span>
+              <Typography as="span" variant="label">Grace Hopper</Typography>
+              <Typography variant="caption">Rear admiral</Typography>
             </span>
           </template>
-          <p style="margin: 0;">Pioneered machine-independent programming languages.</p>
+          <Typography>Pioneered machine-independent programming languages.</Typography>
         </AccordionItem>
       </Accordion>
     `,
@@ -182,7 +183,7 @@ export const CustomHeader: Story = {
 export const Actions: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    components: { Accordion, AccordionItem, Button },
+    components: { Accordion, AccordionItem, Button, Typography },
     template: `
       <Accordion style="width: 360px;">
         <AccordionItem icon="folder" label="Documents" sublabel="12 files">
@@ -190,14 +191,14 @@ export const Actions: Story = {
             <Button icon="edit" variant="text" size="xs" label="Rename" />
             <Button icon="delete" variant="text" size="xs" label="Delete" />
           </template>
-          <p style="margin: 0;">Reports, contracts and specs.</p>
+          <Typography>Reports, contracts and specs.</Typography>
         </AccordionItem>
         <AccordionItem icon="folder" label="Pictures" sublabel="48 files">
           <template #actions>
             <Button icon="edit" variant="text" size="xs" label="Rename" />
             <Button icon="delete" variant="text" size="xs" label="Delete" />
           </template>
-          <p style="margin: 0;">Screenshots and photos.</p>
+          <Typography>Screenshots and photos.</Typography>
         </AccordionItem>
       </Accordion>
     `,
@@ -212,17 +213,17 @@ export const Actions: Story = {
 export const Disabled: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    components: { Accordion, AccordionItem },
+    components: { Accordion, AccordionItem, Typography },
     template: `
       <Accordion style="width: 360px;">
         <AccordionItem icon="lock" label="Security">
-          <p style="margin: 0;">Manage how you sign in and keep your account safe.</p>
+          <Typography>Manage how you sign in and keep your account safe.</Typography>
         </AccordionItem>
         <AccordionItem icon="science" label="Experimental" sublabel="Coming soon" disabled>
-          <p style="margin: 0;">Not available yet.</p>
+          <Typography>Not available yet.</Typography>
         </AccordionItem>
         <AccordionItem icon="credit_card" label="Billing">
-          <p style="margin: 0;">Payment methods, invoices and plan details.</p>
+          <Typography>Payment methods, invoices and plan details.</Typography>
         </AccordionItem>
       </Accordion>
     `,
@@ -236,10 +237,10 @@ export const Disabled: Story = {
 export const Standalone: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    components: { AccordionItem },
+    components: { AccordionItem, Typography },
     template: `
       <AccordionItem icon="help" label="What is this?" sublabel="A single collapsible" style="width: 360px;">
-        <p style="margin: 0;">No parent group needed — exclusivity simply doesn't apply.</p>
+        <Typography>No parent group needed — exclusivity simply doesn't apply.</Typography>
       </AccordionItem>
     `,
   }),

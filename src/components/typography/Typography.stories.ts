@@ -48,7 +48,8 @@ const meta = {
     color: {
       control: 'select',
       options: colors,
-      description: "'default' keeps the variant's own color (subtitle / caption / overline are muted)",
+      description:
+        "'default' keeps the variant's own color (subtitle / caption / overline are muted)",
     },
     truncate: { control: 'boolean', description: 'Single-line ellipsis' },
   },

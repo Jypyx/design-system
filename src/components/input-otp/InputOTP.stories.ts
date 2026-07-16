@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import { ref } from 'vue'
 import InputOTP from './InputOTP.vue'
+import Typography from '../typography/Typography.vue'
 
 const meta = {
   title: 'Components/InputOTP',
@@ -43,7 +44,7 @@ const meta = {
     invalid: false,
   },
   render: (args) => ({
-    components: { InputOTP },
+    components: { InputOTP, Typography },
     setup: () => ({ args }),
     template: '<InputOTP v-bind="args" />',
   }),
@@ -57,7 +58,7 @@ export const Default: Story = {}
 export const Formats: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    components: { InputOTP },
+    components: { InputOTP, Typography },
     template: `
       <div style="display: flex; flex-direction: column; gap: var(--spacing-4); align-items: flex-start;">
         <InputOTP :length="6" format="numeric" model-value="042786" />
@@ -71,7 +72,7 @@ export const Formats: Story = {
 export const Sizes: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    components: { InputOTP },
+    components: { InputOTP, Typography },
     template: `
       <div style="display: flex; flex-direction: column; gap: var(--spacing-4); align-items: flex-start;">
         <InputOTP size="xs" :length="4" model-value="1234" />
@@ -87,7 +88,7 @@ export const Sizes: Story = {
 export const WithSeparator: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    components: { InputOTP },
+    components: { InputOTP, Typography },
     template: `
       <div style="display: flex; flex-direction: column; gap: var(--spacing-4); align-items: flex-start;">
         <InputOTP :length="4" separator="remove" model-value="1234" />
@@ -101,7 +102,7 @@ export const WithSeparator: Story = {
 export const Attached: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    components: { InputOTP },
+    components: { InputOTP, Typography },
     template: `
       <div style="display: flex; flex-direction: column; gap: var(--spacing-4); align-items: flex-start;">
         <InputOTP :length="6" attached model-value="042786" />
@@ -119,7 +120,7 @@ export const Attached: Story = {
 export const Pattern: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    components: { InputOTP },
+    components: { InputOTP, Typography },
     template: `
       <div style="display: flex; flex-direction: column; gap: var(--spacing-4); align-items: flex-start;">
         <InputOTP pattern="GT - ###" format="numeric" model-value="589" />
@@ -134,7 +135,7 @@ export const Pattern: Story = {
 export const Loading: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    components: { InputOTP },
+    components: { InputOTP, Typography },
     template: `<InputOTP :length="6" is-loading model-value="042786" />`,
   }),
 }
@@ -142,7 +143,7 @@ export const Loading: Story = {
 export const States: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    components: { InputOTP },
+    components: { InputOTP, Typography },
     template: `
       <div style="display: flex; flex-direction: column; gap: var(--spacing-4); align-items: flex-start;">
         <InputOTP :length="4" model-value="12" />
@@ -157,7 +158,7 @@ export const States: Story = {
 export const VModelAndComplete: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    components: { InputOTP },
+    components: { InputOTP, Typography },
     setup: () => {
       const code = ref('')
       const completed = ref('')
@@ -166,9 +167,9 @@ export const VModelAndComplete: Story = {
     template: `
       <div style="display: flex; flex-direction: column; gap: var(--spacing-3); align-items: flex-start;">
         <InputOTP v-model="code" :length="4" @complete="completed = $event" />
-        <p style="margin: 0; font-family: var(--font-sans); font-size: var(--text-sm); color: var(--text-muted);">
+        <Typography variant="subtitle">
           value: “{{ code }}” — complete: “{{ completed }}”
-        </p>
+        </Typography>
       </div>
     `,
   }),

@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import Badge from './Badge.vue'
 import Avatar from '../avatar/Avatar.vue'
 import Button from '../button/Button.vue'
+import Typography from '../typography/Typography.vue'
 
 const sizes = ['dot', 'xs', 'sm', 'md', 'lg', 'xl'] as const
 const semanticColors = ['neutral', 'primary', 'success', 'danger', 'warning'] as const
@@ -119,11 +120,11 @@ export const Overlay: Story = {
 export const DotStandalone: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    components: { Badge },
+    components: { Badge, Typography },
     template: `
-      <p style="display: flex; gap: var(--spacing-2); align-items: center; margin: 0; font-family: var(--font-sans); color: var(--text);">
+      <Typography style="display: flex; gap: var(--spacing-2); align-items: center;">
         <Badge size="dot" color="success" /> Operational
-      </p>
+      </Typography>
     `,
   }),
 }

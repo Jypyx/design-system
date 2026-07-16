@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import { ref } from 'vue'
 import Toggle from './Toggle.vue'
+import Typography from '../typography/Typography.vue'
 
 const meta = {
   title: 'Components/Toggle',
@@ -40,7 +41,7 @@ const meta = {
     fillIcon: false,
   },
   render: (args) => ({
-    components: { Toggle },
+    components: { Toggle, Typography },
     setup: () => ({ args, pressed: ref(false) }),
     template: '<Toggle v-bind="args" v-model="pressed" icon-start="bookmark">Bookmark</Toggle>',
   }),
@@ -59,14 +60,14 @@ export const Default: Story = {}
 export const Variants: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    components: { Toggle },
+    components: { Toggle, Typography },
     setup: () => ({
       variants: ['tonal', 'flat', 'outlined-tonal', 'outlined-flat', 'tonal-flat'],
     }),
     template: `
       <div style="display: grid; grid-template-columns: repeat(3, max-content); gap: var(--spacing-3); align-items: center;">
         <template v-for="v in variants" :key="v">
-          <span style="font-family: var(--font-sans); font-size: var(--text-sm); color: var(--text-muted);">{{ v }}</span>
+          <Typography as="span" variant="subtitle">{{ v }}</Typography>
           <Toggle :variant="v">Off</Toggle>
           <Toggle :variant="v" :model-value="true">On</Toggle>
         </template>
@@ -78,7 +79,7 @@ export const Variants: Story = {
 export const Colors: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    components: { Toggle },
+    components: { Toggle, Typography },
     template: `
       <div style="display: flex; flex-direction: column; gap: var(--spacing-3); align-items: flex-start;">
         <div style="display: flex; gap: var(--spacing-2);">
@@ -97,7 +98,7 @@ export const Colors: Story = {
 export const Sizes: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    components: { Toggle },
+    components: { Toggle, Typography },
     template: `
       <div style="display: flex; gap: var(--spacing-2); align-items: center;">
         <Toggle size="xs" :model-value="true">Extra small</Toggle>
@@ -118,7 +119,7 @@ export const Sizes: Story = {
 export const IconOnly: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    components: { Toggle },
+    components: { Toggle, Typography },
     setup: () => ({ starred: ref(true), liked: ref(true), muted: ref(false) }),
     template: `
       <div style="display: flex; gap: var(--spacing-2); align-items: center;">
@@ -133,7 +134,7 @@ export const IconOnly: Story = {
 export const WithIcons: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    components: { Toggle },
+    components: { Toggle, Typography },
     setup: () => ({ pressed: ref(true) }),
     template: `
       <div style="display: flex; gap: var(--spacing-2); align-items: center;">
@@ -147,7 +148,7 @@ export const WithIcons: Story = {
 export const Disabled: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    components: { Toggle },
+    components: { Toggle, Typography },
     template: `
       <div style="display: flex; gap: var(--spacing-2); align-items: center;">
         <Toggle disabled>Off</Toggle>
@@ -162,14 +163,12 @@ export const Disabled: Story = {
 export const VModel: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    components: { Toggle },
+    components: { Toggle, Typography },
     setup: () => ({ pressed: ref(false) }),
     template: `
       <div style="display: flex; flex-direction: column; gap: var(--spacing-3); align-items: flex-start;">
         <Toggle v-model="pressed" icon-start="bookmark">Bookmark</Toggle>
-        <p style="margin: 0; font-family: var(--font-sans); font-size: var(--text-sm); color: var(--text-muted);">
-          pressed: {{ pressed }}
-        </p>
+        <Typography variant="subtitle">pressed: {{ pressed }}</Typography>
       </div>
     `,
   }),

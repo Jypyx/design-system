@@ -1,5 +1,9 @@
 {
   "permissions": {
-    "allow": ["PowerShell(npx vitest run *)", "PowerShell(npm run *)"]
+    "allow": [
+      "PowerShell(npx vitest run *)",
+      "PowerShell(npm run *)",
+      "PowerShell(npx vitest run --project=storybook src/components/dialog/Dialog.stories.ts src/components/toast/Toast.stories.ts src/components/menu/Menu.stories.ts)"
+    ]
   }
 }

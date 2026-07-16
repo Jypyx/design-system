@@ -3,6 +3,7 @@ import { expect, userEvent, waitFor, within } from 'storybook/test'
 import { ref } from 'vue'
 import Calendar from './Calendar.vue'
 import Button from '../button/Button.vue'
+import Typography from '../typography/Typography.vue'
 import type { CalendarEvent } from './Calendar.types'
 
 /* fixed dates keep the stories deterministic (Chromatic, vitest) */
@@ -49,7 +50,7 @@ const meta = {
     selectAdjacentDays: false,
   },
   render: (args) => ({
-    components: { Calendar },
+    components: { Calendar, Typography },
     setup: () => ({ args, value: ref(args.modelValue ?? null) }),
     template: '<Calendar v-bind="args" v-model="value" />',
   }),
@@ -79,7 +80,7 @@ export const Default: Story = {
 export const Range: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    components: { Calendar },
+    components: { Calendar, Typography },
     setup: () => ({ value: ref({ start: june(10), end: june(15) }) }),
     template: '<Calendar v-model="value" range locale="en-US" />',
   }),
@@ -190,7 +191,7 @@ export const MinMax: Story = {
 export const DisabledDates: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    components: { Calendar },
+    components: { Calendar, Typography },
     setup: () => ({
       blockedValue: ref(june(15)),
       weekendValue: ref(june(15)),
@@ -200,11 +201,11 @@ export const DisabledDates: Story = {
     template: `
       <div style="display: flex; flex-wrap: wrap; gap: var(--spacing-6);">
         <div>
-          <p style="margin: 0 0 var(--spacing-2); font: 500 var(--text-sm) var(--font-sans); color: var(--text);">Array of dates</p>
+          <Typography variant="label" as="p" style="margin-bottom: var(--spacing-2);">Array of dates</Typography>
           <Calendar v-model="blockedValue" locale="en-US" :disabled-dates="blocked" />
         </div>
         <div>
-          <p style="margin: 0 0 var(--spacing-2); font: 500 var(--text-sm) var(--font-sans); color: var(--text);">Predicate (weekends)</p>
+          <Typography variant="label" as="p" style="margin-bottom: var(--spacing-2);">Predicate (weekends)</Typography>
           <Calendar v-model="weekendValue" locale="en-US" :disabled-dates="isWeekend" />
         </div>
       </div>
@@ -227,7 +228,7 @@ export const DisabledDates: Story = {
 export const Events: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    components: { Calendar },
+    components: { Calendar, Typography },
     setup: () => ({
       value: ref(june(15)),
       events: [
@@ -254,7 +255,7 @@ export const Events: Story = {
 export const AdjacentDays: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    components: { Calendar },
+    components: { Calendar, Typography },
     setup: () => ({
       hidden: ref(june(15)),
       shown: ref(june(15)),
@@ -263,15 +264,15 @@ export const AdjacentDays: Story = {
     template: `
       <div style="display: flex; flex-wrap: wrap; gap: var(--spacing-6);">
         <div>
-          <p style="margin: 0 0 var(--spacing-2); font: 500 var(--text-sm) var(--font-sans); color: var(--text);">Hidden</p>
+          <Typography variant="label" as="p" style="margin-bottom: var(--spacing-2);">Hidden</Typography>
           <Calendar v-model="hidden" locale="en-US" :show-adjacent-days="false" />
         </div>
         <div>
-          <p style="margin: 0 0 var(--spacing-2); font: 500 var(--text-sm) var(--font-sans); color: var(--text);">Shown (default)</p>
+          <Typography variant="label" as="p" style="margin-bottom: var(--spacing-2);">Shown (default)</Typography>
           <Calendar v-model="shown" locale="en-US" />
         </div>
         <div>
-          <p style="margin: 0 0 var(--spacing-2); font: 500 var(--text-sm) var(--font-sans); color: var(--text);">Selectable</p>
+          <Typography variant="label" as="p" style="margin-bottom: var(--spacing-2);">Selectable</Typography>
           <Calendar v-model="selectable" locale="en-US" select-adjacent-days />
         </div>
       </div>
@@ -287,7 +288,7 @@ export const AdjacentDays: Story = {
 export const CustomDayContent: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    components: { Calendar },
+    components: { Calendar, Typography },
     setup: () => ({
       value: ref(june(15)),
       price: (day: number) => 39 + ((day * 7) % 60),
@@ -341,7 +342,7 @@ export const FooterActions: Story = {
 export const Localized: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    components: { Calendar },
+    components: { Calendar, Typography },
     setup: () => ({
       fr: ref(june(15)),
       us: ref(june(15)),
@@ -351,19 +352,19 @@ export const Localized: Story = {
     template: `
       <div style="display: flex; flex-wrap: wrap; gap: var(--spacing-6);">
         <div>
-          <p style="margin: 0 0 var(--spacing-2); font: 500 var(--text-sm) var(--font-sans); color: var(--text);">fr</p>
+          <Typography variant="label" as="p" style="margin-bottom: var(--spacing-2);">fr</Typography>
           <Calendar v-model="fr" locale="fr" />
         </div>
         <div>
-          <p style="margin: 0 0 var(--spacing-2); font: 500 var(--text-sm) var(--font-sans); color: var(--text);">en-US</p>
+          <Typography variant="label" as="p" style="margin-bottom: var(--spacing-2);">en-US</Typography>
           <Calendar v-model="us" locale="en-US" />
         </div>
         <div>
-          <p style="margin: 0 0 var(--spacing-2); font: 500 var(--text-sm) var(--font-sans); color: var(--text);">en-US, weekStartsOn 1</p>
+          <Typography variant="label" as="p" style="margin-bottom: var(--spacing-2);">en-US, weekStartsOn 1</Typography>
           <Calendar v-model="usMonday" locale="en-US" :week-starts-on="1" />
         </div>
         <div dir="rtl">
-          <p style="margin: 0 0 var(--spacing-2); font: 500 var(--text-sm) var(--font-sans); color: var(--text);">ar (RTL)</p>
+          <Typography variant="label" as="p" style="margin-bottom: var(--spacing-2);">ar (RTL)</Typography>
           <Calendar v-model="ar" locale="ar" />
         </div>
       </div>

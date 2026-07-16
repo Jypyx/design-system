@@ -3,6 +3,7 @@ import { expect, userEvent, waitFor, within } from 'storybook/test'
 import { ref, watch, type DefineComponent } from 'vue'
 import DataTable from './DataTable.vue'
 import Chip from '../chip/Chip.vue'
+import Typography from '../typography/Typography.vue'
 import type {
   DataTableColumn,
   DataTableProps,
@@ -211,7 +212,7 @@ export const PageSize: Story = {
 export const ServerMode: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    components: { DataTable },
+    components: { DataTable, Typography },
     setup: () => {
       const all: Dessert[] = Array.from({ length: 100 }, (_, i) => ({
         id: i + 1,
@@ -328,7 +329,7 @@ export const CellSlots: Story = {
 export const Densities: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    components: { DataTable },
+    components: { DataTable, Typography },
     setup: () => ({ desserts, columns, densities }),
     template: `
       <div style="display: flex; flex-direction: column; gap: var(--spacing-6);">
@@ -391,7 +392,7 @@ export const Loading: Story = {
 export const Responsive: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    components: { DataTable },
+    components: { DataTable, Typography },
     setup: () => ({ desserts, columns }),
     template: `
       <div style="resize: horizontal; overflow: hidden; inline-size: 400px; max-inline-size: 100%; padding-block-end: var(--spacing-2);">
@@ -430,7 +431,7 @@ export const Responsive: Story = {
 export const Empty: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    components: { DataTable },
+    components: { DataTable, Typography },
     setup: () => ({ columns }),
     template: `
       <div style="display: flex; flex-direction: column; gap: var(--spacing-6);">
@@ -453,8 +454,10 @@ export const Empty: Story = {
         >
           <template #empty>
             <div style="display: grid; gap: var(--spacing-2); justify-items: center;">
-              <strong>Nothing to show</strong>
-              <span>Try clearing the filters or come back later.</span>
+              <Typography as="span" variant="label">Nothing to show</Typography>
+              <Typography as="span" variant="subtitle">
+                Try clearing the filters or come back later.
+              </Typography>
             </div>
           </template>
         </DataTable>

@@ -2,6 +2,7 @@
 import { computed, getCurrentInstance, ref, useId } from 'vue'
 import './textarea.tokens.css'
 import Icon from '../icon/Icon.vue'
+import Typography from '../typography/Typography.vue'
 import type { TextareaProps } from './Textarea.types'
 
 const props = withDefaults(defineProps<TextareaProps>(), {
@@ -56,9 +57,9 @@ function clear() {
     :data-invalid="invalid ? '' : undefined"
     :data-loading="isLoading ? '' : undefined"
   >
-    <label v-if="label" class="ds-textarea-label" :for="id">
+    <Typography v-if="label" as="label" variant="label" class="ds-textarea-label" :for="id">
       {{ label }}<span v-if="required" class="ds-textarea-required" aria-hidden="true"> *</span>
-    </label>
+    </Typography>
     <div class="ds-textarea-field">
       <slot name="icon-start">
         <Icon v-if="iconStart" v-bind="iconProps(iconStart)" />
@@ -121,10 +122,12 @@ function clear() {
       </slot>
     </div>
     <div v-if="hint || showCount" class="ds-textarea-meta">
-      <span v-if="hint" :id="hintId" class="ds-textarea-hint">{{ hint }}</span>
-      <span v-if="showCount" class="ds-textarea-count">
+      <Typography v-if="hint" :id="hintId" variant="caption" class="ds-textarea-hint">
+        {{ hint }}
+      </Typography>
+      <Typography v-if="showCount" variant="caption" class="ds-textarea-count">
         {{ count }}<template v-if="maxlength"> / {{ maxlength }}</template>
-      </span>
+      </Typography>
     </div>
   </div>
 </template>
@@ -143,11 +146,11 @@ function clear() {
 
 /* --- label --------------------------------------------------------- */
 
-.ds-textarea-label {
-  font-size: var(--textarea-label-font-size);
-  font-weight: var(--font-weight-medium);
-  line-height: 1.25;
-  color: var(--textarea-label-color);
+.ds-typography.ds-textarea-label {
+  --typo-size: var(--textarea-label-font-size);
+  --typo-line-height: 1.25;
+  --typo-color: var(--textarea-label-color);
+
   user-select: none;
 }
 
@@ -301,9 +304,13 @@ function clear() {
   display: flex;
   justify-content: space-between;
   gap: var(--spacing-3);
-  font-size: var(--textarea-meta-font-size);
-  line-height: 1.25;
-  color: var(--textarea-hint-color);
+}
+
+.ds-typography.ds-textarea-hint,
+.ds-typography.ds-textarea-count {
+  --typo-size: var(--textarea-meta-font-size);
+  --typo-line-height: 1.25;
+  --typo-color: var(--textarea-hint-color);
 }
 
 .ds-textarea-count {

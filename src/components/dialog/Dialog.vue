@@ -2,6 +2,7 @@
 import './dialog.tokens.css'
 import { onMounted, useId, useTemplateRef, watch } from 'vue'
 import Button from '../button/Button.vue'
+import Typography from '../typography/Typography.vue'
 import type { DialogProps } from './Dialog.types'
 
 const props = withDefaults(defineProps<DialogProps>(), {
@@ -68,8 +69,12 @@ defineExpose({
     >
       <div class="ds-dialog-heading">
         <slot name="header">
-          <h2 v-if="title" :id="titleId" class="ds-dialog-title">{{ title }}</h2>
-          <p v-if="subtitle" class="ds-dialog-subtitle">{{ subtitle }}</p>
+          <Typography v-if="title" as="h2" variant="h5" :id="titleId" class="ds-dialog-title">
+            {{ title }}
+          </Typography>
+          <Typography v-if="subtitle" variant="subtitle" class="ds-dialog-subtitle">
+            {{ subtitle }}
+          </Typography>
         </slot>
       </div>
       <div v-if="$slots['header-actions']" class="ds-dialog-header__actions">
@@ -153,18 +158,14 @@ defineExpose({
   min-width: 0;
 }
 
-.ds-dialog-title {
-  margin: 0;
-  font-size: var(--dialog-title-font-size);
-  font-weight: var(--font-weight-semibold);
-  line-height: 1.3;
+.ds-typography.ds-dialog-title {
+  --typo-size: var(--dialog-title-font-size);
+  --typo-line-height: 1.3;
 }
 
-.ds-dialog-subtitle {
-  margin: 0;
-  font-size: var(--dialog-subtitle-font-size);
-  line-height: 1.5;
-  color: var(--text-muted);
+.ds-typography.ds-dialog-subtitle {
+  --typo-size: var(--dialog-subtitle-font-size);
+  --typo-line-height: 1.5;
 }
 
 .ds-dialog-close {

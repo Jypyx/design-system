@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import './switch.tokens.css'
+import Typography from '../typography/Typography.vue'
 import type { SwitchProps } from './Switch.types'
 
 withDefaults(defineProps<SwitchProps>(), {
@@ -28,8 +29,8 @@ const checked = defineModel<boolean>({ default: false })
       />
       <span class="ds-switch-thumb" aria-hidden="true"></span>
     </span>
-    <span v-if="label || $slots.default" class="ds-switch-label"
-      ><slot>{{ label }}</slot></span
+    <Typography v-if="label || $slots.default" as="span" variant="body" class="ds-switch-label"
+      ><slot>{{ label }}</slot></Typography
     >
   </label>
 </template>
@@ -42,13 +43,17 @@ const checked = defineModel<boolean>({ default: false })
   display: inline-flex;
   align-items: center;
   gap: var(--switch-gap);
-  font-family: var(--font-sans);
-  font-size: var(--switch-font-size);
-  line-height: 1.25;
   color: var(--switch-label-color);
   cursor: pointer;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
+}
+
+/* text follows the root color (label color + disabled state) */
+.ds-typography.ds-switch-label {
+  --typo-size: var(--switch-font-size);
+  --typo-line-height: 1.25;
+  --typo-color: currentcolor;
 }
 
 /* the input stays first in the DOM (the thumb is its CSS sibling);

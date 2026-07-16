@@ -2,6 +2,7 @@
 import './menu.tokens.css'
 import { computed, onBeforeUnmount, useId, useSlots, useTemplateRef } from 'vue'
 import Icon from '../icon/Icon.vue'
+import Typography from '../typography/Typography.vue'
 import type { MenuItemProps } from './Menu.types'
 
 /* the item renders as a fragment (button + optional submenu panel), so
@@ -100,8 +101,10 @@ onBeforeUnmount(() => {
       <Icon v-if="iconStart" v-bind="iconProps(iconStart)" />
     </slot>
     <span class="ds-menu-item-text">
-      <span class="ds-menu-item-label">{{ label }}</span>
-      <span v-if="sublabel" class="ds-menu-item-sublabel">{{ sublabel }}</span>
+      <Typography as="span" variant="body" class="ds-menu-item-label">{{ label }}</Typography>
+      <Typography v-if="sublabel" variant="caption" class="ds-menu-item-sublabel">
+        {{ sublabel }}
+      </Typography>
     </span>
     <!-- non-interactive content only: this still lives inside a <button> -->
     <span v-if="hasSubmenu || iconEnd || $slots.end" class="ds-menu-item-end">
@@ -192,10 +195,16 @@ onBeforeUnmount(() => {
   white-space: nowrap;
 }
 
-.ds-menu-item-sublabel {
-  font-size: var(--menu-item-sublabel-font-size);
-  line-height: var(--text-xs--line-height);
-  color: var(--menu-item-sublabel-color);
+/* text follows the item color (danger / disabled / hover states) */
+.ds-typography.ds-menu-item-label {
+  --typo-size: var(--menu-item-font-size);
+  --typo-line-height: var(--menu-item-line-height);
+  --typo-color: currentcolor;
+}
+
+.ds-typography.ds-menu-item-sublabel {
+  --typo-size: var(--menu-item-sublabel-font-size);
+  --typo-color: var(--menu-item-sublabel-color);
 }
 
 /* --- trailing area: icon, chevron or custom #end content ---------- */

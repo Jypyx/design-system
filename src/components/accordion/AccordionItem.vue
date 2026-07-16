@@ -2,6 +2,7 @@
 import './accordion.tokens.css'
 import { inject } from 'vue'
 import Icon from '../icon/Icon.vue'
+import Typography from '../typography/Typography.vue'
 import { accordionGroupKey, type AccordionItemProps } from './Accordion.types'
 
 const props = withDefaults(defineProps<AccordionItemProps>(), {
@@ -39,8 +40,12 @@ function onSummaryClick(event: MouseEvent) {
         <slot name="header">
           <Icon v-if="icon" v-bind="iconProps(icon)" />
           <span class="ds-accordion-text">
-            <span class="ds-accordion-label">{{ label }}</span>
-            <span v-if="sublabel" class="ds-accordion-sublabel">{{ sublabel }}</span>
+            <Typography as="span" variant="body" class="ds-accordion-label">
+              {{ label }}
+            </Typography>
+            <Typography v-if="sublabel" variant="caption" class="ds-accordion-sublabel">
+              {{ sublabel }}
+            </Typography>
           </span>
         </slot>
       </span>
@@ -134,10 +139,16 @@ function onSummaryClick(event: MouseEvent) {
   white-space: nowrap;
 }
 
-.ds-accordion-sublabel {
-  font-size: var(--accordion-sublabel-font-size);
-  line-height: var(--text-xs--line-height);
-  color: var(--accordion-sublabel-color);
+/* text follows the summary color (label color + disabled state) */
+.ds-typography.ds-accordion-label {
+  --typo-size: var(--accordion-summary-font-size);
+  --typo-line-height: 1.25;
+  --typo-color: currentcolor;
+}
+
+.ds-typography.ds-accordion-sublabel {
+  --typo-size: var(--accordion-sublabel-font-size);
+  --typo-color: var(--accordion-sublabel-color);
 }
 
 /* --- trailing area: #actions then chevron -------------------------- */

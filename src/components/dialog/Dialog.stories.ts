@@ -7,6 +7,7 @@ import Input from '../input/Input.vue'
 import Textarea from '../textarea/Textarea.vue'
 import Menu from '../menu/Menu.vue'
 import MenuItem from '../menu/MenuItem.vue'
+import Typography from '../typography/Typography.vue'
 
 /* opens the dialog in the automated (webdriver-driven) vitest run only,
    so the a11y scan covers the open dialog; in the Storybook UI stories
@@ -44,15 +45,15 @@ const meta = {
     closeLabel: 'Close',
   },
   render: (args) => ({
-    components: { Dialog, Button },
+    components: { Dialog, Button, Typography },
     setup: () => ({ args, open: ref(false) }),
     template: `
       <Button @click="open = true">Open dialog</Button>
       <Dialog v-bind="args" v-model:open="open">
-        <p style="margin: 0;">
+        <Typography>
           Your profile is shown on shared documents and in the members list.
           Update your display name and role, then save your changes.
-        </p>
+        </Typography>
         <template #footer>
           <Button variant="text" @click="open = false">Cancel</Button>
           <Button color="primary" @click="open = false">Save changes</Button>
@@ -78,16 +79,16 @@ export const Default: Story = {}
 export const ScrollableContent: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    components: { Dialog, Button },
+    components: { Dialog, Button, Typography },
     setup: () => ({ open: ref(false) }),
     template: `
       <Button @click="open = true">Open dialog</Button>
       <Dialog v-model:open="open" title="Terms of service" subtitle="Last updated July 2026">
-        <p v-for="i in 14" :key="i" style="margin: 0 0 var(--spacing-4);">
+        <Typography v-for="i in 14" :key="i" style="margin-bottom: var(--spacing-4);">
           {{ i }}. These terms govern the use of the service. By accessing or
           using the service you agree to be bound by them, including any
           policies referenced here, and to use the service responsibly.
-        </p>
+        </Typography>
         <template #footer>
           <Button variant="text" @click="open = false">Decline</Button>
           <Button color="primary" @click="open = false">Accept</Button>
@@ -111,12 +112,12 @@ export const CustomWidth: Story = {
 export const HeaderActions: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    components: { Dialog, Button },
+    components: { Dialog, Button, Typography },
     setup: () => ({ open: ref(false) }),
     template: `
       <Button @click="open = true">Open dialog</Button>
       <Dialog v-model:open="open" title="Report — Q3" subtitle="Generated a few seconds ago">
-        <p style="margin: 0;">Revenue is up 12% quarter over quarter.</p>
+        <Typography>Revenue is up 12% quarter over quarter.</Typography>
         <template #header-actions>
           <Button icon="download" variant="tonal" color="primary" label="Download" />
           <Button icon="open_in_full" variant="tonal" color="primary" label="Expand" />
@@ -137,7 +138,7 @@ export const HeaderActions: Story = {
 export const CustomHeader: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    components: { Dialog, Button },
+    components: { Dialog, Button, Typography },
     setup: () => ({ open: ref(false) }),
     template: `
       <Button @click="open = true">Open dialog</Button>
@@ -150,7 +151,7 @@ export const CustomHeader: Story = {
             style="box-sizing: border-box; width: 100%; padding: var(--spacing-2) var(--spacing-3); border: 1px solid var(--border); border-radius: var(--radius-md); background: var(--surface); color: var(--text); font: inherit;"
           />
         </template>
-        <p style="margin: 0; color: var(--text-muted);">Start typing to see results.</p>
+        <Typography color="muted">Start typing to see results.</Typography>
       </Dialog>
     `,
   }),
@@ -179,7 +180,7 @@ export const NotDismissible: Story = {
 export const FormWithMenu: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    components: { Dialog, Button, Input, Textarea, Menu, MenuItem },
+    components: { Dialog, Button, Input, Textarea, Menu, MenuItem, Typography },
     setup: () => ({
       open: ref(false),
       name: ref(''),
@@ -192,7 +193,7 @@ export const FormWithMenu: Story = {
         <div style="display: flex; flex-direction: column; gap: var(--spacing-4);">
           <Input v-model="name" label="Project name" placeholder="Q3 roadmap" required />
           <div>
-            <span style="display: block; margin-bottom: var(--spacing-1); font-size: var(--text-sm); font-weight: var(--font-weight-medium);">Team</span>
+            <Typography variant="label" as="span" style="display: block; margin-bottom: var(--spacing-1);">Team</Typography>
             <Menu>
               <Button variant="outlined" icon-end="expand_more">{{ team || 'Choose a team' }}</Button>
               <template #items>

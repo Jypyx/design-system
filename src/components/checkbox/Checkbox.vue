@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import './checkbox.tokens.css'
+import Typography from '../typography/Typography.vue'
 import type { CheckboxProps } from './Checkbox.types'
 
 withDefaults(defineProps<CheckboxProps>(), {
@@ -32,8 +33,8 @@ const checked = defineModel<boolean>({ default: false })
         <path class="ds-checkbox-dash" d="M6 10h8" />
       </svg>
     </span>
-    <span v-if="label || $slots.default" class="ds-checkbox-label"
-      ><slot>{{ label }}</slot></span
+    <Typography v-if="label || $slots.default" as="span" variant="body" class="ds-checkbox-label"
+      ><slot>{{ label }}</slot></Typography
     >
   </label>
 </template>
@@ -46,13 +47,17 @@ const checked = defineModel<boolean>({ default: false })
   display: inline-flex;
   align-items: center;
   gap: var(--checkbox-gap);
-  font-family: var(--font-sans);
-  font-size: var(--checkbox-font-size);
-  line-height: 1.25;
   color: var(--checkbox-label-color);
   cursor: pointer;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
+}
+
+/* text follows the root color (label color + disabled state) */
+.ds-typography.ds-checkbox-label {
+  --typo-size: var(--checkbox-font-size);
+  --typo-line-height: 1.25;
+  --typo-color: currentcolor;
 }
 
 /* the input stays first in the DOM (the mark is its CSS sibling);

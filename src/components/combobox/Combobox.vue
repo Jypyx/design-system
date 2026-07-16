@@ -3,6 +3,7 @@ import { computed, ref, useId, watch } from 'vue'
 import './combobox.tokens.css'
 import Chip from '../chip/Chip.vue'
 import Icon from '../icon/Icon.vue'
+import Typography from '../typography/Typography.vue'
 import type { ChipSize } from '../chip/Chip.types'
 import type {
   ComboboxModelValue,
@@ -341,9 +342,9 @@ defineExpose({
     :data-invalid="invalid ? '' : undefined"
     :data-loading="isLoading ? '' : undefined"
   >
-    <label v-if="label" class="ds-combobox-label" :for="inputId">
+    <Typography v-if="label" as="label" variant="label" class="ds-combobox-label" :for="inputId">
       {{ label }}<span v-if="required" class="ds-combobox-required" aria-hidden="true"> *</span>
-    </label>
+    </Typography>
 
     <div
       class="ds-combobox-field"
@@ -506,7 +507,7 @@ defineExpose({
     </div>
 
     <div v-if="hint" class="ds-combobox-meta">
-      <span :id="hintId" class="ds-combobox-hint">{{ hint }}</span>
+      <Typography :id="hintId" variant="caption" class="ds-combobox-hint">{{ hint }}</Typography>
     </div>
 
     <!-- native form submission: the visible input holds label text, never a name -->
@@ -530,11 +531,11 @@ defineExpose({
 
 /* --- label --------------------------------------------------------- */
 
-.ds-combobox-label {
-  font-size: var(--combobox-label-font-size);
-  font-weight: var(--font-weight-medium);
-  line-height: 1.25;
-  color: var(--combobox-label-color);
+.ds-typography.ds-combobox-label {
+  --typo-size: var(--combobox-label-font-size);
+  --typo-line-height: 1.25;
+  --typo-color: var(--combobox-label-color);
+
   user-select: none;
 }
 
@@ -868,8 +869,11 @@ defineExpose({
 
 .ds-combobox-meta {
   display: flex;
-  font-size: var(--combobox-meta-font-size);
-  line-height: 1.25;
-  color: var(--combobox-hint-color);
+}
+
+.ds-typography.ds-combobox-hint {
+  --typo-size: var(--combobox-meta-font-size);
+  --typo-line-height: 1.25;
+  --typo-color: var(--combobox-hint-color);
 }
 </style>

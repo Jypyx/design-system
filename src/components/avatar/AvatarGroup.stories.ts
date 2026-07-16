@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import AvatarGroup from './AvatarGroup.vue'
 import Avatar from './Avatar.vue'
+import Typography from '../typography/Typography.vue'
 
 const sizes = ['xs', 'sm', 'md', 'lg', 'xl'] as const
 
@@ -29,7 +30,7 @@ const meta = {
     label: 'Contributors',
   },
   render: (args) => ({
-    components: { AvatarGroup, Avatar },
+    components: { AvatarGroup, Avatar, Typography },
     setup: () => ({ args, portrait }),
     template: `
       <AvatarGroup v-bind="args">
@@ -55,7 +56,7 @@ export const Default: Story = {}
 export const MaxItems: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    components: { AvatarGroup, Avatar },
+    components: { AvatarGroup, Avatar, Typography },
     setup: () => ({
       names: [
         'Ada Lovelace',
@@ -73,9 +74,7 @@ export const MaxItems: Story = {
           <AvatarGroup :max-items="limit">
             <Avatar v-for="name in names" :key="name" :name="name" />
           </AvatarGroup>
-          <span style="font-family: var(--font-sans); font-size: var(--text-sm); color: var(--text-muted);">
-            maxItems: {{ limit ?? 'unset' }}
-          </span>
+          <Typography as="span" variant="subtitle">maxItems: {{ limit ?? 'unset' }}</Typography>
         </div>
       </div>
     `,
@@ -89,7 +88,7 @@ export const MaxItems: Story = {
 export const Sizes: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    components: { AvatarGroup, Avatar },
+    components: { AvatarGroup, Avatar, Typography },
     setup: () => ({ sizes, portrait }),
     template: `
       <div style="display: flex; flex-direction: column; gap: var(--spacing-4); align-items: flex-start;">
@@ -112,7 +111,7 @@ export const Sizes: Story = {
 export const WithTooltips: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    components: { AvatarGroup, Avatar },
+    components: { AvatarGroup, Avatar, Typography },
     setup: () => ({ portrait }),
     template: `
       <AvatarGroup label="Reviewers">
@@ -129,7 +128,7 @@ export const WithTooltips: Story = {
 export const FromArray: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    components: { AvatarGroup, Avatar },
+    components: { AvatarGroup, Avatar, Typography },
     setup: () => ({
       users: [
         { name: 'Ada Lovelace' },

@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite'
 import { ref } from 'vue'
 import Radio from './Radio.vue'
+import Typography from '../typography/Typography.vue'
 
 const meta = {
   title: 'Components/Radio',
@@ -33,7 +34,7 @@ const meta = {
     disabled: false,
   },
   render: (args) => ({
-    components: { Radio },
+    components: { Radio, Typography },
     setup: () => ({ args }),
     template: '<Radio v-bind="args" />',
   }),
@@ -48,13 +49,13 @@ export const Default: Story = {}
 export const Group: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    components: { Radio },
+    components: { Radio, Typography },
     setup: () => ({ plan: ref('pro') }),
     template: `
       <fieldset style="display: flex; flex-direction: column; gap: var(--spacing-3); align-items: flex-start; margin: 0; padding: 0; border: none;">
-        <legend style="font-family: var(--font-sans); font-size: var(--text-sm); color: var(--text-muted); padding: 0; margin-bottom: var(--spacing-3);">
+        <Typography as="legend" variant="subtitle" style="padding: 0; margin-bottom: var(--spacing-3);">
           Billing plan — selected: {{ plan }}
-        </legend>
+        </Typography>
         <Radio v-model="plan" value="free" name="plan" label="Free" />
         <Radio v-model="plan" value="pro" name="plan" label="Pro" />
         <Radio v-model="plan" value="enterprise" name="plan" label="Enterprise" />
@@ -66,7 +67,7 @@ export const Group: Story = {
 export const States: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    components: { Radio },
+    components: { Radio, Typography },
     template: `
       <div style="display: grid; grid-template-columns: repeat(2, max-content); gap: var(--spacing-4);">
         <Radio value="a" label="Unchecked" />
@@ -81,7 +82,7 @@ export const States: Story = {
 export const LabelPosition: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    components: { Radio },
+    components: { Radio, Typography },
     template: `
       <div style="display: flex; flex-direction: column; gap: var(--spacing-4); align-items: flex-start;">
         <Radio value="right" label="Label on the right (default)" label-position="right" />
@@ -95,7 +96,7 @@ export const LabelPosition: Story = {
 export const Spread: Story = {
   parameters: { controls: { disable: true } },
   render: () => ({
-    components: { Radio },
+    components: { Radio, Typography },
     setup: () => ({ shipping: ref('standard') }),
     template: `
       <div style="display: flex; flex-direction: column; gap: var(--spacing-3); width: 280px; padding: var(--spacing-4); border: 1px solid var(--border); border-radius: var(--radius-lg);">

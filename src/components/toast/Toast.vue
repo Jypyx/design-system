@@ -2,6 +2,7 @@
 import './toast.tokens.css'
 import { computed, onBeforeUnmount } from 'vue'
 import Icon from '../icon/Icon.vue'
+import Typography from '../typography/Typography.vue'
 import { dismissAllToasts, dismissToast, pauseToast, resumeToast, toasts } from './toast.ts'
 import type { ToastItem, ToastPosition } from './Toast.types.ts'
 
@@ -56,8 +57,10 @@ onBeforeUnmount(dismissAllToasts)
     >
       <Icon v-bind="iconProps(item.icon)" />
       <div class="ds-toast-content">
-        <p v-if="item.title" class="ds-toast-title">{{ item.title }}</p>
-        <p class="ds-toast-message">{{ item.message }}</p>
+        <Typography v-if="item.title" as="p" variant="label" class="ds-toast-title">
+          {{ item.title }}
+        </Typography>
+        <Typography variant="body" class="ds-toast-message">{{ item.message }}</Typography>
       </div>
       <button
         v-if="item.closable"
@@ -154,20 +157,21 @@ onBeforeUnmount(dismissAllToasts)
 
 .ds-toast-title,
 .ds-toast-message {
-  margin: 0;
   overflow-wrap: break-word;
 }
 
-.ds-toast-title {
-  font-size: var(--toast-title-font-size);
-  line-height: var(--toast-title-line-height);
-  font-weight: var(--font-weight-semibold);
+/* text follows --toast-color set on the bubble (on-accent pairs) */
+.ds-typography.ds-toast-title {
+  --typo-size: var(--toast-title-font-size);
+  --typo-line-height: var(--toast-title-line-height);
+  --typo-weight: var(--font-weight-semibold);
+  --typo-color: currentcolor;
 }
 
-.ds-toast-message {
-  font-size: var(--toast-font-size);
-  line-height: var(--toast-line-height);
-  font-weight: var(--font-weight-normal);
+.ds-typography.ds-toast-message {
+  --typo-size: var(--toast-font-size);
+  --typo-line-height: var(--toast-line-height);
+  --typo-color: currentcolor;
 }
 
 .ds-toast-title + .ds-toast-message {
