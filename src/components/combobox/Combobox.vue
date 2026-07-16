@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref, useId, watch } from 'vue'
 import './combobox.tokens.css'
+import '../../styles/shared/icon-button.css'
 import { fold, iconProps } from '../shared/utils'
 import Spinner from '../spinner/Spinner.vue'
 import Chip from '../chip/Chip.vue'
@@ -399,7 +400,7 @@ defineExpose({
 
       <button
         v-if="showClear"
-        class="ds-combobox-affix"
+        class="ds-combobox-affix ds-icon-btn"
         type="button"
         :aria-label="clearLabel"
         @click.stop="clear"
@@ -668,26 +669,10 @@ defineExpose({
   transform: rotate(180deg);
 }
 
+/* shared .ds-icon-btn reset — only the colors are component-specific */
 .ds-combobox-affix {
-  box-sizing: border-box;
-  appearance: none;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  flex: none;
-  margin: 0;
-  padding: 0;
-  border: none;
-  border-radius: var(--radius-sm);
-  background: none;
-  color: var(--combobox-icon-color);
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-  transition: color var(--duration-150) var(--ease-out);
-}
-
-.ds-combobox-affix:hover {
-  color: var(--combobox-text-color);
+  --icon-btn-color: var(--combobox-icon-color);
+  --icon-btn-hover-color: var(--combobox-text-color);
 }
 
 .ds-combobox .ds-combobox-spinner {

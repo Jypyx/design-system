@@ -1,5 +1,6 @@
 <script setup lang="ts" generic="T extends Record<string, unknown>">
 import './data-table.tokens.css'
+import '../../styles/shared/sr-only.css'
 import { fold } from '../shared/utils'
 import { computed, onBeforeUnmount, ref, watch } from 'vue'
 import Button from '../button/Button.vue'
@@ -301,7 +302,7 @@ const colSpan = computed(() => props.columns.length + (props.selectable ? 1 : 0)
       <!-- explicit roles: card mode restyles display, which would
            otherwise strip the implicit table semantics -->
       <table class="ds-table-table" role="table">
-        <caption v-if="caption" class="ds-table-caption">
+        <caption v-if="caption" class="ds-table-caption ds-sr-only">
           {{
             caption
           }}
@@ -506,18 +507,6 @@ const colSpan = computed(() => props.columns.length + (props.selectable ? 1 : 0)
   border-spacing: 0;
   font: inherit;
   color: inherit;
-}
-
-/* visually-hidden: names the table for screen readers only */
-.ds-table-caption {
-  position: absolute;
-  inline-size: 1px;
-  block-size: 1px;
-  margin: -1px;
-  padding: 0;
-  overflow: hidden;
-  clip-path: inset(50%);
-  white-space: nowrap;
 }
 
 .ds-table-table th,

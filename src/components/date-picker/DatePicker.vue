@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import './date-picker.tokens.css'
+import '../../styles/shared/icon-button.css'
 import { computed, nextTick, onMounted, ref, useId, useTemplateRef, watch } from 'vue'
 import Calendar from '../calendar/Calendar.vue'
 import Icon from '../icon/Icon.vue'
@@ -266,7 +267,7 @@ defineExpose({
       <template #icon-end>
         <button
           v-if="showClear"
-          class="ds-datepicker-clear"
+          class="ds-datepicker-clear ds-icon-btn"
           type="button"
           :aria-label="clearLabel"
           @click.stop="clear"
@@ -332,33 +333,12 @@ defineExpose({
   border-color: color-mix(in oklab, var(--input-border-color) 50%, var(--text));
 }
 
-/* --- clear button (mirrors .ds-input-affix) ----------------------------- */
+/* --- clear button (shared .ds-icon-btn reset, same colors as the
+   Input affixes) -------------------------------------------------------- */
 
 .ds-datepicker-clear {
-  box-sizing: border-box;
-  appearance: none;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  flex: none;
-  margin: 0;
-  padding: 0;
-  border: none;
-  border-radius: var(--radius-sm);
-  background: none;
-  color: var(--input-icon-color);
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-  transition: color var(--duration-150) var(--ease-out);
-}
-
-.ds-datepicker-clear:hover {
-  color: var(--input-text-color);
-}
-
-.ds-datepicker-clear:focus-visible {
-  outline: var(--focus-ring);
-  outline-offset: 1px;
+  --icon-btn-color: var(--input-icon-color);
+  --icon-btn-hover-color: var(--input-text-color);
 }
 
 .ds-datepicker-clear > .ds-icon {

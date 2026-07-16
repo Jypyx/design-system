@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, getCurrentInstance, ref, useId } from 'vue'
 import './input.tokens.css'
+import '../../styles/shared/icon-button.css'
 import { iconProps } from '../shared/utils'
 import Spinner from '../spinner/Spinner.vue'
 import Icon from '../icon/Icon.vue'
@@ -90,7 +91,7 @@ defineExpose({
       />
       <button
         v-if="showClear"
-        class="ds-input-affix"
+        class="ds-input-affix ds-icon-btn"
         type="button"
         :aria-label="clearLabel"
         @click="clear"
@@ -100,7 +101,7 @@ defineExpose({
       <Spinner v-if="isLoading" class="ds-input-spinner" />
       <button
         v-else-if="iconEndClickable && (iconEnd || $slots['icon-end'])"
-        class="ds-input-affix"
+        class="ds-input-affix ds-icon-btn"
         type="button"
         :aria-label="iconEndLabel"
         :disabled="disabled"
@@ -243,35 +244,10 @@ defineExpose({
   color: var(--input-icon-color);
 }
 
+/* shared .ds-icon-btn reset — only the colors are component-specific */
 .ds-input-affix {
-  box-sizing: border-box;
-  appearance: none;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  flex: none;
-  margin: 0;
-  padding: 0;
-  border: none;
-  border-radius: var(--radius-sm);
-  background: none;
-  color: var(--input-icon-color);
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-  transition: color var(--duration-150) var(--ease-out);
-}
-
-.ds-input-affix:hover:not(:disabled) {
-  color: var(--input-text-color);
-}
-
-.ds-input-affix:disabled {
-  cursor: not-allowed;
-}
-
-.ds-input-affix:focus-visible {
-  outline: var(--focus-ring);
-  outline-offset: 1px;
+  --icon-btn-color: var(--input-icon-color);
+  --icon-btn-hover-color: var(--input-text-color);
 }
 
 /* --- loading -------------------------------------------------------- */

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import './calendar.tokens.css'
+import '../../styles/shared/sr-only.css'
 import { computed, nextTick, ref, useTemplateRef, watch } from 'vue'
 import Button from '../button/Button.vue'
 import {
@@ -619,7 +620,7 @@ defineExpose({
     </div>
 
     <!-- announces month changes triggered by the steppers / pickers -->
-    <span class="ds-calendar-sr" aria-live="polite">
+    <span class="ds-calendar-sr ds-sr-only" aria-live="polite">
       {{ monthTitle }} {{ formatYear(visibleMonth.getFullYear()) }}
     </span>
 
@@ -816,20 +817,6 @@ defineExpose({
 
 .ds-calendar-toggle[aria-expanded='true'] .ds-icon {
   transform: rotate(180deg);
-}
-
-/* --- screen-reader-only live region ----------------------------------- */
-
-.ds-calendar-sr {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  margin: -1px;
-  padding: 0;
-  overflow: hidden;
-  clip-path: inset(50%);
-  white-space: nowrap;
-  border: 0;
 }
 
 /* --- body: same box for the three views -------------------------------- */

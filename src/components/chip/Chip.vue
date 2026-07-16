@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import './chip.tokens.css'
+import '../../styles/shared/icon-button.css'
 import { iconProps } from '../shared/utils'
 import { isSemanticColor } from '../shared/colors'
 import { computed, useAttrs } from 'vue'
@@ -90,7 +91,7 @@ const onKeydown = (event: KeyboardEvent) => {
     </component>
     <button
       v-if="closable"
-      class="ds-chip-close"
+      class="ds-chip-close ds-icon-btn"
       type="button"
       :disabled="disabled || undefined"
       :aria-label="closeLabel"
@@ -253,25 +254,12 @@ const onKeydown = (event: KeyboardEvent) => {
 
 /* --- close button --------------------------------------------------- */
 
+/* shared .ds-icon-btn reset; rides on currentColor from the chip body */
 .ds-chip-close {
-  box-sizing: border-box;
-  appearance: none;
-  margin: 0;
+  --icon-btn-radius: var(--radius-full);
   margin-inline-end: calc((var(--chip-size) - var(--chip-close-size)) / 2);
-  padding: 0;
-  background: none;
-  border: none;
-  border-radius: var(--radius-full);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  flex: none;
   width: var(--chip-close-size);
   height: var(--chip-close-size);
-  color: inherit;
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-  transition: background-color var(--duration-150) var(--ease-out);
 }
 
 /* the reduced body padding keeps the close button visually balanced */
@@ -291,12 +279,8 @@ const onKeydown = (event: KeyboardEvent) => {
   background-color: color-mix(in oklab, currentColor 20%, transparent);
 }
 
-.ds-chip-close:disabled {
-  cursor: not-allowed;
-}
-
+/* tighter than the shared 1px offset: the button hugs the chip edge */
 .ds-chip-close:focus-visible {
-  outline: var(--focus-ring);
   outline-offset: 0;
 }
 </style>

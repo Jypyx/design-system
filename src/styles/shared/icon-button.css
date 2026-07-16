@@ -1,0 +1,48 @@
+/* ============================================================
+ * Shared partial — .ds-icon-btn
+ * Reset + base look of the small icon-only buttons living inside
+ * other components (field affixes, clear / close buttons).
+ * Opt-in: each consuming SFC imports this file and adds the class
+ * next to its own (e.g. class="ds-input-affix ds-icon-btn").
+ * Every rule is wrapped in :where() (zero specificity) so any
+ * component-level rule overrides it regardless of bundle order.
+ *
+ *   --icon-btn-radius       corner radius (default --radius-sm)
+ *   --icon-btn-color        resting color (default currentColor)
+ *   --icon-btn-hover-color  hover color (default: resting color)
+ * ============================================================ */
+
+:where(.ds-icon-btn) {
+  /* self-contained: never rely on a host-app reset */
+  box-sizing: border-box;
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  margin: 0;
+  padding: 0;
+  border: none;
+  border-radius: var(--icon-btn-radius, var(--radius-sm));
+  background: none;
+  color: var(--icon-btn-color, currentColor);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    color var(--duration-150) var(--ease-out),
+    background-color var(--duration-150) var(--ease-out),
+    opacity var(--duration-150) var(--ease-out);
+}
+
+:where(.ds-icon-btn:hover:not(:disabled)) {
+  color: var(--icon-btn-hover-color, var(--icon-btn-color, currentColor));
+}
+
+:where(.ds-icon-btn:disabled) {
+  cursor: not-allowed;
+}
+
+:where(.ds-icon-btn:focus-visible) {
+  outline: var(--focus-ring);
+  outline-offset: 1px;
+}

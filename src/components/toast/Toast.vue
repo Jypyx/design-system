@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import './toast.tokens.css'
+import '../../styles/shared/icon-button.css'
 import { iconProps } from '../shared/utils'
 import { computed, onBeforeUnmount } from 'vue'
 import Icon from '../icon/Icon.vue'
@@ -61,7 +62,7 @@ onBeforeUnmount(dismissAllToasts)
       </div>
       <button
         v-if="item.closable"
-        class="ds-toast-close"
+        class="ds-toast-close ds-icon-btn"
         type="button"
         aria-label="Dismiss notification"
         @click="dismissToast(item.id)"
@@ -177,25 +178,12 @@ onBeforeUnmount(dismissAllToasts)
 
 /* --- close button --------------------------------------------------- */
 
+/* shared .ds-icon-btn reset; rides on currentColor from the bubble */
 .ds-toast-close {
-  box-sizing: border-box;
-  appearance: none;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  flex: none;
   /* negative margin grows the hit area without inflating the layout */
   margin: calc(-1 * var(--spacing-1)) calc(-1 * var(--spacing-1)) 0 0;
   padding: var(--spacing-1);
-  border: 0;
-  border-radius: var(--radius-sm);
-  background-color: transparent;
-  color: inherit;
-  cursor: pointer;
   opacity: 0.8;
-  transition:
-    background-color var(--duration-150) var(--ease-out),
-    opacity var(--duration-150) var(--ease-out);
 }
 
 .ds-toast-close:hover {

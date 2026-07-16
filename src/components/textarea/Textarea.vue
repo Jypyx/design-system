@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, getCurrentInstance, ref, useId } from 'vue'
 import './textarea.tokens.css'
+import '../../styles/shared/icon-button.css'
 import { iconProps } from '../shared/utils'
 import Spinner from '../spinner/Spinner.vue'
 import Icon from '../icon/Icon.vue'
@@ -81,7 +82,7 @@ function clear() {
       ></textarea>
       <button
         v-if="showClear"
-        class="ds-textarea-affix"
+        class="ds-textarea-affix ds-icon-btn"
         type="button"
         :aria-label="clearLabel"
         @click="clear"
@@ -91,7 +92,7 @@ function clear() {
       <Spinner v-if="isLoading" class="ds-textarea-spinner" />
       <button
         v-else-if="iconEndClickable && (iconEnd || $slots['icon-end'])"
-        class="ds-textarea-affix"
+        class="ds-textarea-affix ds-icon-btn"
         type="button"
         :aria-label="iconEndLabel"
         :disabled="disabled"
@@ -225,35 +226,10 @@ function clear() {
   color: var(--textarea-icon-color);
 }
 
+/* shared .ds-icon-btn reset — only the colors are component-specific */
 .ds-textarea-affix {
-  box-sizing: border-box;
-  appearance: none;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  flex: none;
-  margin: 0;
-  padding: 0;
-  border: none;
-  border-radius: var(--radius-sm);
-  background: none;
-  color: var(--textarea-icon-color);
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-  transition: color var(--duration-150) var(--ease-out);
-}
-
-.ds-textarea-affix:hover:not(:disabled) {
-  color: var(--textarea-text-color);
-}
-
-.ds-textarea-affix:disabled {
-  cursor: not-allowed;
-}
-
-.ds-textarea-affix:focus-visible {
-  outline: var(--focus-ring);
-  outline-offset: 1px;
+  --icon-btn-color: var(--textarea-icon-color);
+  --icon-btn-hover-color: var(--textarea-text-color);
 }
 
 /* icons and buttons hug the top of the field: center them on the first
