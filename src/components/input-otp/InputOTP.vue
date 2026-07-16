@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import './input-otp.tokens.css'
+import Spinner from '../spinner/Spinner.vue'
 import Icon from '../icon/Icon.vue'
 import Input from '../input/Input.vue'
 import type { InputOTPFormat, InputOTPProps } from './InputOTP.types'
@@ -226,15 +227,7 @@ function onKeydown(index: number, event: KeyboardEvent) {
         />
       </div>
     </template>
-    <svg v-if="isLoading" class="ds-otp-spinner" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3" opacity="0.25" />
-      <path
-        d="M12 2a10 10 0 0 1 10 10"
-        stroke="currentColor"
-        stroke-width="3"
-        stroke-linecap="round"
-      />
-    </svg>
+    <Spinner v-if="isLoading" class="ds-otp-spinner" />
   </div>
 </template>
 
@@ -317,17 +310,8 @@ function onKeydown(index: number, event: KeyboardEvent) {
 
 /* --- loading ----------------------------------------------------------- */
 
-.ds-otp-spinner {
-  flex: none;
-  width: var(--otp-separator-icon-size);
-  height: var(--otp-separator-icon-size);
+.ds-otp .ds-otp-spinner {
+  --spinner-size: var(--otp-separator-icon-size);
   color: var(--otp-separator-color);
-  animation: ds-otp-spin calc(var(--duration-500) * 1.5) var(--ease-linear) infinite;
-}
-
-@keyframes ds-otp-spin {
-  to {
-    transform: rotate(360deg);
-  }
 }
 </style>

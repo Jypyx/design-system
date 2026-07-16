@@ -2,6 +2,7 @@
 import { computed, ref, useId, watch } from 'vue'
 import './combobox.tokens.css'
 import { fold, iconProps } from '../shared/utils'
+import Spinner from '../spinner/Spinner.vue'
 import Chip from '../chip/Chip.vue'
 import Icon from '../icon/Icon.vue'
 import Typography from '../typography/Typography.vue'
@@ -406,21 +407,7 @@ defineExpose({
         <Icon name="close" />
       </button>
 
-      <svg
-        v-if="isLoading"
-        class="ds-combobox-spinner"
-        viewBox="0 0 24 24"
-        fill="none"
-        aria-hidden="true"
-      >
-        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3" opacity="0.25" />
-        <path
-          d="M12 2a10 10 0 0 1 10 10"
-          stroke="currentColor"
-          stroke-width="3"
-          stroke-linecap="round"
-        />
-      </svg>
+      <Spinner v-if="isLoading" class="ds-combobox-spinner" />
       <Icon v-else name="expand_more" class="ds-combobox-chevron" />
     </div>
 
@@ -703,18 +690,9 @@ defineExpose({
   color: var(--combobox-text-color);
 }
 
-.ds-combobox-spinner {
-  flex: none;
-  width: var(--combobox-icon-size);
-  height: var(--combobox-icon-size);
+.ds-combobox .ds-combobox-spinner {
+  --spinner-size: var(--combobox-icon-size);
   color: var(--combobox-icon-color);
-  animation: ds-combobox-spin calc(var(--duration-500) * 1.5) var(--ease-linear) infinite;
-}
-
-@keyframes ds-combobox-spin {
-  to {
-    transform: rotate(360deg);
-  }
 }
 
 /* --- popover (CSS anchor positioning, mirrors Menu) ------------------- */

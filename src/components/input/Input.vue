@@ -2,6 +2,7 @@
 import { computed, getCurrentInstance, ref, useId } from 'vue'
 import './input.tokens.css'
 import { iconProps } from '../shared/utils'
+import Spinner from '../spinner/Spinner.vue'
 import Icon from '../icon/Icon.vue'
 import Typography from '../typography/Typography.vue'
 import type { InputProps } from './Input.types'
@@ -96,21 +97,7 @@ defineExpose({
       >
         <Icon name="close" />
       </button>
-      <svg
-        v-if="isLoading"
-        class="ds-input-spinner"
-        viewBox="0 0 24 24"
-        fill="none"
-        aria-hidden="true"
-      >
-        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="3" opacity="0.25" />
-        <path
-          d="M12 2a10 10 0 0 1 10 10"
-          stroke="currentColor"
-          stroke-width="3"
-          stroke-linecap="round"
-        />
-      </svg>
+      <Spinner v-if="isLoading" class="ds-input-spinner" />
       <button
         v-else-if="iconEndClickable && (iconEnd || $slots['icon-end'])"
         class="ds-input-affix"
@@ -289,18 +276,9 @@ defineExpose({
 
 /* --- loading -------------------------------------------------------- */
 
-.ds-input-spinner {
-  flex: none;
-  width: var(--input-icon-size);
-  height: var(--input-icon-size);
+.ds-input .ds-input-spinner {
+  --spinner-size: var(--input-icon-size);
   color: var(--input-icon-color);
-  animation: ds-input-spin calc(var(--duration-500) * 1.5) var(--ease-linear) infinite;
-}
-
-@keyframes ds-input-spin {
-  to {
-    transform: rotate(360deg);
-  }
 }
 
 /* --- hint + counter -------------------------------------------------- */

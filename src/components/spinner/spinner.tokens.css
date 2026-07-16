@@ -1,0 +1,16 @@
+/* ============================================================
+ * LAYER 3 — Component tokens: Spinner
+ * Consumes Layer 2 semantic tokens only; light + dark come for
+ * free because the semantic layer resolves via light-dark().
+ *
+ *   --spinner-size   diameter; defaults to 1em so the spinner
+ *                    follows the surrounding font size — hosts
+ *                    alias their icon-size token onto it instead
+ *                    (e.g. .ds-btn .ds-btn-spinner)
+ *
+ * Color rides on currentColor, like Icon.
+ * ============================================================ */
+
+.ds-spinner {
+  --spinner-size: 1em;
+}

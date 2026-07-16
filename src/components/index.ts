@@ -133,6 +133,9 @@ export type {
   SliderValue,
 } from './slider/Slider.types'
 
+export { default as Spinner } from './spinner/Spinner.vue'
+export type { SpinnerProps } from './spinner/Spinner.types'
+
 export { default as Switch } from './switch/Switch.vue'
 export type { SwitchLabelPosition, SwitchProps } from './switch/Switch.types'
 
